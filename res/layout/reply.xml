@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/shape"
+    android:layout_margin="15dp" >
+    
+    <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        
+        <TextView android:id="@+id/reply_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reply"
+            android:textSize="17sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/set_text"/>
+        
+        <EditText android:id="@+id/ed_reason"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/reply_hint"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@id/reply_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"/>
+        
+    </RelativeLayout>
+    
+    <ImageView android:id="@+id/devide"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bot_div"
+        android:layout_marginTop="10dp"/>
+    
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        
+        <Button android:id="@+id/btn_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:layout_weight="1.0"
+            android:background="@null"
+            android:textColor="@color/other_text"/>
+        
+        <ImageView 
+	        android:layout_width="0.5dp"
+	        android:layout_height="fill_parent"
+	        android:background="@color/bot_div"/>
+        
+        <Button android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_weight="1.0"
+            android:background="@null"
+            android:textColor="@color/other_text" />
+        
+    </LinearLayout>
+
+</LinearLayout>

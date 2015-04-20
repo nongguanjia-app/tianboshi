@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/gray" >
+
+    <include layout="@layout/title"/>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:layout_marginTop="20dp">
+        
+        <ImageView android:id="@+id/my_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/yellow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"/>
+        
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/my_icon"
+            android:layout_marginLeft="10dp">
+            
+            <TextView android:id="@+id/name" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="水稻大王"
+                android:textSize="16sp"/>
+            
+            <TextView android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机号：15649832116"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        
+        <ImageView android:id="@+id/img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/yellow"
+            android:layout_marginRight="8dp"/>
+        
+    </RelativeLayout>
+    
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:background="@color/white">
+        
+        <!-- 我的资料 -->
+        <RelativeLayout android:id="@+id/my_info"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/my_info_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/my_info_img"
+                android:text="@string/my_info"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 我的下载 -->
+        <RelativeLayout android:id="@+id/my_down"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/my_down_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/my_down_img"
+                android:text="@string/my_down"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 向好友推荐 -->
+        <RelativeLayout android:id="@+id/rec"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/rec_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/rec_img"
+                android:text="@string/rec"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 修改密码 -->
+        <RelativeLayout android:id="@+id/edit_psd"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/edit_psd_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/edit_psd_img"
+                android:text="@string/edit_psd"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 帮助中心 -->
+        <RelativeLayout android:id="@+id/help"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/help_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/help_img"
+                android:text="@string/help"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 关于我们 -->
+        <RelativeLayout android:id="@+id/about"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/about_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/about_img"
+                android:text="@string/about"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        <!-- 升级为推广人 -->
+        <RelativeLayout android:id="@+id/upgrade"
+            style="@style/my_item_layout">
+            
+            <ImageView android:id="@+id/upgrade_img"
+                style="@style/my_item_icon"/>
+            
+            <TextView style="@style/my_item_tv"
+                android:layout_toRightOf="@id/upgrade_img"
+                android:text="@string/about"/>
+        </RelativeLayout>
+        
+        <ImageView style="@style/divide"/>
+        
+        
+        <Button android:id="@+id/logout"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/logout"/>
+        
+    </LinearLayout>
+    
+</LinearLayout>

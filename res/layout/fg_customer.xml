@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/yellow" >
+    
+    <FrameLayout 
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" >
+		    
+		    <ListView
+		        android:id="@+id/cons_list"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:cacheColorHint="#00000000" />
+		
+		    <!-- 
+		    <com.nongguanjia.doctorTian.view.SideBar
+		        android:id="@+id/sideBar"
+		        android:layout_width="25dp"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="right|center_vertical" />
+		         -->
+
+		</FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:background="@color/lightgreen" />
+
+  
+     <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/title_bar_bg"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical" >
+
+         <!-- 课程详情 -->
+        <RadioButton
+            android:id="@+id/cou_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center_vertical"
+            android:text="@string/course_detail"
+            android:textColor="@color/font_selector"
+            android:textSize="18dp" />
+
+        <!-- 课程表 -->
+        <RadioButton
+            android:id="@+id/cou_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:text="@string/course_table"
+            android:textColor="@color/font_selector"
+            android:textSize="18dp" />
+
+        <!-- 经验谈 -->
+        <RadioButton
+            android:id="@+id/cou_exp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:text="@string/course_exp"
+            android:textColor="@color/font_selector"
+            android:textSize="18dp" />
+
+        <!-- 讨论区 -->
+        <RadioButton
+            android:id="@+id/cou_discus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:text="@string/course_discus"
+            android:textColor="@color/font_selector"
+            android:textSize="18dp" />
+    </RadioGroup>
+    
+     
+     <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+    
+    
+
+</LinearLayout>

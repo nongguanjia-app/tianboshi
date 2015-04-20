@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffffff</color>
+    <color name="gray">#bec3c7</color>
+    <color name="regist_des">#414141</color>
+    <color name="regist_type">#bec3c7</color>
+    <color name="regist_agreement">#166fc2</color>
+    <color name="login_txt">#939393</color>
+    <color name="next_step_click">#ff5054</color>
+    <color name="begin_btn_bg">#f1f2f4</color>
+    <color name="divide">#b2b2b2</color>
+    <color name="match_bg">#313131</color>
+    <color name="set_group">#eeeeee</color>
+    <color name="set_text">#6D6D72</color>
+    <color name="set_logout">#FF5054</color>
+    <color name="set_item_on">#dfdfdf</color>
+    <color name="bot_div">#4f4f4f</color>
+    <color name="other_text">#1487d7</color>
+    <color name="from_txt">#2f2f2f</color>
+    <color name="gold">#b89766</color>
+    <color name="name_color">#393939</color>
+    <color name="input_color">#f1f2f4</color>
+    <color name="send_btn_color">#2c94f8</color>
+    <color name="create_on">#fc9093</color>
+    <color name="auth_on">#cdd1d4</color>
+    <color name="agree_on">#cfe7fd</color>
+    <color name="about_tex">#565656</color>
+    
+    <color name="darkgray">#ffa9a9a9</color>
+    <color name="lightgray">#ffd3d3d3</color>
+    <color name="sandybrown">#fff4a460</color>
+    <color name="lightgreen">#ff90ee90</color>
+    <color name="dimgray">#ff696969</color>
+    <color name="silver">#ffc0c0c0</color>
+    <color name="blue">#0000ff</color>
+    <color name="black">#ff000000</color>
+    <color name="red">#ff5054</color>
+    <color name="yellow">#ffffff00</color>
+    <color name="simple_333333">#ff333333</color>
+    <color name="transparent">#00000000</color>
+    <color name="simple_eeeeee">#ffeeeeee</color>
+    <color name="simple_cccccc">#ffcccccc</color>
+    <color name="pull_to_refresh_label_color">#ff737373</color>
+    <color name="dot_bg">#00ff0000</color>
+    <color name="dot_unselect_color">#50ffffff</color>
+    <color name="dot_select_color">#ffffffff</color>
+    <color name="progressbar_app">#ff666666</color>
+    <color name="arc_progress_background">#ffffffff</color>
+    <color name="arc_progress_sweeping_color">#ffcccccc</color>
+    <color name="tab_text_normal">#ffd9d2cc</color>
+    <color name="tab_text_highlight">#ffd6d2cf</color>
+    <color name="tabMedium">#ff2b2b2b</color>
+    <color name="tabDark">#ff000000</color>
+    <color name="tabTransparent">#10ffffff</color>
+    <color name="guide_view_bg">#ff999999</color>
+    <color name="popup_window_pressed_bg">#ff999999</color>
+    <color name="title_text_color">#ffffffff</color>
+    <color name="title_text_color_night">#ffb1b1b1</color>
+    <color name="default_window_bg">#ffffffff</color>
+    <color name="default_window_bg_night">#ff1a1b1d</color>
+    <color name="menu_item_text_normal">#ff535c74</color>
+    <color name="menu_item_text_highlight">#ffffffff</color>
+
+    <color name="bg_row_pressed_start">#ffcccccc</color>
+    <color name="bg_row_pressed_center">#ffcccccc</color>
+    <color name="bg_row_pressed_end">#ffcccccc</color>
+    <color name="bg_row_normal">#ffffffff</color>
+
+    <item name="bg_row_normal_start" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_center" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_end" type="color">@color/bg_row_normal</item>
+
+    <color name="bg_row_border">#ffcacaca</color>
+    <color name="bg_row_pressed_start_night">#ff1a1b1d</color>
+    <color name="bg_row_pressed_center_night">#ff1a1b1d</color>
+    <color name="bg_row_pressed_end_night">#ff1a1b1d</color>
+
+    <!-- 导航条的背景颜色 -->
+    <color name="title_bar_bg">#f9f9f9</color>
+    
+	<!-- 一般按钮颜色 -->
+    <color name="btn_common_normal">#7ecef4</color>
+    <color name="btn_common_pressed">#00b7ee</color>
+    
+     <color name="button_bg_color_selector">#f9f9f9</color>
+     
+     <color name="lightwhite">#fff</color>
+      <color name="background_tab_pressed">#8833B5E5</color>
+      <color name="deep_gray">#544e44</color>
+      
+      <color name="tab_bg_color">#eeeeeeee</color>
+      <drawable name="title_bar_bg">#0fd5c9</drawable>
+    
+</resources>
