@@ -1,6 +1,5 @@
 package com.nongguanjia.doctorTian;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +10,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -254,22 +249,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 						listView.setAdapter(adapter);
 						LvHeightUtil.setListViewHeightBasedOnChildren(listView);
 						
-						listView.setOnItemClickListener(new OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
-								Bundle bd = new Bundle();
-								bd.putString("id", expId);
-								bd.putString("talkId", echoList.get(position).getTalkId());
-								bd.putString("isExp", "1");
-								intent.putExtras(bd);
-								startActivity(intent);
-							}
-							
-						});
+						setListViewInfo();
 					}else{
 						Toast.makeText(getApplicationContext(), "获取经验谈详情失败", Toast.LENGTH_SHORT).show();
 					}
@@ -418,6 +398,28 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		}
 	}
  	
+	
+	
+	private void setListViewInfo(){
+		//点击item
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
+				Bundle bd = new Bundle();
+				bd.putString("id", expId);
+				bd.putString("talkId", echoList.get(position).getTalkId());
+				bd.putString("isExp", "1");
+				intent.putExtras(bd);
+				startActivity(intent);
+			}
+			
+		});
+		
+	}
 	
 	
 	

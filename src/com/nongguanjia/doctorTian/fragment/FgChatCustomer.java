@@ -32,8 +32,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.AddFriendActivity;
+import com.nongguanjia.doctorTian.ContractActivity;
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.adapter.ContactsAdapter;
+import com.nongguanjia.doctorTian.adapter.CustomerAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllAttention;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
@@ -47,7 +48,7 @@ public class FgChatCustomer extends Fragment {
 	private ListView listView;
 //	private SideBar sideBar;
 	private ArrayList<AllAttention> atts;
-	private ContactsAdapter adapter;
+	private CustomerAdapter adapter;
 	private WindowManager mWindowManager;
 	private TextView mDialogText;
 	private View head;
@@ -84,7 +85,7 @@ public class FgChatCustomer extends Fragment {
 		mWindowManager.addView(mDialogText, lp);
 //		sideBar.setTextView(mDialogText);
 		
-		adapter = new ContactsAdapter(getActivity().getApplicationContext());
+		adapter = new CustomerAdapter(getActivity().getApplicationContext());
 		listView.setAdapter(adapter);
 		
 		getAllAttention();
@@ -156,9 +157,13 @@ public class FgChatCustomer extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
+				Intent intent;
 				if(which == 0){
-					Intent intent = new Intent(getActivity(), AddFriendActivity.class);
+					intent = new Intent(getActivity(), AddFriendActivity.class);
 					startActivityForResult(intent, RESULT_OK);
+				}else if(which == 1){
+					intent = new Intent(getActivity(), ContractActivity.class);
+					startActivity(intent);
 				}
 			}
 		});

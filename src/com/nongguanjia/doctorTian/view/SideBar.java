@@ -1,7 +1,7 @@
 package com.nongguanjia.doctorTian.view;
 
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.adapter.ContactsAdapter;
+import com.nongguanjia.doctorTian.adapter.CustomerAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -57,7 +57,7 @@ public class SideBar extends View {
 		list = _list;
 		HeaderViewListAdapter ha = (HeaderViewListAdapter) _list
 				.getAdapter();
-		ContactsAdapter ad = (ContactsAdapter)ha.getWrappedAdapter();
+		CustomerAdapter ad = (CustomerAdapter)ha.getWrappedAdapter();
 		sectionIndexter = (SectionIndexer) ad;
 		
 	}

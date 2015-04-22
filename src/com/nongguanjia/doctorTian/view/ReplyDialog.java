@@ -136,7 +136,7 @@ public class ReplyDialog extends Dialog implements android.view.View.OnClickList
 	
 
 	private void reply(String content){
-		String phoneNum = ((AppApplication)getContext().getApplicationContext()).PHONENUM;
+		String phoneNum = ((AppApplication)context.getApplicationContext()).PHONENUM;
 		String url = CommonConstant.addtalkreply 
 				+ "/" + id + "," 
 				+ phoneNum + ","

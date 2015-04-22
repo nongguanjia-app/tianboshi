@@ -1,5 +1,6 @@
 package com.nongguanjia.doctorTian.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -100,7 +101,10 @@ public class FgChatLetter extends BaseFragment {
 	
 	private void updateList() {
 		List<GotyeChatTarget> sessions = api.getSessionList();
-		Log.d("offLine", "List--sessions" + sessions);
+		if (sessions == null) {
+			sessions = new ArrayList<GotyeChatTarget>();
+		}
+		
 		if (adapter == null) {
 			adapter = new MessageListAdapter(getActivity(), sessions);
 			listView.setAdapter(adapter);

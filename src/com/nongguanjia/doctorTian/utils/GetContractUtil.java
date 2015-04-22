@@ -1,27 +1,22 @@
 package com.nongguanjia.doctorTian.utils;
 
-import java.io.InputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.TextUtils;
 
-import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.bean.ContractInfo;
 
 
 public class GetContractUtil {
 	//读取本地通讯录
-	public static HashMap<String, ContractInfo> getPhoneContracts(Context mContext){
-		HashMap<String, ContractInfo> map = new HashMap<String, ContractInfo>();
+	public static List<ContractInfo> getPhoneContracts(Context mContext){
+		List<ContractInfo> contractList = new ArrayList<ContractInfo>();
+		
 		ContentResolver resolver = mContext.getContentResolver();
 		// 获取手机联系人
 		Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,null, null, null, null); //传入正确的uri
@@ -47,16 +42,16 @@ public class GetContractUtil {
 				Long photoId = phoneCursor.getLong(photoIndex);
 				
 				//得到联系人头像Bitamp  
-		        Bitmap contactPhoto = null;  
-		 
-		        //photoId 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的  
-		        if(photoId > 0 ) {  
-		            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,contactId);  
-		            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(resolver, uri);  
-		            contactPhoto = BitmapFactory.decodeStream(input);  
-		        }else {  
-		            contactPhoto = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.default_icon);  
-		        }  
+//		        Bitmap contactPhoto = null;  
+//		 
+//		        //photoId 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的  
+//		        if(photoId > 0 ) {  
+//		            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,contactId);  
+//		            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(resolver, uri);  
+//		            contactPhoto = BitmapFactory.decodeStream(input);  
+//		        }else {  
+//		            contactPhoto = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.default_icon);  
+//		        }  
 				
 				ContractInfo contractInfo = new ContractInfo();
 				contractInfo.setId(contactId+"");
@@ -64,11 +59,11 @@ public class GetContractUtil {
 				contractInfo.setPhoneNum(phoneNumber);
 				contractInfo.setPhotoId(photoId+"");
 				
-				map.put(phoneNumber, contractInfo);
+				contractList.add(contractInfo);
 			}
 			phoneCursor.close();
 		}
-		return map;
+		return contractList;
 	}
 	
 	

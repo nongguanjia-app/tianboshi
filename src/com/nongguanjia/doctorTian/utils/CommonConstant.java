@@ -21,6 +21,7 @@ public class CommonConstant {
 	public static final String allattentions = "allattentions"; //获取全部好友
 	public static final String addattention = "addattention"; //添加好友
 	public static final String delAttention = "deleteattention"; //取消推广人关注
+	public static final String uploadAttention = "uploadattention"; //上传通讯录 
 	
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;

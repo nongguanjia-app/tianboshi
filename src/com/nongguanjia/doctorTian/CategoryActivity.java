@@ -15,7 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +26,7 @@ import com.nongguanjia.doctorTian.adapter.CategoryAdapter;
 import com.nongguanjia.doctorTian.bean.AllCategoryCourses;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.view.RTPullListView;
 
 /**
  * @author tx
@@ -33,13 +34,15 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
  */
 public class CategoryActivity extends Activity {
 	private TextView tv_name;
-	private ListView listView;
+	private RTPullListView  listView;
 	private CategoryAdapter adapter;
 	private ProgressDialog mDialog;
 	private String id;
 	private String name;
 	private int pageIndex = 1;
 	private ArrayList<AllCategoryCourses> courseList;
+	
+	private ProgressBar moreProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class CategoryActivity extends Activity {
 		name = bd.getString("name");
 		
 		tv_name= (TextView)findViewById(R.id.tv_title);
-		listView = (ListView)findViewById(R.id.category_list);
+		listView = (RTPullListView)findViewById(R.id.category_list);
 		
 		tv_name.setText(name);
 		
@@ -98,20 +101,7 @@ public class CategoryActivity extends Activity {
 						adapter = new CategoryAdapter(getApplicationContext(), courseList);
 						listView.setAdapter(adapter);
 						
-						listView.setOnItemClickListener(new OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
-								Bundle bd = new Bundle();
-								bd.putString("courseId", courseList.get(position).getCourseid());
-								intent.putExtras(bd);
-								startActivity(intent);
-							}
-							
-						});
+						setListViewInfo();
 						
 					}else{
 						Toast.makeText(getApplicationContext(), "获取全部课程失败", Toast.LENGTH_SHORT).show();
@@ -126,5 +116,26 @@ public class CategoryActivity extends Activity {
 			
 		});
 	}
+	
+	
+	
+	private void setListViewInfo(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
+				Bundle bd = new Bundle();
+				bd.putString("courseId", courseList.get(position).getCourseid());
+				intent.putExtras(bd);
+				startActivity(intent);
+			}
+			
+		});
+		
+	}
+	
 	
 }

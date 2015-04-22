@@ -63,6 +63,7 @@ import com.nongguanjia.doctorTian.utils.CommonUtils;
 import com.nongguanjia.doctorTian.utils.Constants;
 import com.nongguanjia.doctorTian.utils.GotyeVoicePlayClickPlayListener;
 import com.nongguanjia.doctorTian.utils.ProgressDialogUtil;
+import com.nongguanjia.doctorTian.utils.SendImageMessageTask;
 import com.nongguanjia.doctorTian.utils.ToastUtil;
 import com.nongguanjia.doctorTian.utils.URIUtil;
 import com.nongguanjia.doctorTian.utils.VoiceToTextUtil;
@@ -703,9 +704,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 		intent.setType("image/jpeg");
 		startActivityForResult(intent, REQUEST_PIC);
 
-		// Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-		// intent.setType("image/*");
-		// startActivityForResult(intent, REQUEST_PIC);
+//		 Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
+//		 intent.setType("image/*");
+//		 startActivityForResult(intent, REQUEST_PIC);
 	}
 
 	private void takePhoto() {
@@ -752,15 +753,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 	}
 
 	private void sendPicture(String path) {
-//		SendImageMessageTask task;
-//		if (chatType == 0) {
-//			task = new SendImageMessageTask(this, user);
-//		} else if (chatType == 1) {
-//			task = new SendImageMessageTask(this, room);
-//		} else {
-//			task = new SendImageMessageTask(this, group);
-//		}
-//		task.execute(path);
+		SendImageMessageTask task;
+		if (chatType == 0) {
+			task = new SendImageMessageTask(this, user);
+		} else if (chatType == 1) {
+			task = new SendImageMessageTask(this, room);
+		} else {
+			task = new SendImageMessageTask(this, group);
+		}
+		task.execute(path);
 	}
 
 	public void setPlayingId(long playingId) {
@@ -870,6 +871,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 		adapter.notifyDataSetInvalidated();
 		pullListView.onRefreshComplete();
 	}
+	
     boolean realTalk,realPlay;
 	@Override
 	public void onStartTalk(int code, boolean isRealTime, int targetType,
