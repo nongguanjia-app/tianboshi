@@ -92,6 +92,5 @@ public class CourseActivity extends FragmentActivity {
 	}
 
 	
-	
 
 }

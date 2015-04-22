@@ -17,13 +17,17 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,8 +65,11 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	private String expId;
 	private String flag;
 	private ExperienceInfo info;
-	private ArrayList<AllEcho> echoList;
+	private ArrayList<AllEcho> allEchoList;
 	private int pageIndex = 1;
+	
+	private LinearLayout footerView;
+	private boolean isSuccess = false;
 	
 	private Html.ImageGetter imageGetter;
 	
@@ -78,6 +85,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				break;
 			case CommonConstant.RESPONSE_SUCCESS:
 				Toast.makeText(ExpInfoActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+				pageIndex = 1;//相当于刷新
+				allEchoList = null;
 				getAllechos();//重新获取数据
 				ed_info.setText("");
 				
@@ -131,18 +140,23 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		adapter = new AllechosAdapter(ExpInfoActivity.this, expId);
 				
 		tv_title = (TextView)findViewById(R.id.tv_title);
-		tv_info_title = (TextView)findViewById(R.id.info_title);
-		tv_time = (TextView)findViewById(R.id.tv_time);
-		tv_summary = (TextView)findViewById(R.id.tv_summary);
-		tv_name = (TextView)findViewById(R.id.name);
-		tv_product = (TextView)findViewById(R.id.product);
-		tv_content = (TextView)findViewById(R.id.tv_content);
-		
-		img = (ImageView)findViewById(R.id.img);
 		listView = (ListView)findViewById(R.id.talk_list);
+		
+		LayoutInflater inflater = LayoutInflater.from(ExpInfoActivity.this);
+		View header = inflater.inflate(R.layout.expinfo_header, null);
+		tv_info_title = (TextView)header.findViewById(R.id.info_title);
+		tv_time = (TextView)header.findViewById(R.id.tv_time);
+		tv_summary = (TextView)header.findViewById(R.id.tv_summary);
+		tv_name = (TextView)header.findViewById(R.id.name);
+		tv_product = (TextView)header.findViewById(R.id.product);
+		tv_content = (TextView)header.findViewById(R.id.tv_content);
+		img = (ImageView)header.findViewById(R.id.img);
+		btn_attention = (Button)header.findViewById(R.id.btn_attention);
+		listView.addHeaderView(header);
+		
 		ed_info = (EditText)findViewById(R.id.ed_info);
 		btn_send = (Button)findViewById(R.id.btn_send);
-		btn_attention = (Button)findViewById(R.id.btn_attention);
+		
 		btn_attention.setOnClickListener(this);
 		
 		ed_info.addTextChangedListener(new TextWatcher(){
@@ -175,6 +189,10 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			}
 			
 		});
+		
+		View view = inflater.inflate(R.layout.list_footview, null);
+		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
+		listView.addFooterView(view);
 		
 		getExperienceInfo();
 		
@@ -241,18 +259,30 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				// TODO Auto-generated method stub
 				try {
 					if(response.getJSONObject("AllEchos").getString("returnCode").equals("1")){
+						isSuccess = true;
+						
 						Gson gson = new Gson();
-						echoList = new ArrayList<AllEcho>();
+						ArrayList<AllEcho> echoList = new ArrayList<AllEcho>();
 						JSONArray ja = response.getJSONObject("AllEchos").getJSONArray("allEchos");
 						echoList = gson.fromJson(ja.toString(), new TypeToken<List<AllEcho>>(){}.getType());
-						adapter.setEchos(echoList);
+						
+						if(allEchoList == null){
+							allEchoList = new ArrayList<AllEcho>();
+						}
+						allEchoList.addAll(echoList);
+						
+						adapter.setEchos(allEchoList);
+						
 						listView.setAdapter(adapter);
-						LvHeightUtil.setListViewHeightBasedOnChildren(listView);
+						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
 					}else{
-						Toast.makeText(getApplicationContext(), "获取经验谈详情失败", Toast.LENGTH_SHORT).show();
+						isSuccess = false;
+						Toast.makeText(getApplicationContext(), "获取讨论区内容失败", Toast.LENGTH_SHORT).show();
 					}
+					
+					footerView.setVisibility(View.GONE);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -411,12 +441,45 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
 				Bundle bd = new Bundle();
 				bd.putString("id", expId);
-				bd.putString("talkId", echoList.get(position).getTalkId());
+				bd.putString("talkId", allEchoList.get(position).getTalkId());
 				bd.putString("isExp", "1");
 				intent.putExtras(bd);
 				startActivity(intent);
 			}
 			
+		});
+		
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				//当不滚动时
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+					//判断是否滚动到底部
+					if(view.getLastVisiblePosition() == view.getCount() - 1){
+						
+						if(adapter.getCount() % 8 == 0){
+							if(isSuccess){
+								pageIndex = pageIndex + 1;
+								
+								//加载更多
+								footerView.setVisibility(View.VISIBLE);
+								
+								getAllechos();
+							}
+							
+						}
+						
+					}
+				}
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 	}

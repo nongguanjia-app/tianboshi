@@ -12,10 +12,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +43,11 @@ public class CategoryActivity extends Activity {
 	private String id;
 	private String name;
 	private int pageIndex = 1;
-	private ArrayList<AllCategoryCourses> courseList;
+	private boolean isSuccess = false;
 	
-	private ProgressBar moreProgressBar;
+	private ArrayList<AllCategoryCourses> allCourseList;//用于缓存所有数据
+	
+	private LinearLayout footerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,11 @@ public class CategoryActivity extends Activity {
 		
 		tv_name.setText(name);
 		
+		LayoutInflater inflater = LayoutInflater.from(CategoryActivity.this);
+		View view = inflater.inflate(R.layout.list_footview, null);
+		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
+		listView.addFooterView(view);
+		
 		mDialog.show();
 		getCategory();
 	}
@@ -91,21 +101,44 @@ public class CategoryActivity extends Activity {
 			public void onSuccess(int statusCode, Header[] headers,
 					JSONObject response) {
 				// TODO Auto-generated method stub
-				mDialog.dismiss();
+				if(mDialog.isShowing()){
+					mDialog.dismiss();
+				}
+				
 				try {
 					if(response.getJSONObject("AllCategoryCourses").getString("returnCode").equals("1")){
+						isSuccess = true;
+						
 						JSONArray ja = response.getJSONObject("AllCategoryCourses").getJSONArray("allCategoryCourses");
 						Gson gson = new Gson();
-						courseList = new ArrayList<AllCategoryCourses>();
+						
+						//缓存每次请求应答
+						ArrayList<AllCategoryCourses> courseList = new ArrayList<AllCategoryCourses>();
 						courseList = gson.fromJson(ja.toString(), new TypeToken<List<AllCategoryCourses>>(){}.getType());
-						adapter = new CategoryAdapter(getApplicationContext(), courseList);
+						
+						if(allCourseList == null){
+							allCourseList = new ArrayList<AllCategoryCourses>();
+						}
+						allCourseList.addAll(courseList);
+						
+						if(adapter == null){
+							adapter = new CategoryAdapter(getApplicationContext(), allCourseList);
+						}else{
+							adapter.setCourses(allCourseList);
+						}
+						
 						listView.setAdapter(adapter);
 						
-						setListViewInfo();
+						adapter.notifyDataSetChanged();
 						
+						setListViewInfo();
 					}else{
+						isSuccess = false;
 						Toast.makeText(getApplicationContext(), "获取全部课程失败", Toast.LENGTH_SHORT).show();
 					}
+					
+					footerView.setVisibility(View.GONE);
+					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -128,13 +161,44 @@ public class CategoryActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
 				Bundle bd = new Bundle();
-				bd.putString("courseId", courseList.get(position).getCourseid());
+				bd.putString("courseId", allCourseList.get(position-1).getCourseid());
 				intent.putExtras(bd);
 				startActivity(intent);
 			}
 			
 		});
 		
+		
+		listView.setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				//当不滚动时
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+					//判断是否滚动到底部
+					if(view.getLastVisiblePosition() == view.getCount() - 1){
+						
+						if(adapter.getCount() % 8 == 0){
+							if(isSuccess){
+								pageIndex = pageIndex + 1;
+								
+								//加载更多
+								footerView.setVisibility(View.VISIBLE);
+								
+								getCategory();
+							}
+							
+						}
+						
+					}
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	
