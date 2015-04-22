@@ -16,7 +16,11 @@ import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.bean.AllAttention;
 import com.nongguanjia.doctorTian.utils.PingYinUtil;
 
-public class ContactsAdapter extends BaseAdapter implements SectionIndexer{
+/**
+ * @author tx
+ * 我的客户列表
+ */
+public class CustomerAdapter extends BaseAdapter implements SectionIndexer{
 
 	private Context mContext;
 	private SectionIndexer mIndexer;
@@ -29,7 +33,7 @@ public class ContactsAdapter extends BaseAdapter implements SectionIndexer{
 	}
 	
 	
-	public ContactsAdapter(Context mContext) {
+	public CustomerAdapter(Context mContext) {
 		this.mContext = mContext;
 
 	}
@@ -50,7 +54,7 @@ public class ContactsAdapter extends BaseAdapter implements SectionIndexer{
 		ViewHolder viewHolder = null;
 		if (view == null) {
 			viewHolder = new ViewHolder();
-			view = LayoutInflater.from(mContext).inflate(R.layout.contact_item, null);
+			view = LayoutInflater.from(mContext).inflate(R.layout.customer_item, null);
 			viewHolder.letter = (TextView) view.findViewById(R.id.catalog);
 			viewHolder.name = (TextView) view.findViewById(R.id.name);
 			viewHolder.from = (TextView) view.findViewById(R.id.from);
