@@ -22,10 +22,6 @@ public class FgCourseExpAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
 	private ArrayList<AllExperiences> experiences;
-	public void setExperiences(ArrayList<AllExperiences> experiences) {
-		this.experiences = experiences;
-	}
-
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	

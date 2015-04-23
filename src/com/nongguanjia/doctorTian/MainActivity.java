@@ -27,7 +27,6 @@ public class MainActivity extends FragmentActivity {
 	private FgChat fgChat; //客户服务
 	private FgMy fgMy; //我的
 	private Dialog noticeDialog;
-
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private RadioGroup radioGroup;
@@ -44,7 +43,6 @@ public class MainActivity extends FragmentActivity {
 		fragmentManager = getSupportFragmentManager();
 		radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 		((RadioButton)radioGroup.findViewById(R.id.radio_mycourse)).setChecked(true);
-		
 		
 		if(((AppApplication)getApplication()).ROLE.equals("农户")){
 			((RadioButton)radioGroup.findViewById(R.id.radio_chat)).setText("交流");
@@ -86,7 +84,6 @@ public class MainActivity extends FragmentActivity {
 	                transaction.commit();
 					break;
             	}
-                
             }
         });
 	}

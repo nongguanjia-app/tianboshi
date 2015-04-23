@@ -14,12 +14,12 @@
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/title_bar_bg"
-        android:orientation="horizontal"
         android:layout_gravity="center_vertical"
-        android:gravity="center_vertical" >
+        android:background="@color/title_bar_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radio_mycourse"
@@ -28,10 +28,12 @@
             android:layout_weight="1"
             android:button="@null"
             android:checked="true"
-            android:gravity="center_vertical"
+            android:drawableTop="@drawable/selected_my_course"
+            android:gravity="center_horizontal|bottom"
+            android:paddingTop="1px"
             android:text="@string/my_course"
             android:textColor="@color/font_selector"
-            android:textSize="18dp" />
+             />
 
         <RadioButton
             android:id="@+id/radio_center"
@@ -39,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/course_res"
+            android:drawableTop="@drawable/selected_course_lib"
+            android:gravity="center_horizontal|bottom"
             android:textColor="@color/font_selector"
-            android:textSize="18dp" />
+             />
 
         <RadioButton
             android:id="@+id/radio_chat"
@@ -50,10 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/chat"
+            android:drawableTop="@drawable/selected_consumer_service"
+            android:gravity="center_horizontal|bottom"
             android:textColor="@color/font_selector"
-            android:textSize="18dp" />
+             />
 
         <RadioButton
             android:id="@+id/radio_my"
@@ -61,10 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/my"
+            android:drawableTop="@drawable/selected_my"
+            android:gravity="center_horizontal|bottom"
             android:textColor="@color/font_selector"
-            android:textSize="18dp" />
+             />
     </RadioGroup>
 
 </LinearLayout>

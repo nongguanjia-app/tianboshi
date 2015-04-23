@@ -21,10 +21,6 @@ public class CategoryAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
 	private ArrayList<AllCategoryCourses> courses;
-	public void setCourses(ArrayList<AllCategoryCourses> courses) {
-		this.courses = courses;
-	}
-
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	

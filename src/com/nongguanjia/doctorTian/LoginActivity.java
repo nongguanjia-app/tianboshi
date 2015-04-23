@@ -5,13 +5,10 @@ import java.util.HashMap;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,9 +42,7 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 	private TextView forget_psd;
 	private EditText ed_phone, ed_psd;
 	private ProgressDialog mDialog;
-	
 	private CacheUserHelper cacheUser;
-	
 	public static final String CONFIG = "login_config";
 
 	@Override

@@ -2,86 +2,96 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    
     android:orientation="vertical" >
-    
-    <ImageView android:layout_width="60dp"
+
+    <ImageView
+        android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="80dp"
-        android:src="@color/yellow"
-        android:layout_gravity="center_horizontal"/>
-    
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_show_name"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="80dp"
+        android:src="@drawable/picture_logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_show_name" />
 
     <!-- 手机号码 -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@color/yellow"/>
-        
-        <EditText android:id="@+id/edit_phone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_phone"
-            android:numeric="integer"
-            android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
-    
-    <!-- 密码 -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@color/yellow"/>
-        
-        <EditText android:id="@+id/edit_psd"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_psd"
-            android:password="true"
-            android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
-    
-    <Button android:id="@+id/btn_login"
+
+    <LinearLayout
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@color/yellow" />
+
+        <EditText
+            android:id="@+id/edit_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:hint="@string/hint_input_phone"
+            android:numeric="integer" />
+    </LinearLayout>
+
+    <!-- 密码 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@color/yellow" />
+
+        <EditText
+            android:id="@+id/edit_psd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:hint="@string/hint_input_psd"
+            android:password="true" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
-        android:layout_height="45dp"
-        android:text="@string/login"/>
-    
-    <Button android:id="@+id/btn_regist"
+        android:text="@string/login" />
+
+    <Button
+        android:id="@+id/btn_regist"
         android:layout_width="fill_parent"
+        android:layout_height="45dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:layout_height="45dp"
-        android:text="@string/regist"/>
-    
-    <TextView android:id="@+id/forget_psd"
+        android:text="@string/regist" />
+
+    <TextView
+        android:id="@+id/forget_psd"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:text="@string/forget_psd"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"/>
-    
+        android:gravity="right"
+        android:text="@string/forget_psd" />
+
 </LinearLayout>

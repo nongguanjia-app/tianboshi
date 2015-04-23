@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.letvcloud.sdk.LeCloud;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,7 +34,8 @@ public class AppApplication extends Application {
 		
 		loadSelectedKey(this);
 		initImageLoader(getApplicationContext());
-		
+		//初始化乐视sdk
+		LeCloud.init(getApplicationContext());
 		spf = getSharedPreferences(SHARE_PREFERENCE_NAME, Context.MODE_PRIVATE);
 	}
 
