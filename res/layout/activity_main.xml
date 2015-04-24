@@ -17,7 +17,6 @@
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_vertical"
-        android:background="@color/title_bar_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 

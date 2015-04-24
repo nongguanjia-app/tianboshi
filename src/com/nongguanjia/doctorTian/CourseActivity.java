@@ -106,7 +106,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 	
 	private void init(){
 		db = getIntent().getExtras();
-		//courseId = db.getString("courseId");
+		courseId = db.getString("courseId");
 		fragmentManager = getSupportFragmentManager();
 		radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 		((RadioButton)radioGroup.findViewById(R.id.cou_detail)).setChecked(true);

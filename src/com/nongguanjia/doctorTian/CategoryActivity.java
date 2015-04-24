@@ -48,7 +48,7 @@ public class CategoryActivity extends Activity {
 	private int pageIndex = 1;
 	private boolean isSuccess = false;
 	
-	private ArrayList<AllCategoryCourses> allCourseList;//用于缓存所有数据
+	private ArrayList<AllCategoryCourses> courseList;
 	
 	private LinearLayout footerView;
 
@@ -82,6 +82,9 @@ public class CategoryActivity extends Activity {
 		View view = inflater.inflate(R.layout.list_footview, null);
 		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
 		listView.addFooterView(view);
+		
+		adapter = new CategoryAdapter(getApplicationContext());
+		listView.setAdapter(adapter);
 		
 		img_back.setOnClickListener(new OnClickListener() {
 			
@@ -126,22 +129,10 @@ public class CategoryActivity extends Activity {
 						Gson gson = new Gson();
 						
 						//缓存每次请求应答
-						ArrayList<AllCategoryCourses> courseList = new ArrayList<AllCategoryCourses>();
+						courseList = new ArrayList<AllCategoryCourses>();
 						courseList = gson.fromJson(ja.toString(), new TypeToken<List<AllCategoryCourses>>(){}.getType());
 						
-						if(allCourseList == null){
-							allCourseList = new ArrayList<AllCategoryCourses>();
-						}
-						allCourseList.addAll(courseList);
-						
-						if(adapter == null){
-							adapter = new CategoryAdapter(getApplicationContext(), allCourseList);
-						}else{
-							adapter.setCourses(allCourseList);
-						}
-						
-						listView.setAdapter(adapter);
-						
+						adapter.getCourses().addAll(courseList);
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
@@ -174,7 +165,7 @@ public class CategoryActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
 				Bundle bd = new Bundle();
-				bd.putString("courseId", allCourseList.get(position-1).getCourseid());
+				bd.putString("courseId", courseList.get(position-1).getCourseid());
 				intent.putExtras(bd);
 				startActivity(intent);
 			}

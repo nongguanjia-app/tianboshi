@@ -1,6 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,21 +22,24 @@ public class FgCourseExpAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllExperiences> experiences;
-	public void setExperiences(ArrayList<AllExperiences> experiences) {
-		this.experiences = experiences;
-	}
-
+	private List<AllExperiences> experiences = new ArrayList<AllExperiences>(0);
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	
 	private ViewHolder mHolder = null;
 	
-	public FgCourseExpAdapter(Context context, ArrayList<AllExperiences> experiences){
+	public List<AllExperiences> getExperiences() {
+		return experiences;
+	}
+
+	public void setExperiences(List<AllExperiences> experiences) {
+		this.experiences = experiences;
+	}
+	
+	public FgCourseExpAdapter(Context context){
 		inflater = LayoutInflater.from(context);
 		options = Options.getOptions();
 		this.context = context;
-		this.experiences = experiences;
 		
 	}
 	

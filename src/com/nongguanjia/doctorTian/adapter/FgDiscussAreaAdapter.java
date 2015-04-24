@@ -1,12 +1,13 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class FgDiscussAreaAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllReviews> reviews;
+	private List<AllReviews> reviews = new ArrayList<AllReviews>(0);
 	private String id;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
@@ -31,9 +32,14 @@ public class FgDiscussAreaAdapter extends BaseAdapter {
 
 	private ViewHolder mHolder = null;
 	
-	public void setReviews(ArrayList<AllReviews> reviews) {
+	public List<AllReviews> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<AllReviews> reviews) {
 		this.reviews = reviews;
 	}
+	
 
 	public FgDiscussAreaAdapter(Context context, String id) {
 		inflater = LayoutInflater.from(context);

@@ -55,8 +55,6 @@ public class FgDiscussArea extends Fragment {
 	private boolean isSuccess = false;
 	private LinearLayout footerView;
 	private FgDiscussAreaAdapter adapter;
-	
-	private ArrayList<AllReviews> allReviewList;
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
@@ -75,7 +73,6 @@ public class FgDiscussArea extends Fragment {
 			case CommonConstant.RESPONSE_SUCCESS:
 				Toast.makeText(getActivity(), "评论成功", Toast.LENGTH_SHORT).show();
 				pageIndex = 1;//相当于刷新
-				allReviewList = null;
 				getAllreviews();//重新获取数据
 				ed_info.setText("");
 				
@@ -112,6 +109,8 @@ public class FgDiscussArea extends Fragment {
 		listView = (ListView)view.findViewById(R.id.discuss_list);
 		ed_info = (EditText)view.findViewById(R.id.ed_info);
 		btn_send = (Button)view.findViewById(R.id.btn_send);
+		
+		listView.setAdapter(adapter);
 		
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		View layout = inflater.inflate(R.layout.list_footview, null);
@@ -184,13 +183,7 @@ public class FgDiscussArea extends Fragment {
 						ArrayList<AllReviews> reviewList = new ArrayList<AllReviews>();
 						reviewList = gson.fromJson(ja.toString(), new TypeToken<List<AllReviews>>(){}.getType());
 						
-						if(allReviewList == null){
-							allReviewList = new ArrayList<AllReviews>();
-						}
-						allReviewList.addAll(reviewList);
-						
-						adapter.setReviews(allReviewList);
-						listView.setAdapter(adapter);
+						adapter.getReviews().addAll(reviewList);
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
@@ -233,9 +226,9 @@ public class FgDiscussArea extends Fragment {
 				Intent intent = new Intent(getActivity(), AllreplysActivity.class);
 				Bundle bd = new Bundle();
 				bd.putString("id", courseId);
-				bd.putString("talkId", allReviewList.get(position).getTalkId());
+				bd.putString("talkId", adapter.getReviews().get(position).getTalkId());
 				bd.putString("isExp", "0");
-				bd.putString("phoneNum", allReviewList.get(position).getPhone());
+				bd.putString("phoneNum", adapter.getReviews().get(position).getPhone());
 				intent.putExtras(bd);
 				startActivity(intent);
 			}

@@ -1,6 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class AllechosAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllEcho> echos;
+	private List<AllEcho> echos = new ArrayList<AllEcho>(0);
 	private String expId;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
@@ -34,7 +35,10 @@ public class AllechosAdapter extends BaseAdapter {
 
 	private ViewHolder mHolder = null;
 	
-	public void setEchos(ArrayList<AllEcho> echos) {
+	public List<AllEcho> getEchos() {
+		return echos;
+	}
+	public void setEchos(List<AllEcho> echos) {
 		this.echos = echos;
 	}
 

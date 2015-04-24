@@ -64,9 +64,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	DisplayImageOptions options;
 	
 	private String expId;
-//	private String flag;
 	private ExperienceInfo info;
-	private ArrayList<AllEcho> allEchoList;
 	private int pageIndex = 1;
 	
 	private LinearLayout footerView;
@@ -90,7 +88,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			case CommonConstant.RESPONSE_SUCCESS:
 				Toast.makeText(ExpInfoActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
 				pageIndex = 1;//相当于刷新
-				allEchoList = null;
 				getAllechos();//重新获取数据
 				ed_info.setText("");
 				
@@ -144,12 +141,9 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		Bundle bd = getIntent().getExtras();
 		expId = bd.getString("ExperienceId");
-//		flag = bd.getString("Flag");
 		
 		phoneNum = ((AppApplication)getApplication()).PHONENUM;
 		
-		adapter = new AllechosAdapter(ExpInfoActivity.this, expId);
-				
 		tv_title = (TextView)findViewById(R.id.tv_title);
 		img_back = (ImageView)findViewById(R.id.img_back);
 		listView = (ListView)findViewById(R.id.talk_list);
@@ -165,6 +159,9 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		img = (ImageView)header.findViewById(R.id.img);
 		btn_attention = (Button)header.findViewById(R.id.btn_attention);
 		listView.addHeaderView(header);
+		
+		adapter = new AllechosAdapter(ExpInfoActivity.this, expId);
+		listView.setAdapter(adapter);
 		
 		ed_info = (EditText)findViewById(R.id.ed_info);
 		btn_send = (Button)findViewById(R.id.btn_send);
@@ -287,14 +284,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 						JSONArray ja = response.getJSONObject("AllEchos").getJSONArray("allEchos");
 						echoList = gson.fromJson(ja.toString(), new TypeToken<List<AllEcho>>(){}.getType());
 						
-						if(allEchoList == null){
-							allEchoList = new ArrayList<AllEcho>();
-						}
-						allEchoList.addAll(echoList);
-						
-						adapter.setEchos(allEchoList);
-						
-						listView.setAdapter(adapter);
+						adapter.getEchos().addAll(echoList);
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
@@ -496,9 +486,9 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
 				Bundle bd = new Bundle();
 				bd.putString("id", expId);
-				bd.putString("talkId", allEchoList.get(position-1).getTalkId());
+				bd.putString("talkId", adapter.getEchos().get(position-1).getTalkId());
 				bd.putString("isExp", "1");
-				bd.putString("phoneNum", allEchoList.get(position-1).getPhone());
+				bd.putString("phoneNum", adapter.getEchos().get(position-1).getPhone());
 				intent.putExtras(bd);
 				startActivity(intent);
 			}

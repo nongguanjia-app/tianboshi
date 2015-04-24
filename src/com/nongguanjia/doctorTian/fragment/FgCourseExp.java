@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nongguanjia.doctorTian.CategoryActivity;
 import com.nongguanjia.doctorTian.ExpInfoActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.FgCourseExpAdapter;
@@ -45,7 +44,6 @@ public class FgCourseExp extends Fragment {
 	private int pageIndex = 1;
 	private boolean isSuccess = false;
 	
-	private ArrayList<AllExperiences> allExperienceList;
 	private LinearLayout footerView;
 
 	public void setCourseId(String courseId) {
@@ -67,6 +65,9 @@ public class FgCourseExp extends Fragment {
 		View layout = inflater.inflate(R.layout.list_footview, null);
 		footerView = (LinearLayout)layout.findViewById(R.id.foot_layout);
 		listView.addFooterView(layout);
+		
+		adapter = new FgCourseExpAdapter(getActivity());
+		listView.setAdapter(adapter);
 		
 		getAllexperiences();
 		
@@ -97,21 +98,10 @@ public class FgCourseExp extends Fragment {
 						
 						JSONArray ja = response.getJSONObject("AllExperiences").getJSONArray("allExperiences");
 						Gson gson = new Gson();
-						ArrayList<AllExperiences> experienceList = new ArrayList<AllExperiences>();
+						List<AllExperiences> experienceList = new ArrayList<AllExperiences>();
 						experienceList = gson.fromJson(ja.toString(), new TypeToken<List<AllExperiences>>(){}.getType());
 						
-						if(allExperienceList == null){
-							allExperienceList = new ArrayList<AllExperiences>();
-						}
-						allExperienceList.addAll(experienceList);
-						
-						if(adapter == null){
-							adapter = new FgCourseExpAdapter(getActivity(), allExperienceList);
-						}else{
-							adapter.setExperiences(allExperienceList);
-						}
-						
-						listView.setAdapter(adapter);
+						adapter.getExperiences().addAll(experienceList);
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
@@ -142,8 +132,8 @@ public class FgCourseExp extends Fragment {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), ExpInfoActivity.class);
 				Bundle bd = new Bundle();
-				bd.putString("ExperienceId", allExperienceList.get(position).getExperienceId());
-				bd.putString("Flag", allExperienceList.get(position).getFlage());
+				bd.putString("ExperienceId", adapter.getExperiences().get(position).getExperienceId());
+				bd.putString("Flag", adapter.getExperiences().get(position).getFlage());
 				intent.putExtras(bd);
 				getActivity().startActivity(intent);
 			}

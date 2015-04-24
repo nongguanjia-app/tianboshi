@@ -1,6 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,13 +20,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class AllReplysAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllReply> replys;
+	private List<AllReply> replys = new ArrayList<AllReply>(0);
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	
 	private ViewHolder mHolder = null;
 	
-	public void setReplys(ArrayList<AllReply> replys) {
+	public List<AllReply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(List<AllReply> replys) {
 		this.replys = replys;
 	}
 	

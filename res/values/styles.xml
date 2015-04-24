@@ -19,7 +19,7 @@
     </style>
     
    <style name="title_bar_style">
-        <item name="android:background">@color/lightgreen</item>
+        <item name="android:background">@color/title_bar_bg</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/title_bar_height</item>
     </style>

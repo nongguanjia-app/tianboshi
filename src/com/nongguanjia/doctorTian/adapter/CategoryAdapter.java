@@ -1,6 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,22 +21,24 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class CategoryAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllCategoryCourses> courses;
-	public void setCourses(ArrayList<AllCategoryCourses> courses) {
-		this.courses = courses;
-	}
-
+	private List<AllCategoryCourses> courses = new ArrayList<AllCategoryCourses>(0);
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	
 	private ViewHolder mHolder = null;
 	
-	public CategoryAdapter(Context context, ArrayList<AllCategoryCourses> courses){
+	public List<AllCategoryCourses> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<AllCategoryCourses> courses) {
+		this.courses = courses;
+	}
+	
+	public CategoryAdapter(Context context){
 		inflater = LayoutInflater.from(context);
 		options = Options.getOptions();
 		this.context = context;
-		this.courses = courses;
-		
 	}
 
 	@Override
