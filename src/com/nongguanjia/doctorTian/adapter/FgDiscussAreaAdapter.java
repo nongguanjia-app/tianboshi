@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gotye.api.GotyeUser;
+import com.nongguanjia.doctorTian.ChatActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.bean.AllReviews;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
@@ -100,6 +103,19 @@ public class FgDiscussAreaAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				dialog.setIdAndEcho(id, review.getTalkId(), "0");
 				dialog.show();
+			}
+		});
+		
+		
+		mHolder.btn_letter.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(context, ChatActivity.class);
+				GotyeUser user = new GotyeUser(review.getPhone());
+				intent.putExtra("user", user);
+				context.startActivity(intent);
 			}
 		});
 

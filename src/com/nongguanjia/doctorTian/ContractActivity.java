@@ -3,7 +3,6 @@ package com.nongguanjia.doctorTian;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,17 +12,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.nongguanjia.doctorTian.adapter.ContactAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.ContractInfo;
 import com.nongguanjia.doctorTian.http.CustomerHttpClient;
-import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.GetContractUtil;
 
@@ -33,6 +30,7 @@ import com.nongguanjia.doctorTian.utils.GetContractUtil;
  */
 public class ContractActivity extends Activity {
 	private TextView tv_title;
+	private ImageView img_back;
 	private ListView listView;
 	private ContactAdapter adapter;
 	private List<ContractInfo> contracts;
@@ -55,6 +53,7 @@ public class ContractActivity extends Activity {
 		
 		btn_commit = (Button)findViewById(R.id.btn_commit);
 		tv_title = (TextView)findViewById(R.id.tv_title);
+		img_back = (ImageView)findViewById(R.id.img_back);
 		listView = (ListView)findViewById(R.id.listview);
 		tv_title.setText("通讯录");
 		btn_commit.setVisibility(View.VISIBLE);
@@ -71,6 +70,15 @@ public class ContractActivity extends Activity {
 				list = adapter.getList();
 				UploadTask task = new UploadTask();
 				task.execute();
+			}
+		});
+		
+		img_back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ContractActivity.this.finish();
 			}
 		});
 	}

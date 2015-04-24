@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddFriendActivity extends Activity implements OnClickListener{
 	private TextView tv_title;
+	private ImageView img_back;
 	private EditText ed_tel;
 	private Button btn_confirm;
 
@@ -35,10 +37,12 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 	
 	private void init(){
 		tv_title = (TextView)findViewById(R.id.tv_title);
+		img_back = (ImageView)findViewById(R.id.img_back);
 		tv_title.setText("添加好友");
 		ed_tel = (EditText)findViewById(R.id.ed_tel);
 		btn_confirm = (Button)findViewById(R.id.btn_confirm);
 		btn_confirm.setOnClickListener(this);
+		img_back.setOnClickListener(this);
 	}
 
 	@Override
@@ -56,7 +60,9 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 				}
 			}
 			break;
-
+		case R.id.img_back:
+			AddFriendActivity.this.finish();
+			break;
 		default:
 			break;
 		}

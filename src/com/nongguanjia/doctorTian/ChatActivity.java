@@ -107,6 +107,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 	public static final int Voice_MAX_TIME_LIMIT = 60 * 1000;
 	private long playingId;
 	private TextView title;
+	private ImageView img_back;
 	private VoiceRecognitionClient mASREngine;
 	private PopupWindow mPopupWindow;
 	
@@ -158,7 +159,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 
 	private void initView() {
 		pullListView = (RTPullListView) findViewById(R.id.gotye_msg_listview);
-//		findViewById(R.id.back).setOnClickListener(this);
+		img_back = (ImageView)findViewById(R.id.img_back);
+		img_back.setOnClickListener(this);
 		title = ((TextView) findViewById(R.id.tv_title));
 		realTalkView = findViewById(R.id.real_time_talk_layout);
 		realTalkName = (TextView) realTalkView
@@ -594,12 +596,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		// if (onRealTimeTalkFrom == REALTIMEFROM_SELF) {
-		api.stopTalk();
-		// return;
-		// } else if (onRealTimeTalkFrom == REALTIMEFROM_OTHER) {
-		api.stopPlay();
-		// }
+		if (onRealTimeTalkFrom == REALTIMEFROM_SELF) {
+			api.stopTalk();
+			return;
+		} else if (onRealTimeTalkFrom == REALTIMEFROM_OTHER) {
+			api.stopPlay();
+		}
 		super.onBackPressed();
 	}
 
@@ -607,12 +609,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
-//		case R.id.back:
-//			if(onRealTimeTalkFrom>=0){
-//				return;
-//			}
-//			onBackPressed();
-//			break;
+		case R.id.img_back:
+			if(onRealTimeTalkFrom>=0){
+				return;
+			}
+			onBackPressed();
+			break;
 		case R.id.send_voice:
 			if (pressToVoice.getVisibility() == View.VISIBLE) {
 				pressToVoice.setVisibility(View.GONE);
@@ -661,7 +663,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 			takePhoto();
 			break;
 		case R.id.voice_to_text:
-			// showTalkView();
+//			 showTalkView();
 			break;
 		case R.id.real_time_voice_chat:
 			realTimeTalk();
