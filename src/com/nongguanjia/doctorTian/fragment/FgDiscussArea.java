@@ -20,10 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,7 +34,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.AllreplysActivity;
-import com.nongguanjia.doctorTian.ExpInfoActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.FgDiscussAreaAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
@@ -50,9 +52,11 @@ public class FgDiscussArea extends Fragment {
 	private EditText ed_info;
 	private Button btn_send;
 	private int pageIndex = 1;
+	private boolean isSuccess = false;
+	private LinearLayout footerView;
 	private FgDiscussAreaAdapter adapter;
 	
-	private ArrayList<AllReviews> reviewList;
+	private ArrayList<AllReviews> allReviewList;
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
@@ -70,6 +74,8 @@ public class FgDiscussArea extends Fragment {
 				break;
 			case CommonConstant.RESPONSE_SUCCESS:
 				Toast.makeText(getActivity(), "评论成功", Toast.LENGTH_SHORT).show();
+				pageIndex = 1;//相当于刷新
+				allReviewList = null;
 				getAllreviews();//重新获取数据
 				ed_info.setText("");
 				
@@ -101,9 +107,16 @@ public class FgDiscussArea extends Fragment {
 	
 	
 	private void init(View view){
+		adapter = new FgDiscussAreaAdapter(getActivity(), courseId);
+		
 		listView = (ListView)view.findViewById(R.id.discuss_list);
 		ed_info = (EditText)view.findViewById(R.id.ed_info);
 		btn_send = (Button)view.findViewById(R.id.btn_send);
+		
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		View layout = inflater.inflate(R.layout.list_footview, null);
+		footerView = (LinearLayout)layout.findViewById(R.id.foot_layout);
+		listView.addFooterView(layout);
 		
 		ed_info.addTextChangedListener(new TextWatcher(){
 
@@ -164,34 +177,28 @@ public class FgDiscussArea extends Fragment {
 				// TODO Auto-generated method stub
 				try {
 					if(response.getJSONObject("AllReviews").getString("returnCode").equals("1")){
+						isSuccess = true;
+						
 						JSONArray ja = response.getJSONObject("AllReviews").getJSONArray("allReviews");
 						Gson gson = new Gson();
-						reviewList = new ArrayList<AllReviews>();
+						ArrayList<AllReviews> reviewList = new ArrayList<AllReviews>();
 						reviewList = gson.fromJson(ja.toString(), new TypeToken<List<AllReviews>>(){}.getType());
-						adapter = new FgDiscussAreaAdapter(getActivity(), courseId);
-						adapter.setReviews(reviewList);
+						
+						if(allReviewList == null){
+							allReviewList = new ArrayList<AllReviews>();
+						}
+						allReviewList.addAll(reviewList);
+						
+						adapter.setReviews(allReviewList);
 						listView.setAdapter(adapter);
+						adapter.notifyDataSetChanged();
 						
-						listView.setOnItemClickListener(new OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								Intent intent = new Intent(getActivity(), AllreplysActivity.class);
-								Bundle bd = new Bundle();
-								bd.putString("id", courseId);
-								bd.putString("talkId", reviewList.get(position).getTalkId());
-								bd.putString("isExp", "0");
-								intent.putExtras(bd);
-								startActivity(intent);
-							}
-							
-						});
-						
+						setListViewInfo();
 					}else{
+						isSuccess = false;
 						Toast.makeText(getActivity(), "获取讨论区内容失败", Toast.LENGTH_SHORT).show();
 					}
+					footerView.setVisibility(View.GONE);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -215,5 +222,58 @@ public class FgDiscussArea extends Fragment {
 		task.addTalk();
 	}
 	
+	
+	private void setListViewInfo(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), AllreplysActivity.class);
+				Bundle bd = new Bundle();
+				bd.putString("id", courseId);
+				bd.putString("talkId", allReviewList.get(position).getTalkId());
+				bd.putString("isExp", "0");
+				bd.putString("phoneNum", allReviewList.get(position).getPhone());
+				intent.putExtras(bd);
+				startActivity(intent);
+			}
+			
+		});
+		
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				//当不滚动时
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+					//判断是否滚动到底部
+					if(view.getLastVisiblePosition() == view.getCount() - 1){
+						
+						if(adapter.getCount() % 8 == 0){
+							if(isSuccess){
+								pageIndex = pageIndex + 1;
+								
+								//加载更多
+								footerView.setVisibility(View.VISIBLE);
+								
+								getAllreviews();
+							}
+							
+						}
+						
+					}
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
 	
 }

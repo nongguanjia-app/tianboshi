@@ -6,9 +6,10 @@
     <!-- 返回 -->
     <ImageView
         android:id="@+id/img_back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/btn_back"
+        android:layout_marginLeft="5dp"
         android:layout_centerVertical="true" />
     
     <!-- 标题 -->
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="22sp"
-        android:textColor="@color/red" />
+        android:textColor="@color/white" />
     
     
     <!-- 关闭 -->
