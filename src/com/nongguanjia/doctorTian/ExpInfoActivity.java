@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,17 +17,13 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +38,7 @@ import com.nongguanjia.doctorTian.bean.ExperienceInfo;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.task.AddTalkTask;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.LvHeightUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -52,7 +48,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class ExpInfoActivity extends Activity implements OnClickListener{
 	private TextView tv_title, tv_info_title, tv_time, tv_summary; 
-	private ImageView img_back;
 	private ImageView img;
 	private TextView tv_name, tv_product; 
 	private TextView tv_content;
@@ -64,16 +59,10 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	DisplayImageOptions options;
 	
 	private String expId;
-//	private String flag;
+	private String flag;
 	private ExperienceInfo info;
-	private ArrayList<AllEcho> allEchoList;
+	private ArrayList<AllEcho> echoList;
 	private int pageIndex = 1;
-	
-	private LinearLayout footerView;
-	private boolean isSuccess = false;
-	private String phoneNum;
-	private boolean isAttention = false;
-	private ProgressDialog mDialog;
 	
 	private Html.ImageGetter imageGetter;
 	
@@ -89,8 +78,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				break;
 			case CommonConstant.RESPONSE_SUCCESS:
 				Toast.makeText(ExpInfoActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
-				pageIndex = 1;//相当于刷新
-				allEchoList = null;
 				getAllechos();//重新获取数据
 				ed_info.setText("");
 				
@@ -137,40 +124,26 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	
 	
 	private void init(){
-		mDialog = new ProgressDialog(this);
-		mDialog.setMessage("正在加载请稍后...");
-		mDialog.setIndeterminate(true);
-		mDialog.setCancelable(true);
-		
 		Bundle bd = getIntent().getExtras();
 		expId = bd.getString("ExperienceId");
-//		flag = bd.getString("Flag");
-		
-		phoneNum = ((AppApplication)getApplication()).PHONENUM;
+		flag = bd.getString("Flag");
 		
 		adapter = new AllechosAdapter(ExpInfoActivity.this, expId);
 				
 		tv_title = (TextView)findViewById(R.id.tv_title);
-		img_back = (ImageView)findViewById(R.id.img_back);
+		tv_info_title = (TextView)findViewById(R.id.info_title);
+		tv_time = (TextView)findViewById(R.id.tv_time);
+		tv_summary = (TextView)findViewById(R.id.tv_summary);
+		tv_name = (TextView)findViewById(R.id.name);
+		tv_product = (TextView)findViewById(R.id.product);
+		tv_content = (TextView)findViewById(R.id.tv_content);
+		
+		img = (ImageView)findViewById(R.id.img);
 		listView = (ListView)findViewById(R.id.talk_list);
-		
-		LayoutInflater inflater = LayoutInflater.from(ExpInfoActivity.this);
-		View header = inflater.inflate(R.layout.expinfo_header, null);
-		tv_info_title = (TextView)header.findViewById(R.id.info_title);
-		tv_time = (TextView)header.findViewById(R.id.tv_time);
-		tv_summary = (TextView)header.findViewById(R.id.tv_summary);
-		tv_name = (TextView)header.findViewById(R.id.name);
-		tv_product = (TextView)header.findViewById(R.id.product);
-		tv_content = (TextView)header.findViewById(R.id.tv_content);
-		img = (ImageView)header.findViewById(R.id.img);
-		btn_attention = (Button)header.findViewById(R.id.btn_attention);
-		listView.addHeaderView(header);
-		
 		ed_info = (EditText)findViewById(R.id.ed_info);
 		btn_send = (Button)findViewById(R.id.btn_send);
-		
+		btn_attention = (Button)findViewById(R.id.btn_attention);
 		btn_attention.setOnClickListener(this);
-		img_back.setOnClickListener(this);
 		
 		ed_info.addTextChangedListener(new TextWatcher(){
 
@@ -203,11 +176,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			
 		});
 		
-		View view = inflater.inflate(R.layout.list_footview, null);
-		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
-		listView.addFooterView(view);
-		
-		mDialog.show();
 		getExperienceInfo();
 		
 		getAllechos();
@@ -215,6 +183,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	
 	
 	private void getExperienceInfo(){
+		String phoneNum = ((AppApplication)getApplication()).PHONENUM;
 		String url = CommonConstant.experienceinfo + "/" + phoneNum + "," + expId;
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
 
@@ -230,17 +199,12 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			public void onSuccess(int statusCode, Header[] headers,
 					JSONObject response) {
 				// TODO Auto-generated method stub
-				if(mDialog.isShowing()){
-					mDialog.dismiss();
-				}
+				
 				try {
 					if(response.getJSONObject("ExperienceInfos").getString("returnCode").equals("1")){
 						Gson gson = new Gson();
 						info = new ExperienceInfo();
 						info = gson.fromJson(response.getJSONObject("ExperienceInfos").toString(), new TypeToken<ExperienceInfo>(){}.getType());
-						
-						//判断好友是否存在
-						verifyattention();
 						
 						showView();
 					}else{
@@ -275,35 +239,20 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			public void onSuccess(int statusCode, Header[] headers,
 					JSONObject response) {
 				// TODO Auto-generated method stub
-				if(mDialog.isShowing()){
-					mDialog.dismiss();
-				}
 				try {
 					if(response.getJSONObject("AllEchos").getString("returnCode").equals("1")){
-						isSuccess = true;
-						
 						Gson gson = new Gson();
-						ArrayList<AllEcho> echoList = new ArrayList<AllEcho>();
+						echoList = new ArrayList<AllEcho>();
 						JSONArray ja = response.getJSONObject("AllEchos").getJSONArray("allEchos");
 						echoList = gson.fromJson(ja.toString(), new TypeToken<List<AllEcho>>(){}.getType());
-						
-						if(allEchoList == null){
-							allEchoList = new ArrayList<AllEcho>();
-						}
-						allEchoList.addAll(echoList);
-						
-						adapter.setEchos(allEchoList);
-						
+						adapter.setEchos(echoList);
 						listView.setAdapter(adapter);
-						adapter.notifyDataSetChanged();
+						LvHeightUtil.setListViewHeightBasedOnChildren(listView);
 						
 						setListViewInfo();
 					}else{
-						isSuccess = false;
-						Toast.makeText(getApplicationContext(), "获取讨论区内容失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "获取经验谈详情失败", Toast.LENGTH_SHORT).show();
 					}
-					
-					footerView.setVisibility(View.GONE);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -335,11 +284,17 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		tv_content.setText(Html.fromHtml(info.getContent()));
 		
+		if(flag.equals("1")){
+			btn_attention.setBackgroundResource(R.drawable.btn_attention_on);
+		}else{
+			btn_attention.setBackgroundResource(R.drawable.btn_attention_off);
+		}
 	}
 
  	
  	
  	private void addtalk(String content){
+		String phoneNum = ((AppApplication)getApplication()).PHONENUM;
 		String url = CommonConstant.addtalk + "/" + expId + "," 
 					+ phoneNum + ","
 					+ content + ","
@@ -350,8 +305,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 
  	
  	
- 	//取消关注推广人
  	private void delAttention(){
+ 		String phoneNum = ((AppApplication)getApplication()).PHONENUM;
  		String url = CommonConstant.delAttention + "/"
  				+ info.getTelephone() + ","
  				+ phoneNum;
@@ -370,6 +325,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				// TODO Auto-generated method stub
 				try {
 					if(response.getJSONObject("DeleteAttention").getString("returnCode").equals("1")){
+						btn_attention.setBackgroundResource(R.drawable.btn_attention_off);
 						Toast.makeText(ExpInfoActivity.this, "取消关注成功", Toast.LENGTH_SHORT).show();
 					}else{
 						Toast.makeText(ExpInfoActivity.this, "取消关注失败", Toast.LENGTH_SHORT).show();
@@ -385,8 +341,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
  	}
  	
  	
- 	//关注推广人
  	private void addAttention(){
+		String phoneNum = ((AppApplication)getApplication()).PHONENUM;
 		String url = CommonConstant.addattention + "/" 
 				+ info.getTelephone() + ","
 				+ phoneNum + ","
@@ -405,6 +361,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 					JSONObject response) {
 				try {
 					if(response.getJSONObject("AddAttention").getString("returnCode").equals("1")){
+						btn_attention.setBackgroundResource(R.drawable.btn_attention_on);
 						Toast.makeText(ExpInfoActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
 					}else{
 						Toast.makeText(ExpInfoActivity.this, "关注失败", Toast.LENGTH_SHORT).show();
@@ -421,42 +378,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	}
  	
  	
- 	//判断好友是否存在
- 	private void verifyattention(){
- 		String url = CommonConstant.verifyattention + "/" 
- 				+ info.getTelephone() 
- 				+ "," + phoneNum;
- 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers,
-					String responseString, Throwable throwable) {
-				// TODO Auto-generated method stub
-				super.onFailure(statusCode, headers, responseString, throwable);
-			}
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					JSONObject response) {
-				try {
-					if(response.getJSONObject("VerifyAttention").getString("returnCode").equals("1")){
-						isAttention = true;
-						btn_attention.setBackgroundResource(R.drawable.btn_attention_on);
-					}else{
-						isAttention = false;
-						btn_attention.setBackgroundResource(R.drawable.btn_attention_off);
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				super.onSuccess(statusCode, headers, response);
-			}
- 			
- 		});
- 	}
- 	
- 	
  	
 	@Override
 	public void onClick(View v) {
@@ -466,17 +387,11 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			addtalk(ed_info.getText().toString());
 			break;
 		case R.id.btn_attention:
-			isAttention = !isAttention;
-			if(isAttention){ //已经关注 -- 取消关注
-				btn_attention.setBackgroundResource(R.drawable.btn_attention_off);
+			if(flag.equals("1")){ //已经关注 -- 取消关注
 				delAttention();
 			}else{ //未关注 -- 添加关注
-				btn_attention.setBackgroundResource(R.drawable.btn_attention_on);
 				addAttention();
 			}
-			break;
-		case R.id.img_back:
-			this.finish();
 			break;
 		default:
 			break;
@@ -496,46 +411,12 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
 				Bundle bd = new Bundle();
 				bd.putString("id", expId);
-				bd.putString("talkId", allEchoList.get(position-1).getTalkId());
+				bd.putString("talkId", echoList.get(position).getTalkId());
 				bd.putString("isExp", "1");
-				bd.putString("phoneNum", allEchoList.get(position-1).getPhone());
 				intent.putExtras(bd);
 				startActivity(intent);
 			}
 			
-		});
-		
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				//当不滚动时
-				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
-					//判断是否滚动到底部
-					if(view.getLastVisiblePosition() == view.getCount() - 1){
-						
-						if(adapter.getCount() % 8 == 0){
-							if(isSuccess){
-								pageIndex = pageIndex + 1;
-								
-								//加载更多
-								footerView.setVisibility(View.VISIBLE);
-								
-								getAllechos();
-							}
-							
-						}
-						
-					}
-				}
-				
-			}
-			
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 		
 	}

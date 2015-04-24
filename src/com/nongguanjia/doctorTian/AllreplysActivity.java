@@ -8,13 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,18 +29,14 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
 public class AllreplysActivity extends Activity {
 	private ListView listView;
 	private TextView tv_title;
-	private ImageView img_back;
 	
 	private String id;//经验谈id|课程id
 	private String talkId;
 	private String isExp; //是否是经验谈
-	private String phoneNum;
 	private int pageIndex = 1;
 	
 	private ArrayList<AllReply> replys;
 	private AllReplysAdapter adapter;
-	
-	private ProgressDialog mDialog;
 	
 	
 	Handler mHandler = new Handler(){
@@ -52,7 +44,6 @@ public class AllreplysActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
-			mDialog.dismiss();
 			switch (msg.what) {
 			case CommonConstant.RESPONSE_ERROR:
 				Toast.makeText(AllreplysActivity.this, "获取回复内容失败", Toast.LENGTH_SHORT).show();
@@ -97,34 +88,17 @@ public class AllreplysActivity extends Activity {
 	
 	
 	private void init(){
-		mDialog = new ProgressDialog(AllreplysActivity.this);
-		mDialog.setMessage("正在加载请稍后...");
-		mDialog.setIndeterminate(true);
-		mDialog.setCancelable(true);
-		
 		Bundle bd = getIntent().getExtras();
 		id = bd.getString("id");
 		talkId = bd.getString("talkId");
 		isExp = bd.getString("isExp");
-		phoneNum = bd.getString("phoneNum");
 		
 		tv_title = (TextView)findViewById(R.id.tv_title);
-		img_back = (ImageView)findViewById(R.id.img_back);
 		listView = (ListView)findViewById(R.id.allreply_list);
 		adapter = new AllReplysAdapter(AllreplysActivity.this);
 		
 		tv_title.setText("评论回复");
 		
-		img_back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				AllreplysActivity.this.finish();
-			}
-		});
-		
-		mDialog.show();
 		getAllReplys();
 	}
 	
@@ -133,8 +107,7 @@ public class AllreplysActivity extends Activity {
 		String url = CommonConstant.allreplys + "/" + id + ","
 				+ talkId + ","
 				+ isExp + ","
-				+ pageIndex + ","
-				+ phoneNum;
+				+ pageIndex;
 		AllReplyTask task = new AllReplyTask(url, mHandler);
 		task.getAllReplys();
 	}
