@@ -4,11 +4,13 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import com.lecloud.skin.vod.VODPlayCenter;
 import com.letvcloud.sdk.base.util.Logger;
 import com.letvcloud.sdk.play.util.LogUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.Favorite;
 import com.nongguanjia.doctorTian.bean.FavoriteColl;
 import com.nongguanjia.doctorTian.fragment.FgCourse;
@@ -54,6 +57,8 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 	private VODPlayCenter mPlayerView;
 	private boolean isBackgroud = false;
 	private Bundle db;
+	private Context mContext;
+	private String id;
 	
 	// 乐视视频
 		private EditText etUUID;
@@ -63,13 +68,14 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 		private RadioButton rb2;
 		String uuid = "7a0888b569";
 		String vuid = "79dd8da08a";
-    private String courseId;
+		private String courseId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course);
+		mContext = this;
 		mCancleCollectionBtn = (Button) findViewById(R.id.cancle_collection);
 		mCollectionBtn = (Button) findViewById(R.id.collection);
 		cou_detail = (RadioButton) findViewById(R.id.cou_detail);
@@ -121,15 +127,16 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
             	switch (checkedId) {
-				case R.id.cou_detail:
+				case R.id.cou_detail:  //课程详情
 					transaction = fragmentManager.beginTransaction();
 					fgDetail = new FgDetail();
 	                transaction.replace(R.id.content, fgDetail);
 	                transaction.commit();
 					break;
-				case R.id.cou_table:
+				case R.id.cou_table:  //课程表	
 					transaction = fragmentManager.beginTransaction();
 					fgCourse = new FgCourse();
+					fgCourse.setCourseId(courseId);
 	                transaction.replace(R.id.content, fgCourse);
 	                transaction.commit();
 					break;
@@ -150,15 +157,18 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
             	}
             }
         });
-	
-		
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String url = CommonConstant.deletefavorite + "/" + "13733445566,3";
-		String url2 = CommonConstant.addfavorite + "/" + "13733445566,3";
+		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
+		Bundle bd = getIntent().getExtras();
+		id = bd.getString("Id");	
+		Log.v("sun", id);
+		//Log.v("it", phoneNum);
+		String url = CommonConstant.deletefavorite + "/" +phoneNum+","+id;
+		String url2 = CommonConstant.addfavorite + "/" +phoneNum+","+id;
 		
 		switch (v.getId()) {
 		case R.id.cancle_collection:

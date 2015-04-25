@@ -42,7 +42,6 @@ public class FgDetail extends Fragment {
 	private List<Courses> mAllCoursesList;
 	private TextView mCourseIntro;
 	private Bundle db;
-
 	// private ArrayList<AllLecture> AllLecture_list;
 
 	@Override
@@ -88,8 +87,7 @@ public class FgDetail extends Fragment {
 			public void onSuccess(int statusCode, Header[] headers,
 					JSONObject response) {
 				try {
-					if (response.getJSONObject("Courses")
-							.getString("returnCode").equals("1")) {
+					if (response.getJSONObject("Courses").getString("returnCode").equals("1")) {
 						JSONObject ja = response.getJSONObject("Courses");
 						// 解析应答数据
 						Gson gson = new Gson();

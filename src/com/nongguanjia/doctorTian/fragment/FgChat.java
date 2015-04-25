@@ -25,13 +25,10 @@ import com.nongguanjia.doctorTian.view.PagerSlidingTabStrip;
 public class FgChat extends Fragment {
 	Resources resources;
     private ViewPager mPager;
-
     private PagerSlidingTabStrip tabs;
-    
     Fragment fgDiscuss;
     Fragment fgLetter;
     Fragment fgCustomer;
-    
     private String role;
     private String[] titles;
 

@@ -1,23 +1,19 @@
 package com.nongguanjia.doctorTian.fragment;
 
 import java.util.List;
-
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -38,6 +34,11 @@ public class FgCourse extends Fragment {
 	private AllChapters allChapters;
 	private CourseTableAdapter mCourseTableAdapter;
 	private List<AllChapters> mAllChaptersList;
+	private String courseId;
+	
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -62,7 +63,8 @@ public class FgCourse extends Fragment {
 
 	private void getTableDetail() {
 		// TODO Auto-generated method stub
-		String url = CommonConstant.allchapters + "/" + "25";
+		
+		String url = CommonConstant.allchapters + "/" + courseId;
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
@@ -80,13 +82,9 @@ public class FgCourse extends Fragment {
 						JSONArray ja = response.getJSONObject("AllChapters").getJSONArray("allChapters");
 						// 解析应答数据
 						Gson gson = new Gson();
-						// String str = getString(R.string.json);
-//						mAllChaptersList = new ArrayList<AllChapters>();
 						mAllChaptersList = gson.fromJson(ja.toString(), new TypeToken<List<AllChapters>>(){}.getType());
-						// mAllChaptersList.add(mAllChapters);
 						mCourseTableAdapter = new CourseTableAdapter(getActivity(), mAllChaptersList);
 						mListView.setAdapter(mCourseTableAdapter);
-						Log.v("sun", mAllChaptersList.toString());
 					} else {
 						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT).show();
 					}

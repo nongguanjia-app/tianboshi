@@ -38,12 +38,11 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
  * 经验谈 -- 课程库
  */
 public class FgCourseExp extends Fragment {
-	private String courseId;
 	private ListView listView;
 	private FgCourseExpAdapter adapter;
 	private int pageIndex = 1;
 	private boolean isSuccess = false;
-	
+	private String courseId;
 	private LinearLayout footerView;
 
 	public void setCourseId(String courseId) {

@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.DeleteSubscribe;
 import com.nongguanjia.doctorTian.bean.Lectures;
 import com.nongguanjia.doctorTian.bean.Subscribe;
@@ -44,12 +45,12 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	private ImageView mImg;
 	private String lectureId;
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.expert_item);
+		mContext = this;
 		lectureId = (String) getIntent().getExtras().get("lectureId");
 		mTitle = (TextView) findViewById(R.id.tv_title);
 		mTitle.setText("专家详情页面");
@@ -76,7 +77,8 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	}
 
 	private void getExpert() {
-		String url = CommonConstant.lecture + "/" + lectureId + "," + "13349954813";
+		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
+		String url = CommonConstant.lecture + "/" + lectureId + "," + phoneNum;
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
@@ -118,8 +120,12 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String url = CommonConstant.addsubscribe + "/" + "15618509847,13349954813";
-		String url2 = CommonConstant.deletesubscribe + "/" + "15618509847,13349954813";
+	//	String url = CommonConstant.addsubscribe + "/" + "15618509847,13349954813";
+		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
+		String url = CommonConstant.addsubscribe + "/" + phoneNum+","+lectureId;
+		String url2 = CommonConstant.deletesubscribe + "/"+ phoneNum+","+lectureId;
+		Log.v("tel", phoneNum);
+		Log.v("lec", lectureId);
 
 		switch (v.getId()) {
 		case R.id.subscribe_btn:
@@ -143,7 +149,6 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 						Gson gson = new Gson();
 						mSubscribes = gson.fromJson(ja.toString(), Subscribe.class);
 						if (mSubscribes.getReturnCode().equals("1")) {
-							Log.e(TAG, "it"+mSubscribes);
 							Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
 							mSubscribe_btn2.setVisibility(View.VISIBLE);
 							mSubscribe_btn.setVisibility(View.GONE);

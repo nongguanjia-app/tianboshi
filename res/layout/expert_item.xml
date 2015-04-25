@@ -31,35 +31,30 @@
                 android:id="@+id/expert_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11111"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/expert_PT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11111"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/expert_Address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11111"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/expert_Field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11111"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/expert_Year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11111"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -75,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginTop="50dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/button_subscribe_before" />
 
         <Button
@@ -97,6 +93,6 @@
         android:layout_below="@+id/linear_layout"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:text="内容" />
+         />
 
 </RelativeLayout>
