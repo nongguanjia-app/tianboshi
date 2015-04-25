@@ -41,9 +41,11 @@ public class FgDetail extends Fragment {
 	private CourseAdapter mCourseAdapter;
 	private List<Courses> mAllCoursesList;
 	private TextView mCourseIntro;
-	private Bundle db;
-	// private ArrayList<AllLecture> AllLecture_list;
-
+	private String courseId;
+	
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -70,10 +72,10 @@ public class FgDetail extends Fragment {
 	ArrayList<AllLecture> AllLecture_list;
 
 	private void getDetail() {
-		db = this.getArguments();
-		String id = db.getString("Id");
+		//db = this.getArguments();
+		//String id = db.getString("Id");
 		String phoneNum = ((AppApplication)getActivity().getApplication()).PHONENUM;
-		String url = CommonConstant.course + "/" + id +","+ phoneNum;
+		String url = CommonConstant.course + "/" + courseId +","+ phoneNum;
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override

@@ -130,6 +130,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 				case R.id.cou_detail:  //课程详情
 					transaction = fragmentManager.beginTransaction();
 					fgDetail = new FgDetail();
+					fgDetail.setCourseId(courseId);
 	                transaction.replace(R.id.content, fgDetail);
 	                transaction.commit();
 					break;
