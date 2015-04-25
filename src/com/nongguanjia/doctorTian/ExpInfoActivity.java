@@ -192,6 +192,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 					//按钮改变颜色
 					btn_send.setTextColor(ExpInfoActivity.this.getResources().getColor(R.color.send_btn_color));
 					btn_send.setOnClickListener(ExpInfoActivity.this);
+					btn_send.setEnabled(true);
 				}else{
 					btn_send.setTextColor(ExpInfoActivity.this.getResources().getColor(R.color.login_txt));
 					btn_send.setEnabled(false);

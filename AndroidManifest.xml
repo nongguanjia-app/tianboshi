@@ -126,6 +126,10 @@
         <activity
             android:name=".HelpActivity"
             android:screenOrientation="portrait" />
+        
+        <activity 
+            android:name=".DiscussAllreviewsActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".receiver.StartServiceReceiver" >
             <intent-filter android:priority="1000" >

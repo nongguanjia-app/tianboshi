@@ -1,13 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
-
-import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.bean.AllTalks;
-import com.nongguanjia.doctorTian.utils.CommonConstant;
-import com.nongguanjia.doctorTian.utils.Options;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,21 +11,34 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.bean.AllTalks;
+import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.Options;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class FgChatDiscussAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater = null;
-	private ArrayList<AllTalks> talks;
+	private List<AllTalks> talks = new ArrayList<AllTalks>(0);
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 
 	private ViewHolder mHolder = null;
+	
+	public List<AllTalks> getTalks() {
+		return talks;
+	}
 
-	public FgChatDiscussAdapter(Context context, ArrayList<AllTalks> talks) {
+	public void setTalks(List<AllTalks> talks) {
+		this.talks = talks;
+	}
+
+	public FgChatDiscussAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
 		options = Options.getOptions();
 		this.context = context;
-		this.talks = talks;
-
 	}
 
 	@Override

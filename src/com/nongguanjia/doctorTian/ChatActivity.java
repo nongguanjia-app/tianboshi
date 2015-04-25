@@ -596,12 +596,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		if (onRealTimeTalkFrom == REALTIMEFROM_SELF) {
+//		if (onRealTimeTalkFrom == REALTIMEFROM_SELF) {
 			api.stopTalk();
-			return;
-		} else if (onRealTimeTalkFrom == REALTIMEFROM_OTHER) {
+//			return;
+//		} else if (onRealTimeTalkFrom == REALTIMEFROM_OTHER) {
 			api.stopPlay();
-		}
+//		}
 		super.onBackPressed();
 	}
 
