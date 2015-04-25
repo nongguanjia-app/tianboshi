@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,12 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.ExpertDetailActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.CourseAdapter;
+import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllLecture;
 import com.nongguanjia.doctorTian.bean.Courses;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+
 /**
  * @author itachi 课程详情
  */
@@ -41,9 +42,9 @@ public class FgDetail extends Fragment {
 	private List<Courses> mAllCoursesList;
 	private TextView mCourseIntro;
 	private Bundle db;
-	//private ArrayList<AllLecture> AllLecture_list;
-	
-	
+
+	// private ArrayList<AllLecture> AllLecture_list;
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -57,17 +58,7 @@ public class FgDetail extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.course_item, container, false);
 		mCourseIntro = (TextView) view.findViewById(R.id.course_intro);
-		// mLinearLayout = (LinearLayout) view.findViewById(R.id.lin_zhu);
 		alllecture_listview = (ListView) view.findViewById(R.id.alllecture_listview);
-		// mLinearLayout.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// Intent it = new Intent(getActivity(),ExpertDetailActivity.class);
-		// startActivity(it);
-		// }
-		// });
 		init(view);
 		return view;
 	}
@@ -76,14 +67,14 @@ public class FgDetail extends Fragment {
 		// TODO Auto-generated method stub
 		getDetail();
 	}
+
 	ArrayList<AllLecture> AllLecture_list;
+
 	private void getDetail() {
-		// TODO Auto-generated method stub
-		//db = this.getArguments();
-		//String id = db.getString("Id");
-		//String name = db.getString("name");
-	//	Log.d("zhao", "-----" + id + "*" + name);
-		String url = CommonConstant.course + "/38,13778866445";
+		db = this.getArguments();
+		String id = db.getString("Id");
+		String phoneNum = ((AppApplication)getActivity().getApplication()).PHONENUM;
+		String url = CommonConstant.course + "/" + id +","+ phoneNum;
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
@@ -97,34 +88,36 @@ public class FgDetail extends Fragment {
 			public void onSuccess(int statusCode, Header[] headers,
 					JSONObject response) {
 				try {
-					if (response.getJSONObject("Courses").getString("returnCode").equals("1")) {
+					if (response.getJSONObject("Courses")
+							.getString("returnCode").equals("1")) {
 						JSONObject ja = response.getJSONObject("Courses");
 						// 解析应答数据
 						Gson gson = new Gson();
-						// String str = getString(R.string.json);
 						mAllCoursesList = new ArrayList<Courses>();
 						mCourses = gson.fromJson(ja.toString(), Courses.class);
-						Log.d("zhao", "-----" + mCourses);
 						mAllCoursesList.add(mCourses);
 						AllLecture_list = mCourses.getAllLecture();
-						Log.v("zhao", "&&" + AllLecture_list);
-						mCourseIntro.setText(mCourses.getCourseIntro()+ "----------");
-						mCourseAdapter = new CourseAdapter(getActivity(),AllLecture_list);
-						alllecture_listview.setAdapter(mCourseAdapter);
-						alllecture_listview.setOnItemClickListener(new OnItemClickListener() {
+						mCourseIntro.setText(mCourses.getCourseIntro());
+						if (mAllCoursesList.size() > 0) {
+							mCourseAdapter = new CourseAdapter(getActivity(),AllLecture_list);
+							alllecture_listview.setAdapter(mCourseAdapter);
+							alllecture_listview.setOnItemClickListener(new OnItemClickListener() {
 
-									@Override
-									public void onItemClick(AdapterView<?> arg0, View arg1,
-											int arg2, long arg3) {
-										Intent intent = new Intent(getActivity(),ExpertDetailActivity.class);
-										AllLecture allLecture = AllLecture_list.get(arg2);
-										intent.putExtra("AllLecture",allLecture);
-										startActivity(intent);
-									}
-								});
+										@Override
+										public void onItemClick(AdapterView<?> arg0, View arg1,
+												int arg2, long arg3) {
+											Intent intent = new Intent(getActivity(),ExpertDetailActivity.class);
+											String lectureId = AllLecture_list.get(arg2).getLectureId();
+											intent.putExtra("lectureId",lectureId);
+											startActivity(intent);
+										}
+									});
+						} else {
+							Toast.makeText(getActivity(), "课程详情为空",
+									Toast.LENGTH_SHORT).show();
+						}
 					} else {
-						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT)
-								.show();
+						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -134,5 +127,4 @@ public class FgDetail extends Fragment {
 			}
 		});
 	}
-
 }

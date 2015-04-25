@@ -3,6 +3,7 @@ package com.nongguanjia.doctorTian.adapter;
 import java.util.List;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.bean.AllStartCourse;
+import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.Options;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -66,7 +67,7 @@ public class StartCoursesAdapter extends BaseAdapter {
 		mHolder.mTitle.setText(mList.get(position).getCourseTitle());
 		mHolder.mId.setText(mList.get(position).getCourseId());
 		mHolder.mProgress.setText("已更新  "+mList.get(position).getProgress());
-		//imageLoader.displayImage(CommonConstant.img_course_primary + mList.get(position).getLecturePhoto(), mHolder.mExpertPhoto, options);
+		imageLoader.displayImage(CommonConstant.img_course_primary + mList.get(position).getSmallPicture(), mHolder.mSmallPicture, options);
 		return convertView;
 	}
 	

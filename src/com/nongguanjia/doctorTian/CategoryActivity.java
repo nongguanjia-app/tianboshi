@@ -47,9 +47,8 @@ public class CategoryActivity extends Activity {
 	private String name;
 	private int pageIndex = 1;
 	private boolean isSuccess = false;
-	
 	private ArrayList<AllCategoryCourses> courseList;
-	
+	private Bundle bd;
 	private LinearLayout footerView;
 
 	@Override
@@ -57,7 +56,6 @@ public class CategoryActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.category);
-		
 		init();
 	}
 
@@ -83,7 +81,7 @@ public class CategoryActivity extends Activity {
 		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
 		listView.addFooterView(view);
 		
-		adapter = new CategoryAdapter(getApplicationContext());
+		adapter = new CategoryAdapter(getApplicationContext(), courseList);
 		listView.setAdapter(adapter);
 		
 		img_back.setOnClickListener(new OnClickListener() {
@@ -120,23 +118,19 @@ public class CategoryActivity extends Activity {
 				if(mDialog.isShowing()){
 					mDialog.dismiss();
 				}
-				
 				try {
 					if(response.getJSONObject("AllCategoryCourses").getString("returnCode").equals("1")){
 						isSuccess = true;
-						
 						JSONArray ja = response.getJSONObject("AllCategoryCourses").getJSONArray("allCategoryCourses");
 						Gson gson = new Gson();
-						
 						//缓存每次请求应答
 						courseList = new ArrayList<AllCategoryCourses>();
 						courseList = gson.fromJson(ja.toString(), new TypeToken<List<AllCategoryCourses>>(){}.getType());
-						
 						adapter.getCourses().addAll(courseList);
 						adapter.notifyDataSetChanged();
-						
+						listView.setAdapter(adapter);
 						setListViewInfo();
-					}else{
+				}else{
 						isSuccess = false;
 						Toast.makeText(getApplicationContext(), "获取全部课程失败", Toast.LENGTH_SHORT).show();
 					}
@@ -155,7 +149,6 @@ public class CategoryActivity extends Activity {
 	}
 	
 	
-	
 	private void setListViewInfo(){
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -164,12 +157,12 @@ public class CategoryActivity extends Activity {
 					View view, int position, long id) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
-				Bundle bd = new Bundle();
-				bd.putString("courseId", courseList.get(position-1).getCourseid());
-				intent.putExtras(bd);
+				intent.putExtra("Id", courseList.get(position-1).getCourseid());
 				startActivity(intent);
+			//	Bundle bd = new Bundle();
+				/*bd.putString("courseId", courseList.get(position-1).getCourseid());
+				intent.putExtras(bd);*/
 			}
-			
 		});
 		
 		

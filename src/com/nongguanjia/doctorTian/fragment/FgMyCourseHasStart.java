@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.StartCoursesAdapter;
+import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllStartCourse;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
@@ -72,7 +73,8 @@ public class FgMyCourseHasStart extends Fragment {
 	}
 
 	private void getStartDetail() {
-		String url = CommonConstant.startcourses + "/" + "18518483303,1";
+		String phoneNum = ((AppApplication)getActivity().getApplication()).PHONENUM;
+		String url = CommonConstant.startcourses + "/" + phoneNum + ","+ "1";
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override

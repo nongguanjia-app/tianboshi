@@ -104,11 +104,7 @@ public class AppApplication extends Application {
 				} catch (Exception e) {
 
 				}
-
 			}
 		}
-
 	}
-	
-
 }

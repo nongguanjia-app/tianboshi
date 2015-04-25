@@ -24,6 +24,7 @@ import com.gotye.api.listener.UserListener;
 public class BaseActivity extends Activity implements LoginListener, ChatListener,
 		DownloadListener, GroupListener, UserListener, RoomListener,PlayListener,NotifyListener {
 	public GotyeAPI api=GotyeAPI.getInstance();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

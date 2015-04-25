@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nongguanjia.doctorTian.bean.AllLecture;
 import com.nongguanjia.doctorTian.bean.DeleteSubscribe;
 import com.nongguanjia.doctorTian.bean.Lectures;
 import com.nongguanjia.doctorTian.bean.Subscribe;
@@ -30,7 +29,6 @@ import android.widget.Toast;
  */
 public class ExpertDetailActivity extends Activity implements OnClickListener {
 	private String TAG = ExpertDetailActivity.class.getSimpleName();
-	private Activity activity;
 	private LayoutInflater inflater = null;
 	private LinearLayout layout;
 	private Context mContext;
@@ -43,15 +41,16 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	private Button mSubscribe_btn2;
 	private ImageView mExpertPhoto,mExpert_Back;
 	private TextView mName, mPT, mAddress, mField, mYear, mInfo,mTitle;
-
+	private ImageView mImg;
+	private String lectureId;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.expert_item);
-		AllLecture allLecture = (AllLecture) getIntent().getExtras().get("AllLecture");
-		Log.d("s", "^^^" + allLecture.toString());
-		String name = allLecture.getName();
+		lectureId = (String) getIntent().getExtras().get("lectureId");
 		mTitle = (TextView) findViewById(R.id.tv_title);
 		mTitle.setText("专家详情页面");
 		initViews();
@@ -70,19 +69,20 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 		mSubscribe_btn = (Button) findViewById(R.id.subscribe_btn);
 		mSubscribe_btn2 = (Button) findViewById(R.id.subscribe_btn2);
 		mExpert_Back = (ImageView) findViewById(R.id.img_back);
+		mImg = (ImageView) findViewById(R.id.expert_photo);
 		mSubscribe_btn.setOnClickListener(this);
 		mSubscribe_btn2.setOnClickListener(this);
 		mExpert_Back.setOnClickListener(this);
 	}
 
 	private void getExpert() {
-		String url = CommonConstant.lecture + "/" + "13804563652,13349954813";
+		String url = CommonConstant.lecture + "/" + lectureId + "," + "13349954813";
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
 			public void onFailure(int statusCode, Header[] headers,
 					String responseString, Throwable throwable) {
-				Toast.makeText(activity, "请求接口异常", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ExpertDetailActivity.this, "请求接口异常", Toast.LENGTH_SHORT).show();
 				super.onFailure(statusCode, headers, responseString, throwable);
 			}
 
@@ -104,7 +104,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 						mInfo.setText(mLectures.getLectureInfo());
 
 					} else {
-						Toast.makeText(activity, "获取信息失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ExpertDetailActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -120,9 +120,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		String url = CommonConstant.addsubscribe + "/" + "15618509847,13349954813";
 		String url2 = CommonConstant.deletesubscribe + "/" + "15618509847,13349954813";
-		
-		//String url = "addsubscribe/15618509847,13349954813";
-		//String url2 = "deletesubscribe/15618509847,13349954813";
+
 		switch (v.getId()) {
 		case R.id.subscribe_btn:
 			DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
@@ -140,7 +138,6 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 						JSONObject response) {
 					// TODO Auto-generated method stub
 					try {
-//						JSONObject ja = response.getJSONObject("Subscribe");
 						JSONObject ja = response.getJSONObject("AddSubscribe");
 						// 解析应答数据
 						Gson gson = new Gson();
@@ -168,7 +165,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 				@Override
 				public void onFailure(int statusCode, Header[] headers,
 						String responseString, Throwable throwable) {
-					Toast.makeText(activity, "请求接口异常", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ExpertDetailActivity.this, "请求接口异常", Toast.LENGTH_SHORT).show();
 					super.onFailure(statusCode, headers, responseString, throwable);
 				}
 
@@ -185,7 +182,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 							mSubscribe_btn2.setVisibility(View.GONE);
 							mSubscribe_btn.setVisibility(View.VISIBLE);
 						} else {
-							Toast.makeText(activity, "取消订阅失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(ExpertDetailActivity.this, "取消订阅失败", Toast.LENGTH_SHORT).show();
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block

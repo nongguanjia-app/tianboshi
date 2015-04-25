@@ -60,7 +60,6 @@ public class FgCourseCenter extends Fragment {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.course_res, container,false);
 		init(view);
-		
 		return view;
 	}
 	
