@@ -12,6 +12,9 @@ import com.nongguanjia.doctorTian.bean.Lectures;
 import com.nongguanjia.doctorTian.bean.Subscribe;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -44,6 +47,9 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	private TextView mName, mPT, mAddress, mField, mYear, mInfo,mTitle;
 	private ImageView mImg;
 	private String lectureId;
+	protected ImageLoader imageLoader = ImageLoader.getInstance();
+	DisplayImageOptions options;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +73,10 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 		mField = (TextView) findViewById(R.id.expert_Field);
 		mYear = (TextView) findViewById(R.id.expert_Year);
 		mInfo = (TextView) findViewById(R.id.expert_Info);
+		mImg = (ImageView) findViewById(R.id.expert_photo);
 		mSubscribe_btn = (Button) findViewById(R.id.subscribe_btn);
 		mSubscribe_btn2 = (Button) findViewById(R.id.subscribe_btn2);
 		mExpert_Back = (ImageView) findViewById(R.id.img_back);
-		mImg = (ImageView) findViewById(R.id.expert_photo);
 		mSubscribe_btn.setOnClickListener(this);
 		mSubscribe_btn2.setOnClickListener(this);
 		mExpert_Back.setOnClickListener(this);
@@ -79,6 +85,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 	private void getExpert() {
 		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
 		String url = CommonConstant.lecture + "/" + lectureId + "," + phoneNum;
+		Log.v("sun", lectureId);
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
@@ -104,7 +111,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 						mField.setText("研究方向：" + mLectures.getLectureField());
 						mYear.setText("研究时间：" + mLectures.getLectureYear());
 						mInfo.setText(mLectures.getLectureInfo());
-
+						imageLoader.displayImage(CommonConstant.img_detail + mLectures.getLecturePhoto(), mImg, options);
 					} else {
 						Toast.makeText(ExpertDetailActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}
@@ -116,6 +123,7 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -124,8 +132,6 @@ public class ExpertDetailActivity extends Activity implements OnClickListener {
 		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
 		String url = CommonConstant.addsubscribe + "/" + phoneNum+","+lectureId;
 		String url2 = CommonConstant.deletesubscribe + "/"+ phoneNum+","+lectureId;
-		Log.v("tel", phoneNum);
-		Log.v("lec", lectureId);
 
 		switch (v.getId()) {
 		case R.id.subscribe_btn:

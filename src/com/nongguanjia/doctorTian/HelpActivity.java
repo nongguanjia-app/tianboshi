@@ -10,6 +10,7 @@ import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class HelpActivity extends Activity {
 	private TextView mHelp_word,mTitle;
 	private AllHelps mAllHelps;
 	private Activity activity;
+	private WebView mWebView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class HelpActivity extends Activity {
 		setContentView(R.layout.help);
 		mHelp_word = (TextView) findViewById(R.id.help_word);
 		mTitle = (TextView) findViewById(R.id.tv_title);
+		mWebView = (WebView) findViewById(R.id.webView);
 		mTitle.setText("帮助中心");
 		init();
 	}
@@ -50,6 +53,8 @@ public class HelpActivity extends Activity {
 						mAllHelps = gson.fromJson(response.toString(),AllHelps.class);
 						Log.e(TAG, "解析"+mAllHelps);
 						mHelp_word.setText(mAllHelps.getHelps().get(0).getContent());
+						mWebView.loadUrl(mAllHelps.getHelps().get(0).getUrl());
+						mWebView.getSettings().setJavaScriptEnabled(true);
 					}else {
 						Toast.makeText(activity, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}

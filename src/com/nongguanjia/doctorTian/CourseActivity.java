@@ -191,8 +191,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 					// TODO Auto-generated method stub
 					try {
 						// JSONObject ja = response.getJSONObject("Subscribe");
-						JSONObject ja = response
-								.getJSONObject("DeleteFavorite");
+						JSONObject ja = response.getJSONObject("DeleteFavorite");
 						// 解析应答数据
 						Gson gson = new Gson();
 						mFavorite = gson.fromJson(ja.toString(), Favorite.class);

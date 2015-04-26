@@ -84,9 +84,6 @@ public class AppApplication extends Application {
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
 	}
-
-	
-	
 	
 	public static void loadSelectedKey(Context context) {
 		SharedPreferences spf = context.getSharedPreferences("gotye_api",

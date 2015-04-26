@@ -130,7 +130,10 @@
         <activity 
             android:name=".DiscussAllreviewsActivity"
             android:screenOrientation="portrait" />
-
+        <activity 
+            android:name=".SurePsdActivity"
+            android:screenOrientation="portrait" />
+		
         <receiver android:name=".receiver.StartServiceReceiver" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
