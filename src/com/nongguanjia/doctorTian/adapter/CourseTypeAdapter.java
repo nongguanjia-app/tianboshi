@@ -11,14 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.nongguanjia.doctorTian.CategoryActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.bean.AllCategorys;
+import com.nongguanjia.doctorTian.view.MyGridView;
 
 public class CourseTypeAdapter extends BaseExpandableListAdapter {
 	private LayoutInflater mInflater;
@@ -56,7 +57,7 @@ public class CourseTypeAdapter extends BaseExpandableListAdapter {
 		if(convertView == null){
 			holder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.course_type_child, null);
-			holder.gridView = (GridView)convertView.findViewById(R.id.gridview);
+			holder.gridView = (MyGridView)convertView.findViewById(R.id.gridview);
 			
 			convertView.setTag(holder);
 		}else{
@@ -147,7 +148,7 @@ public class CourseTypeAdapter extends BaseExpandableListAdapter {
 		private TextView groupName;
 		private TextView groupCount;
 		
-		private GridView gridView;
+		private MyGridView gridView;
 	}
 
 }

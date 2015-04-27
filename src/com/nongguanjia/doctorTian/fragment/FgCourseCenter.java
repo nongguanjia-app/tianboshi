@@ -10,29 +10,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nongguanjia.doctorTian.CategoryActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.CourseTypeAdapter;
-import com.nongguanjia.doctorTian.adapter.GridViewAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllCategorys;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
@@ -44,20 +35,14 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
  */
 public class FgCourseCenter extends Fragment {
 	private Activity activity;
-//	private LinearLayout layout;
 	private ExpandableListView expListView;
 	private List<AllCategorys> categorys;
-//	private LayoutInflater inflater = null;
-//	private GridViewAdapter gridAdapter;
-//	private final int WRAP = LayoutParams.WRAP_CONTENT;
-//	private final int MATCH = LayoutParams.MATCH_PARENT;
 	private CourseTypeAdapter adapter;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		this.activity = activity;
-//		inflater = LayoutInflater.from(activity);
 		super.onAttach(activity);
 	}
 
@@ -68,17 +53,10 @@ public class FgCourseCenter extends Fragment {
 		View view = inflater.inflate(R.layout.course_res, container,false);
 		expListView = (ExpandableListView)view.findViewById(R.id.exp_list);
 		getCategory();
-		
-//		init();
+
 		return view;
 	}
 	
-	private void init(){
-//		layout = (LinearLayout)view.findViewById(R.id.category_layout);
-//		expListView = (ExpandableListView)getView().findViewById(R.id.exp_list);
-//		
-//		getCategory();
-	}
 	
 	
 	private void getCategory(){
