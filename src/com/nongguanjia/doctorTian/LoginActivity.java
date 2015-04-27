@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import com.nongguanjia.doctorTian.bean.UserInfo;
 import com.nongguanjia.doctorTian.db.CacheUserHelper;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.service.GotyeService;
+import com.nongguanjia.doctorTian.service.InitService;
+import com.nongguanjia.doctorTian.task.InitCityTask;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.MD5Util;
 
@@ -49,6 +52,9 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		Intent initService = new Intent(this, InitService.class);
+		startService(initService);
 		
 		//判断当前登录状态
 		int state = GotyeAPI.getInstance().getOnLineState();

@@ -38,7 +38,14 @@ public class SqliteHelper extends SQLiteOpenHelper {
 				+ "phone char(11),"
 				+ "psd char(20))";
 		db.execSQL(create_user_info);
-
+		
+		
+		//初始化城市列表
+		String create_region = "CREATE TABLE IF NOT EXISTS region("
+				+ "id integer primary key," //行政区id
+				+ "name varchar(64)," //行政区域名称
+				+ "father int(8))";  //行政区域父级id
+		db.execSQL(create_region);
 		
 	}
 

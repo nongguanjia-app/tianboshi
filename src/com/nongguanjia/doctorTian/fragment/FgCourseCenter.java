@@ -3,10 +3,12 @@ package com.nongguanjia.doctorTian.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,16 +19,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.CategoryActivity;
 import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.adapter.CourseTypeAdapter;
 import com.nongguanjia.doctorTian.adapter.GridViewAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllCategorys;
@@ -39,18 +44,20 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
  */
 public class FgCourseCenter extends Fragment {
 	private Activity activity;
-	private LinearLayout layout;
+//	private LinearLayout layout;
+	private ExpandableListView expListView;
 	private List<AllCategorys> categorys;
-	private LayoutInflater inflater = null;
-	private GridViewAdapter gridAdapter;
-	private final int WRAP = LayoutParams.WRAP_CONTENT;
-	private final int MATCH = LayoutParams.MATCH_PARENT;
+//	private LayoutInflater inflater = null;
+//	private GridViewAdapter gridAdapter;
+//	private final int WRAP = LayoutParams.WRAP_CONTENT;
+//	private final int MATCH = LayoutParams.MATCH_PARENT;
+	private CourseTypeAdapter adapter;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		this.activity = activity;
-		inflater = LayoutInflater.from(activity);
+//		inflater = LayoutInflater.from(activity);
 		super.onAttach(activity);
 	}
 
@@ -59,13 +66,18 @@ public class FgCourseCenter extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.course_res, container,false);
-		init(view);
+		expListView = (ExpandableListView)view.findViewById(R.id.exp_list);
+		getCategory();
+		
+//		init();
 		return view;
 	}
 	
-	private void init(View view){
-		layout = (LinearLayout)view.findViewById(R.id.category_layout);
-		getCategory();
+	private void init(){
+//		layout = (LinearLayout)view.findViewById(R.id.category_layout);
+//		expListView = (ExpandableListView)getView().findViewById(R.id.exp_list);
+//		
+//		getCategory();
 	}
 	
 	
@@ -144,40 +156,15 @@ public class FgCourseCenter extends Fragment {
 	
 	
 	private void showView(List<String> names, List<HashMap<String, ArrayList<AllCategorys>>> list){
+		adapter = new CourseTypeAdapter(getActivity(), names, list);
+		expListView.setAdapter(adapter);
+		
+		expListView.setGroupIndicator(null);
+		
 		for(int i = 0; i < names.size(); i++){
-			//分类
-			View view = inflater.inflate(R.layout.course_res_type, null);
-			TextView tv = (TextView)view.findViewById(R.id.tv_type);
-			TextView tv_count = (TextView)view.findViewById(R.id.tv_count);
-			GridView gridView = (GridView)view.findViewById(R.id.gridview);
-			
-			//添加分类名称
-			tv.setText(names.get(i));
-			tv_count.setText(list.get(i).get(names.get(i)).size()+"");
-			layout.addView(view);
-			
-			//添加内部子类
-			final ArrayList<AllCategorys> cates = list.get(i).get(names.get(i));
-			
-			gridAdapter = new GridViewAdapter(activity, cates);
-			gridView.setAdapter(gridAdapter);
-			
-			gridView.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(activity, CategoryActivity.class);
-					Bundle bd = new Bundle();
-					bd.putString("Id", cates.get(position).getId());
-					bd.putString("name", cates.get(position).getName());
-					intent.putExtras(bd);
-					activity.startActivity(intent);
-				}
-				
-			});
+			expListView.expandGroup(i);
 		}
+		
 	}
 	
 

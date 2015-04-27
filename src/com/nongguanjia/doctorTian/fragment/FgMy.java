@@ -22,6 +22,8 @@ import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.SystemActivity;
 import com.nongguanjia.doctorTian.UpdatePassActivity;
 import com.nongguanjia.doctorTian.UpgradeActivity;
+import com.nongguanjia.doctorTian.task.UpdateTask;
+import com.nongguanjia.doctorTian.utils.NetworkDetector;
 
 /**
  * @author 我
@@ -98,9 +100,17 @@ public class FgMy extends Fragment implements OnClickListener {
 			Intent intent_upgrade = new Intent(getActivity(),UpgradeActivity.class);
 			startActivity(intent_upgrade);
 			break;
-		case R.id.upgrade_system:
-			Intent intent_system = new Intent(getActivity(),SystemActivity.class);
-			startActivity(intent_system);
+		case R.id.upgrade_system: //系统升级
+//			Intent intent_system = new Intent(getActivity(),SystemActivity.class);
+//			startActivity(intent_system);
+			
+			if(NetworkDetector.detect(getActivity())){
+				UpdateTask task = new UpdateTask(getActivity());
+				task.getVersion();	
+			}else{
+				NetworkDetector.dialog(getActivity());
+			}
+			
 			break;
 		case R.id.exitlogin:
 			new AlertDialog.Builder(getActivity())

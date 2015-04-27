@@ -34,6 +34,8 @@ public class CommonConstant {
 	public static final String allchapters = "allchapters"; // 课程表
 	public static final String verifyattention = "verifyattention"; //判断好友是否存在
 	public static final String newpassword = "newpassword"; //忘记密码
+	public static final String version = "version"; //系统更新
+	
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;
 	
@@ -49,5 +51,7 @@ public class CommonConstant {
 	public static String img_discuss = "http://182.92.170.172/DoctorTian/img/roles/";
 	//课程经验谈详情图片路径
 	public static String img_exp_img = "http://182.92.170.172/DoctorTian";
+	//下载包安装路径
+	public static final String savePath = "/sdcard/nongguanjia/apk/"; 
 	
 }
