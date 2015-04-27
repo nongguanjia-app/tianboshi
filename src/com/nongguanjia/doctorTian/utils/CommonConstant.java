@@ -11,7 +11,8 @@ public class CommonConstant {
 	public static final String userinfo = "userinfo"; //用户详情
 	public static final String startcourses = "startcourses"; // 已经开始
 	public static final String unstartcourses = "unstartcourses"; // 即将开始
-	public static final String statements = "statements"; // 升级推广人
+	public static final String statements = "statements"; // 升级推广人协议
+	public static final String upstatement = "upstatement"; // 升级推广人
 	public static final String authtxts = "authtxts"; //获取authTxt
 	public static final String allexperiences = "allexperiences"; //获取经验谈
 	public static final String experienceinfo = "experienceinfo"; //获取经验谈详情

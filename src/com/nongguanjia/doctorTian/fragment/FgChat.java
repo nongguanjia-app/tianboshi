@@ -11,10 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.app.AppApplication;
-import com.nongguanjia.doctorTian.base.BaseFragment;
 import com.nongguanjia.doctorTian.view.PagerSlidingTabStrip;
 
 /**
