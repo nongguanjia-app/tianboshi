@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res/com.nongguanjia.doctorTian"
     android:orientation="vertical"
     android:background="@color/white" >
+    
+    <include layout="@layout/title"/>
 
     <com.nongguanjia.doctorTian.view.PagerSlidingTabStrip
         android:id="@+id/tabs"
@@ -13,8 +15,8 @@
         app:pstsShouldExpand="true"
         app:pstsUnderlineHeight="2dp"
         app:pstsIndicatorHeight="2dp"
-        app:pstsIndicatorColor="@android:color/holo_blue_light"
-       	app:selectedTabTextColor="@android:color/holo_blue_light"
+        app:pstsIndicatorColor="@color/title_bar_bg"
+       	app:selectedTabTextColor="@color/title_bar_bg"
         app:pstsDividerColor="@android:color/transparent"
 	    app:pstsTabBackground="@drawable/background_tab"
 	   	android:background="@android:color/white" />

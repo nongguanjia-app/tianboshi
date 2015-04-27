@@ -158,6 +158,7 @@ public class CategoryActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(CategoryActivity.this, CourseActivity.class);
 				intent.putExtra("Id", courseList.get(position-1).getCourseid());
+				intent.putExtra("title", courseList.get(position-1).getTitle());
 				startActivity(intent);
 			//	Bundle bd = new Bundle();
 				/*bd.putString("courseId", courseList.get(position-1).getCourseid());

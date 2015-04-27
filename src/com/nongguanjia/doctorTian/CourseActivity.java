@@ -9,15 +9,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,40 +37,46 @@ import com.nongguanjia.doctorTian.fragment.FgDetail;
 import com.nongguanjia.doctorTian.fragment.FgDiscussArea;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.view.PagerSlidingTabStrip;
 
 /**
- * @author tx
- * 课程详情
+ * @author tx 课程详情
  */
-public class CourseActivity extends FragmentActivity implements OnClickListener{
+public class CourseActivity extends FragmentActivity implements OnClickListener {
+	private ViewPager mPager;
+	private PagerSlidingTabStrip tabs;
+	private String[] titles = new String[] { "课程详情", "课程表", "经验谈", "讨论区" };
+
 	private FgDetail fgDetail;
 	private FgCourse fgCourse;
 	private FgCourseExp fgCourseExp;
 	private FgDiscussArea fgDiscussArea;
+	
+	private TextView tv_title;
+	private ImageView img_back;
+
 	private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
-    private RadioGroup radioGroup;
-    private Button mCancleCollectionBtn;
+	private Button mCancleCollectionBtn;
 	private Button mCollectionBtn;
 	private Favorite mFavorite;
 	private FavoriteColl mFavoriteColl;
-	private RadioButton cou_detail;
 	private RelativeLayout layout_player;
 	private VODPlayCenter mPlayerView;
 	private boolean isBackgroud = false;
 	private Bundle db;
 	private Context mContext;
 	private String id;
-	
+	private String title;
+
 	// 乐视视频
-		private EditText etUUID;
-		private EditText etVUID;
-		private EditText etLiveId;
-		private RadioButton rb1;
-		private RadioButton rb2;
-		String uuid = "7a0888b569";
-		String vuid = "79dd8da08a";
-		private String courseId;
+	private EditText etUUID;
+	private EditText etVUID;
+	private EditText etLiveId;
+	private RadioButton rb1;
+	private RadioButton rb2;
+	String uuid = "7a0888b569";
+	String vuid = "79dd8da08a";
+	private String courseId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,19 +86,19 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 		mContext = this;
 		mCancleCollectionBtn = (Button) findViewById(R.id.cancle_collection);
 		mCollectionBtn = (Button) findViewById(R.id.collection);
-		cou_detail = (RadioButton) findViewById(R.id.cou_detail);
-		
+
 		/*
 		 * 乐视
 		 */
 		layout_player = (RelativeLayout) findViewById(R.id.layout_player);
 		mPlayerView = new VODPlayCenter(CourseActivity.this, true);
 		layout_player.addView(mPlayerView.getPlayerView());
-		
+
 		mCancleCollectionBtn.setOnClickListener(this);
 		mCollectionBtn.setOnClickListener(this);
-		init();
 		
+		init();
+
 		mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
 
 			@Override
@@ -106,71 +114,103 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 				}
 			}
 		});
-		
-		mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898", "", "");
+
+		mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898",
+				"", "");
 	}
-	
-	private void init(){
+
+	private void init() {
 		db = getIntent().getExtras();
 		courseId = db.getString("Id");
+		title = db.getString("title");
 		fragmentManager = getSupportFragmentManager();
-		radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
-		((RadioButton)radioGroup.findViewById(R.id.cou_detail)).setChecked(true);
+
+		tv_title = (TextView)findViewById(R.id.tv_title);
+		img_back = (ImageView)findViewById(R.id.img_back);
 		
-		transaction = fragmentManager.beginTransaction();
-        Fragment fragment = new FgDetail();
-        fragment.setArguments(db);
-        transaction.replace(R.id.content, fragment);
-        transaction.commit();
-        
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-            	switch (checkedId) {
-				case R.id.cou_detail:  //课程详情
-					transaction = fragmentManager.beginTransaction();
+		tv_title.setText(title);
+		
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		mPager = (ViewPager) findViewById(R.id.vPager);
+
+		mPager.setAdapter(new MyAdapter(fragmentManager, titles));
+
+		tabs.setViewPager(mPager);
+		
+		img_back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				CourseActivity.this.finish();
+			}
+		});
+
+	}
+
+	public class MyAdapter extends FragmentPagerAdapter {
+		String[] _titles;
+
+		public MyAdapter(FragmentManager fm, String[] titles) {
+			super(fm);
+			_titles = titles;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return _titles[position];
+		}
+
+		@Override
+		public int getCount() {
+			return _titles.length;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0:// 课程详情
+				if (fgDetail == null) {
 					fgDetail = new FgDetail();
 					fgDetail.setCourseId(courseId);
-	                transaction.replace(R.id.content, fgDetail);
-	                transaction.commit();
-					break;
-				case R.id.cou_table:  //课程表	
-					transaction = fragmentManager.beginTransaction();
+				}
+				return fgDetail;
+			case 1:// 课程表
+				if (fgCourse == null) {
 					fgCourse = new FgCourse();
 					fgCourse.setCourseId(courseId);
-	                transaction.replace(R.id.content, fgCourse);
-	                transaction.commit();
-					break;
-				case R.id.cou_exp:	//经验谈
-					transaction = fragmentManager.beginTransaction();
+				}
+				return fgCourse;
+			case 2:// 经验谈
+				if (fgCourseExp == null) {
 					fgCourseExp = new FgCourseExp();
 					fgCourseExp.setCourseId(courseId);
-	                transaction.replace(R.id.content, fgCourseExp);
-	                transaction.commit();
-					break;
-				case R.id.cou_discus: // 讨论区
-					transaction = fragmentManager.beginTransaction();
+				}
+				return fgCourseExp;
+			case 3:// 讨论区
+				if (fgDiscussArea == null) {
 					fgDiscussArea = new FgDiscussArea();
 					fgDiscussArea.setCourseId(courseId);
-	                transaction.replace(R.id.content, fgDiscussArea);
-	                transaction.commit();
-					break;
-            	}
-            }
-        });
+				}
+				return fgDiscussArea;
+			default:
+				return null;
+			}
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String phoneNum = ((AppApplication)getBaseContext().getApplicationContext()).PHONENUM;
+		String phoneNum = ((AppApplication) getBaseContext()
+				.getApplicationContext()).PHONENUM;
 		Bundle bd = getIntent().getExtras();
-		id = bd.getString("Id");	
+		id = bd.getString("Id");
 		Log.v("sun", id);
-		//Log.v("it", phoneNum);
-		String url = CommonConstant.deletefavorite + "/" +phoneNum+","+id;
-		String url2 = CommonConstant.addfavorite + "/" +phoneNum+","+id;
-		
+		// Log.v("it", phoneNum);
+		String url = CommonConstant.deletefavorite + "/" + phoneNum + "," + id;
+		String url2 = CommonConstant.addfavorite + "/" + phoneNum + "," + id;
+
 		switch (v.getId()) {
 		case R.id.cancle_collection:
 			DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
@@ -191,13 +231,15 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 					// TODO Auto-generated method stub
 					try {
 						// JSONObject ja = response.getJSONObject("Subscribe");
-						JSONObject ja = response.getJSONObject("DeleteFavorite");
+						JSONObject ja = response
+								.getJSONObject("DeleteFavorite");
 						// 解析应答数据
 						Gson gson = new Gson();
 						mFavorite = gson.fromJson(ja.toString(), Favorite.class);
 						if (mFavorite.getReturnCode().equals("1")) {
 							// Log.e(TAG, "it"+mSubscribes);
-							Toast.makeText(getApplicationContext(), "取消收藏",Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), "取消收藏",
+									Toast.LENGTH_SHORT).show();
 							mCollectionBtn.setVisibility(View.VISIBLE);
 							mCancleCollectionBtn.setVisibility(View.GONE);
 						} else {
@@ -255,7 +297,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 			break;
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -265,7 +307,8 @@ public class CourseActivity extends FragmentActivity implements OnClickListener{
 					this.mPlayerView.resumeVideo();
 				} else {
 					Logger.e("VODActivity", "已回收，重新请求播放");
-					mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898", "", "测试节目");
+					mPlayerView.playVideo(uuid, vuid,
+							"c8b127186556ccfae084bbede663a898", "", "测试节目");
 				}
 			}
 		}

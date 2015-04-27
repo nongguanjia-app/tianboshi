@@ -11,6 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.view.PagerSlidingTabStrip;
@@ -29,6 +32,8 @@ public class FgChat extends Fragment {
     Fragment fgCustomer;
     private String role;
     private String[] titles;
+    private TextView tv_title;
+    private ImageView img_back;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -56,6 +61,16 @@ public class FgChat extends Fragment {
 	
 	
 	private void initView(View view) {
+		tv_title = (TextView)view.findViewById(R.id.tv_title);
+		img_back = (ImageView)view.findViewById(R.id.img_back);
+		if(role.equals("推广人")){
+			tv_title.setText("客户服务");
+		}else{
+			tv_title.setText("交流");
+		}
+		
+		img_back.setVisibility(View.GONE);
+		
 		tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 		mPager = (ViewPager) view.findViewById(R.id.vPager);
 		

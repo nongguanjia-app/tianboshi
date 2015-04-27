@@ -15,8 +15,11 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -38,6 +41,8 @@ public class FgCourseCenter extends Fragment {
 	private ExpandableListView expListView;
 	private List<AllCategorys> categorys;
 	private CourseTypeAdapter adapter;
+	private TextView tv_title;
+	private ImageView img_back;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -51,9 +56,14 @@ public class FgCourseCenter extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.course_res, container,false);
+		tv_title = (TextView)view.findViewById(R.id.tv_title);
+		img_back = (ImageView)view.findViewById(R.id.img_back);
+		img_back.setVisibility(View.GONE);
+		tv_title.setText("课程库");
+		
 		expListView = (ExpandableListView)view.findViewById(R.id.exp_list);
 		getCategory();
-
+		
 		return view;
 	}
 	

@@ -1,5 +1,6 @@
 package com.nongguanjia.doctorTian;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -102,24 +104,22 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	
 	
 	
-	
-//	final Html.ImageGetter imageGetter = new Html.ImageGetter() {
-//
-//	    public Drawable getDrawable(String source) {
-//	        Drawable drawable=null;
-//		    URL url;
-//		    try {
-//		    	source = CommonConstant.img_exp_img + source.substring(2);
-//		        url = new URL(source);
-//		        drawable = Drawable.createFromStream(url.openStream(), "");
-//		    } catch (Exception e) {
-//		        e.printStackTrace();
-//		        return null;
-//		    }
-//		    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());            
-//		    return drawable;
-//		}
-//	};
+	Handler vHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			switch (msg.what) {
+			
+			case 2:
+				tv_content.setText((CharSequence)msg.obj);
+				
+				break;
+			default:
+				break;
+			}
+			super.handleMessage(msg);
+		}
+	};
 	
 	
 
@@ -319,12 +319,10 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		//判断html是否含有图片
 		if(info.getContent().indexOf("img") > 0){
-//			tv_content.setText(Html.fromHtml(info.getContent(), imageGetter, null));
+			t.start();
 		}else{
-//			tv_content.setText(Html.fromHtml(info.getContent()));
+			tv_content.setText(Html.fromHtml(info.getContent()));
 		}
-		
-		tv_content.setText(Html.fromHtml(info.getContent()));
 		
 	}
 
@@ -531,6 +529,36 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 	}
 	
+	
+	Thread t = new Thread(new Runnable() {
+		Message msg = Message.obtain();
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Html.ImageGetter imageGetter = new Html.ImageGetter() {
+
+			    public Drawable getDrawable(String source) {
+			        Drawable drawable=null;
+				    URL url;
+				    try {
+				    	source = CommonConstant.img_exp_img + source.substring(2);
+				        url = new URL(source);
+				        drawable = Drawable.createFromStream(url.openStream(), "");
+				    } catch (Exception e) {
+				        e.printStackTrace();
+				        return null;
+				    }
+				    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());            
+				    return drawable;
+				}
+			};
+			CharSequence tv = Html.fromHtml(info.getContent(), imageGetter, null);
+			msg.what = 2;
+			msg.obj = tv;
+			vHandler.sendMessage(msg);
+		}
+	});
 	
 	
 }

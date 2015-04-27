@@ -32,7 +32,6 @@ import com.nongguanjia.doctorTian.db.CacheUserHelper;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.service.GotyeService;
 import com.nongguanjia.doctorTian.service.InitService;
-import com.nongguanjia.doctorTian.task.InitCityTask;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.MD5Util;
 

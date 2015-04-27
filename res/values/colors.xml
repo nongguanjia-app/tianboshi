@@ -91,5 +91,7 @@
       
       <color name="tab_bg_color">#eeeeeeee</color>
       <drawable name="title_bar_bg">#0fd5c9</drawable>
+      
+      <color name="text_color">#6d6e71</color>
     
 </resources>

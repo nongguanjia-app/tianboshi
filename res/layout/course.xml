@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res/com.nongguanjia.doctorTian"
     android:orientation="vertical" >
+    
+    <include layout="@layout/title"/>
 
     <RelativeLayout
         android:id="@+id/layout_player"
@@ -29,74 +32,28 @@
             android:background="@drawable/exitcollection" />
     </RelativeLayout>
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <com.nongguanjia.doctorTian.view.PagerSlidingTabStrip
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_vertical"
-        android:background="@color/title_bar_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:layout_height="40dp"
+        app:pstsShouldExpand="true"
+        app:pstsUnderlineHeight="2dp"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsIndicatorColor="@color/title_bar_bg"
+       	app:selectedTabTextColor="@color/title_bar_bg"
+        app:pstsDividerColor="@android:color/transparent"
+	    app:pstsTabBackground="@drawable/background_tab"
+	   	android:background="@android:color/white" />
 
-        <!-- 课程详情 -->
-
-        <RadioButton
-            android:id="@+id/cou_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center_vertical"
-            android:text="@string/course_detail"
-            android:textColor="@color/font_selector"
-            android:textSize="18dp" />
-
-        <!-- 课程表 -->
-
-        <RadioButton
-            android:id="@+id/cou_table"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/course_table"
-            android:textColor="@color/font_selector"
-            android:textSize="18dp" />
-
-        <!-- 经验谈 -->
-
-        <RadioButton
-            android:id="@+id/cou_exp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/course_exp"
-            android:textColor="@color/font_selector"
-            android:textSize="18dp" />
-
-        <!-- 讨论区 -->
-
-        <RadioButton
-            android:id="@+id/cou_discus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal"
-            android:text="@string/course_discus"
-            android:textColor="@color/font_selector"
-            android:textSize="18dp" />
-    </RadioGroup>
-
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.0"
+        android:background="#000000"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+   
 
 </LinearLayout>
