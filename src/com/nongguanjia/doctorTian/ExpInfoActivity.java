@@ -16,10 +16,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -168,38 +166,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		btn_attention.setOnClickListener(this);
 		img_back.setOnClickListener(this);
-		
-		ed_info.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				// TODO Auto-generated method stub
-				if(!TextUtils.isEmpty(ed_info.getText())){
-					//按钮改变颜色
-					btn_send.setTextColor(ExpInfoActivity.this.getResources().getColor(R.color.send_btn_color));
-					btn_send.setOnClickListener(ExpInfoActivity.this);
-					btn_send.setEnabled(true);
-				}else{
-					btn_send.setTextColor(ExpInfoActivity.this.getResources().getColor(R.color.login_txt));
-					btn_send.setEnabled(false);
-				}
-			}
-			
-		});
+		btn_send.setOnClickListener(this);
 		
 		View view = inflater.inflate(R.layout.list_footview, null);
 		footerView = (LinearLayout)view.findViewById(R.id.foot_layout);
@@ -452,7 +419,12 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_send:
-			addtalk(ed_info.getText().toString());
+			if(!TextUtils.isEmpty(ed_info.getText())){
+				addtalk(ed_info.getText().toString());
+			}else{
+				Toast.makeText(ExpInfoActivity.this, "请输入评论信息", Toast.LENGTH_SHORT).show();
+			}
+			
 			break;
 		case R.id.btn_attention:
 			isAttention = !isAttention;

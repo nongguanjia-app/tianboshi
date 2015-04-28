@@ -3,118 +3,197 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <ImageView android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:src="@color/yellow"
-        android:layout_gravity="center_horizontal"/>
-    
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_show_name"
+
+    <ImageView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ngj_icon" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ngj_name" />
 
     <!-- 手机号码 -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@color/yellow"/>
-        
-        <EditText android:id="@+id/edit_phone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_phone"
-            android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
-    
-    <!-- 密码 -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@color/yellow"/>
-        
-        <EditText android:id="@+id/edit_psd"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_psd"
-            android:password="true"
-            android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
-    
-    <!-- 再次输入密码 -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@color/yellow"/>
-        
-        <EditText android:id="@+id/edit_psd_again"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_again"
-            android:password="true"
-            android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        
-        <EditText android:id="@+id/edit_verify_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:hint="@string/hint_input_auto" />
-        
-        <Button android:id="@+id/get_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/get_code"/>
-        
-    </LinearLayout>
-    
-    <Button android:id="@+id/btn_regist"
+
+    <RelativeLayout
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_height="45dp"
-        android:text="@string/regist"/>
-    
-    <TextView android:id="@+id/forget_psd"
+        android:layout_marginTop="30dp" >
+
+        <ImageView
+            android:id="@+id/img_tel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/img_tel" />
+
+        <EditText
+            android:id="@+id/edit_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_tel"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_tel"
+            android:background="@null"
+            android:hint="@string/hint_input_phone"
+            android:numeric="integer" />
+    </RelativeLayout>
+
+    <!-- 底部线 -->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/title_bar_bg" />
+
+    <!-- 密码 -->
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/agreement"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-    
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/img_psd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/img_input_psd" />
+
+        <EditText
+            android:id="@+id/edit_psd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_psd"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_psd"
+            android:background="@null"
+            android:hint="@string/hint_input_psd"
+            android:password="true" />
+    </RelativeLayout>
+
+    <!-- 底部线 -->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/title_bar_bg" />
+
+    <!-- 再次输入密码 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/img_again"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/img_input_psd" />
+
+        <EditText
+            android:id="@+id/edit_psd_again"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_again"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_again"
+            android:background="@null"
+            android:hint="@string/hint_input_again"
+            android:password="true" />
+    </RelativeLayout>
+
+    <!-- 底部线 -->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/title_bar_bg" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1.5" 
+            android:gravity="bottom"
+            android:layout_gravity="bottom">
+
+            <EditText
+                android:id="@+id/edit_verify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_input_auto" />
+
+            <!-- 底部线 -->
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/title_bar_bg" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/get_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@color/title_bar_bg"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/get_code"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_regist"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/title_bar_bg"
+        android:text="@string/regist"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/forget_psd"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/agreement" />
+
 </LinearLayout>

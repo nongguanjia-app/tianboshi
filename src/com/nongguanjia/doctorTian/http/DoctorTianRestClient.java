@@ -7,6 +7,8 @@ import com.loopj.android.http.RequestParams;
 public class DoctorTianRestClient {
 	private static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
 	
+//	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
+	
 	private static AsyncHttpClient client = new AsyncHttpClient();
 	
 	public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){

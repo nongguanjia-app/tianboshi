@@ -176,7 +176,7 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 				mDialog.dismiss();
 				//解析应答数据
 				try {
-					if(new JSONArray(response.getString("AddUser")).getJSONObject(0).getString("returnCode").equals("1")){
+					if(response.getJSONObject("AddUser").getString("returnCode").equals("1")){
 						//注册成功后，初始化权限（农户）
 						((AppApplication)getApplication()).ROLE = "农户";
 						
