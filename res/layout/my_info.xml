@@ -85,6 +85,11 @@
         <TextView
             style="@style/my_item_tv"
             android:text="@string/my_age" />
+        <TextView 
+            android:id="@+id/t_ege"
+            style="@style/my_item_tv"
+            android:layout_alignParentRight="true"
+            android:text="0岁" />
     </RelativeLayout>
 
     <ImageView style="@style/divide" />

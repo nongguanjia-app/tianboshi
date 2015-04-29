@@ -31,8 +31,7 @@
             android:gravity="center_horizontal|bottom"
             android:paddingTop="1px"
             android:text="@string/my_course"
-            android:textColor="@color/font_selector"
-             />
+            android:textColor="@color/font_selector" />
 
         <RadioButton
             android:id="@+id/radio_center"
@@ -42,8 +41,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selected_course_lib"
             android:gravity="center_horizontal|bottom"
-            android:textColor="@color/font_selector"
-             />
+            android:textColor="@color/font_selector" />
 
         <RadioButton
             android:id="@+id/radio_chat"
@@ -53,8 +51,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selected_consumer_service"
             android:gravity="center_horizontal|bottom"
-            android:textColor="@color/font_selector"
-             />
+            android:textColor="@color/font_selector" />
 
         <RadioButton
             android:id="@+id/radio_my"
@@ -64,8 +61,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selected_my"
             android:gravity="center_horizontal|bottom"
-            android:textColor="@color/font_selector"
-             />
+            android:textColor="@color/font_selector" />
     </RadioGroup>
 
 </LinearLayout>
