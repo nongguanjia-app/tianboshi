@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.app.AppApplication;
-import com.nongguanjia.doctorTian.bean.AllAbouts;
+import com.nongguanjia.doctorTian.bean.Abouts;
 import com.nongguanjia.doctorTian.bean.AllNewPassword;
 import com.nongguanjia.doctorTian.db.CacheUserHelper;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;

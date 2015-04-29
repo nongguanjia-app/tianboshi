@@ -36,6 +36,8 @@ public class CommonConstant {
 	public static final String verifyattention = "verifyattention"; //判断好友是否存在
 	public static final String newpassword = "newpassword"; //忘记密码
 	public static final String version = "version"; //系统更新
+	public static final String abouts = "abouts"; //关于
+	public static final String helps = "helps"; //帮助
 	
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;

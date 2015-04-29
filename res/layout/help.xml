@@ -6,35 +6,9 @@
 
     <include layout="@layout/title" />
 
-    <TextView
-        android:id="@+id/help_word"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="290dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="11111" />
-    <WebView 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.nongguanjia.doctorTian.view.ProgressWebView 
         android:id="@+id/webView"
-        />
-
-    <EditText
-        android:id="@+id/help_edit"
-        android:layout_width="280dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/shape" />
-
-    <Button
-        android:id="@+id/help_message"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        android:background="#539900"
-        android:text="@string/message"
-        android:textColor="@color/white" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
