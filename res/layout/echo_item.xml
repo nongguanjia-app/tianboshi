@@ -57,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:focusable="false"
+                    android:drawableLeft="@drawable/img_reply"
                     android:background="@null"
                     android:text="回复"
                     android:textSize="13sp"
@@ -67,11 +68,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/btn_reply"
+                    android:drawableLeft="@drawable/img_letter"
                     android:focusable="false"
                     android:background="@null"
                     android:text="私信"
                     android:textSize="13sp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_marginRight="5dp" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gotye.api.GotyeUser;
 import com.nongguanjia.doctorTian.ChatActivity;
@@ -111,9 +113,14 @@ public class AllechosAdapter extends BaseAdapter {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(context, ChatActivity.class);
-				GotyeUser user = new GotyeUser(echo.getPhone());
-				intent.putExtra("user", user);
-				context.startActivity(intent);
+				if(echo!=null && !TextUtils.isEmpty(echo.getPhone())){
+					GotyeUser user = new GotyeUser(echo.getPhone());
+					intent.putExtra("user", user);
+					context.startActivity(intent);
+				}else{
+					Toast.makeText(context, "当前评论人不存在", Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
 		

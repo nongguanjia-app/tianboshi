@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,6 @@ import com.nongguanjia.doctorTian.AboutActivity;
 import com.nongguanjia.doctorTian.HelpActivity;
 import com.nongguanjia.doctorTian.MyDataActivity;
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.SystemActivity;
 import com.nongguanjia.doctorTian.UpdatePassActivity;
 import com.nongguanjia.doctorTian.UpgradeActivity;
 import com.nongguanjia.doctorTian.task.UpdateTask;
@@ -29,10 +29,11 @@ import com.nongguanjia.doctorTian.utils.NetworkDetector;
  * @author 我
  */
 public class FgMy extends Fragment implements OnClickListener {
-	private RelativeLayout mMy_info, mMy_Down, mRec, mEdit_psd, mHelp, mAbout,
-			mUpgrade, mSystemUpgrade;
+	private RelativeLayout mMy_info, mMy_Down, mEdit_psd, mHelp, mAbout,
+			mUpgrade, mSystemUpgrade; //mRec
 	private Button mExit;
 	private TextView tv_title;
+	private ImageView img_back;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -45,16 +46,21 @@ public class FgMy extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.my, container, false);
+		tv_title = (TextView)view.findViewById(R.id.tv_title);
+		tv_title.setText("我");
+		img_back = (ImageView)view.findViewById(R.id.img_back);
+		img_back.setVisibility(View.GONE);
+		
 		mMy_info = (RelativeLayout) view.findViewById(R.id.my_info);
 		mMy_Down = (RelativeLayout) view.findViewById(R.id.my_down);
-		mRec = (RelativeLayout) view.findViewById(R.id.rec);
+//		mRec = (RelativeLayout) view.findViewById(R.id.rec);
 		mEdit_psd = (RelativeLayout) view.findViewById(R.id.edit_psd);
 		mUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade);
 		mHelp = (RelativeLayout) view.findViewById(R.id.help);
 		mAbout = (RelativeLayout) view.findViewById(R.id.about);
 		mSystemUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade_system);
 		mExit = (Button) view.findViewById(R.id.exitlogin);
-		mRec.setOnClickListener(this);
+//		mRec.setOnClickListener(this);
 		mMy_info.setOnClickListener(this);
 		mMy_Down.setOnClickListener(this);
 		mEdit_psd.setOnClickListener(this);
@@ -63,8 +69,6 @@ public class FgMy extends Fragment implements OnClickListener {
 		mUpgrade.setOnClickListener(this);
 		mSystemUpgrade.setOnClickListener(this);
 		mExit.setOnClickListener(this);
-		tv_title = (TextView) view.findViewById(R.id.tv_title);
-		//tv_title.setText("我");
 
 		return view;
 	}
@@ -81,9 +85,9 @@ public class FgMy extends Fragment implements OnClickListener {
 		case R.id.my_down:
 			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
 			break;
-		case R.id.rec:
-			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
-			break;
+//		case R.id.rec:
+//			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
+//			break;
 		case R.id.edit_psd:
 			Intent intent_Update_Psd = new Intent(getActivity(),UpdatePassActivity.class);
 			startActivity(intent_Update_Psd);

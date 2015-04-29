@@ -43,7 +43,7 @@ public class CustomerHttpClient {
 	private static final String TAG = "CustomerHttpClient";
 	
 	private static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
-//	private static final String BASE_URL = "http://192.168.1.166:8080/demo/tbs/"; 
+//	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
 
 	private CustomerHttpClient() {
 	}
