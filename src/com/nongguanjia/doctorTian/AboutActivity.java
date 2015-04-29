@@ -33,7 +33,6 @@ public class AboutActivity extends Activity implements OnClickListener {
 		init();
 	}
 	private void initViews() {
-		// TODO Auto-generated method stub
 		mTitle = (TextView) findViewById(R.id.tv_title);
 		mTitle.setText("关于我们");
 		mAboub_Back = (ImageView) findViewById(R.id.img_back);
