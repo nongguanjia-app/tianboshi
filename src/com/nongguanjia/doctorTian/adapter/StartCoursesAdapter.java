@@ -1,12 +1,7 @@
 package com.nongguanjia.doctorTian.adapter;
 
 import java.util.List;
-import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.bean.AllStartCourse;
-import com.nongguanjia.doctorTian.utils.CommonConstant;
-import com.nongguanjia.doctorTian.utils.Options;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +9,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.bean.AllStartCourse;
+import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.Options;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class StartCoursesAdapter extends BaseAdapter {
 	
@@ -30,6 +32,11 @@ public class StartCoursesAdapter extends BaseAdapter {
 		options = Options.getOptions();
 		this.mContext = mContext;
 		this.mList = mList;
+	}
+	
+	public void refreshData(List<AllStartCourse> mList) {
+		this.mList = mList;
+		notifyDataSetChanged();
 	}
 
 	@Override

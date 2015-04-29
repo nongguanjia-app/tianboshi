@@ -40,7 +40,6 @@ import com.nongguanjia.doctorTian.view.RTPullListView;
 public class CategoryActivity extends Activity {
 	private TextView tv_name;
 	private ImageView img_back;
-	private RTPullListView  listView;
 	private CategoryAdapter adapter;
 	private ProgressDialog mDialog;
 	private String id;
@@ -49,6 +48,8 @@ public class CategoryActivity extends Activity {
 	private boolean isSuccess = false;
 	private ArrayList<AllCategoryCourses> courseList;
 	private Bundle bd;
+	
+	private RTPullListView  listView;
 	private LinearLayout footerView;
 
 	@Override

@@ -1,25 +1,20 @@
 package com.nongguanjia.doctorTian.fragment;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.adapter.MyFragmentPageAadpter;
+import com.nongguanjia.doctorTian.app.AppApplication;
+import com.nongguanjia.doctorTian.view.PagerSlidingTabStrip;
 
 /**
  * @author tx
@@ -29,21 +24,16 @@ import com.nongguanjia.doctorTian.adapter.MyFragmentPageAadpter;
 public class FgMyCourse extends Fragment {
 	Resources resources;
     private ViewPager mPager;
-    private ArrayList<Fragment> fragmentsList;
-    private ImageView ivBottomLine;
-    private TextView tvHasStart, tvWillStart;
-
-    private int currIndex = 0;
-    private int bottomLineWidth;
-    private int offset = 0;
-    private int position_one;
-    public final static int num = 2 ; 
+    private String role;
+    private String[] titles;
+    private PagerSlidingTabStrip tabs;
     Fragment hasStart;
     Fragment willStart;
+    Fragment myCourse;
 	
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
+		role = ((AppApplication)activity.getApplication()).ROLE;
 		super.onAttach(activity);
 	}
 
@@ -52,105 +42,67 @@ public class FgMyCourse extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.my_course, container,false);
 		resources = getResources();
-        initWidth(view);
+        
+        if(role.equals("推广人")){
+			titles = new String[]{ "已经开始", "即将开始", "我的课程" };
+		}else{
+			titles = new String[]{"已经开始", "即将开始"};
+		}
+        
         initTextView(view);
-        initViewPager(view);
-        TranslateAnimation animation = new TranslateAnimation(position_one, offset, 0, 0);
-        tvHasStart.setTextColor(resources.getColor(R.color.lightgreen));
-        animation.setFillAfter(true);
-        animation.setDuration(300);
-        ivBottomLine.startAnimation(animation);
 		
 		return view;
 	}
 	
 	
-	private void initWidth(View parentView) {
-        ivBottomLine = (ImageView) parentView.findViewById(R.id.iv_bottom_line);
-        bottomLineWidth = ivBottomLine.getLayoutParams().width;
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenW = dm.widthPixels;
-        offset = (int) ((screenW / num - bottomLineWidth) / 2);
-        int avg = (int) (screenW / num);
-        position_one = avg + offset;
-    }
-	
 	private void initTextView(View parentView) {
-		tvHasStart = (TextView) parentView.findViewById(R.id.tv_has_start);
-		tvWillStart = (TextView) parentView.findViewById(R.id.tv_will_start);
+		tabs = (PagerSlidingTabStrip) parentView.findViewById(R.id.tabs_myCourse);
+		mPager = (ViewPager) parentView.findViewById(R.id.vPager);
+		mPager.setAdapter(new MyAdapter(getChildFragmentManager(),titles));
+		tabs.setViewPager(mPager);
 
-        tvHasStart.setOnClickListener(new MyOnClickListener(0));
-        tvWillStart.setOnClickListener(new MyOnClickListener(1));
     }
 	
 	
-	private void initViewPager(View parentView) {
-        mPager = (ViewPager) parentView.findViewById(R.id.vPager);
-        fragmentsList = new ArrayList<Fragment>();
+	public class MyAdapter extends FragmentPagerAdapter{
+		String[] _titles;
+		public MyAdapter(FragmentManager fm,String[] titles) {
+			super(fm);
+			_titles=titles;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return _titles[position];
+		}
+		
+		@Override
+		public int getCount() {
+			return _titles.length;
+		}
 
-        hasStart = new FgMyCourseHasStart();
-        willStart = new FgMyCourseWillStart();
-
-        fragmentsList.add(hasStart);
-        fragmentsList.add(willStart);
-        
-        mPager.setAdapter(new MyFragmentPageAadpter(getChildFragmentManager(), fragmentsList));
-        mPager.setOnPageChangeListener(new MyOnPageChangeListener());
-        mPager.setCurrentItem(0);
-        
-    }
-	
-	
-	public class MyOnClickListener implements View.OnClickListener {
-        private int index = 0;
-
-        public MyOnClickListener(int i) {
-            index = i;
-        }
-
-        @Override
-        public void onClick(View v) {
-            mPager.setCurrentItem(index);
-        }
-    };
-	
-	
-	
-	public class MyOnPageChangeListener implements OnPageChangeListener {
-
-        @Override
-        public void onPageSelected(int arg0) {
-            Animation animation = null;
-            switch (arg0) {
-            case 0:
-                if (currIndex == 1) {
-                    animation = new TranslateAnimation(position_one, offset, 0, 0);
-                    tvHasStart.setTextColor(resources.getColor(R.color.lightgreen));
-                } 
-                tvWillStart.setTextColor(resources.getColor(R.color.lightgray));
-                break;
-            case 1:
-                if (currIndex == 0) {
-                    animation = new TranslateAnimation(offset, position_one, 0, 0);
-                    tvWillStart.setTextColor(resources.getColor(R.color.lightgreen));
-                } 
-                tvHasStart.setTextColor(resources.getColor(R.color.lightgray));
-                break;
-            }
-            currIndex = arg0;
-            animation.setFillAfter(true);
-            animation.setDuration(300);
-            ivBottomLine.startAnimation(animation);
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-        }
-    }
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0:
+				if (hasStart == null) {
+					hasStart = new FgMyCourseHasStart();
+				}
+				return hasStart;
+			case 1:
+				if (willStart == null) {
+					willStart = new FgMyCourseWillStart();
+				}
+				return willStart;
+			case 2:
+				if (myCourse == null) {
+					myCourse = new FgMyCourseTG();
+				}
+				return myCourse;
+			default:
+				return null;
+			}
+		}
+	}
 	
 }

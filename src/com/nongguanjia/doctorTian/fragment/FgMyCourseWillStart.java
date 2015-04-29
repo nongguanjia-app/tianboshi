@@ -14,9 +14,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,21 +29,27 @@ import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.AllUnStartCourses;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.ToastUtil;
+import com.nongguanjia.doctorTian.view.RTPullListView;
+import com.nongguanjia.doctorTian.view.RTPullListView.OnRefreshListener;
 
 /**
  * @author tx 我的课程 -- 即将开始
  */
 public class FgMyCourseWillStart extends Fragment {
 	private Activity activity;
-	private ListView mListView;
+	private RTPullListView mListView;
 	private LayoutInflater inflater = null;
 	private LinearLayout layout;
 	private UnStartCoursesAdapter mUnStartCoursesAdapter;
 	private List<AllUnStartCourses> mAllUnStartCourses;
+	
+	private LinearLayout footerView;
+	private int pageIndex = 1;
+	private boolean isSuccess = false;
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		this.activity = activity;
 		inflater = LayoutInflater.from(activity);
 		super.onAttach(activity);
@@ -57,8 +65,53 @@ public class FgMyCourseWillStart extends Fragment {
 	}
 
 	private void init(View view) {
-		// TODO Auto-generated method stub
-		mListView = (ListView) view.findViewById(R.id.un_start_list);
+		mListView = (RTPullListView) view.findViewById(R.id.un_start_list);
+		View v= inflater.inflate(R.layout.list_footview, null);
+		footerView = (LinearLayout)v.findViewById(R.id.foot_layout);
+		mListView.addFooterView(v);
+		
+		
+		// 下拉刷新监听器
+				mListView.setonRefreshListener(new OnRefreshListener() {
+					@Override
+					public void onRefresh() {
+						if (mAllUnStartCourses != null) {
+							getUnStartDetail();
+							mUnStartCoursesAdapter.refreshData(mAllUnStartCourses);
+						} else {
+							ToastUtil.show(getActivity(), "没有更多历史消息");
+						}
+						mListView.onRefreshComplete();
+					}
+				});
+				
+				mListView.setOnScrollListener(new OnScrollListener() {
+					@Override
+					public void onScrollStateChanged(AbsListView view, int scrollState) {
+						//当不滚动时
+						if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+							//判断是否滚动到底部
+							if(view.getLastVisiblePosition() == view.getCount() - 1){
+								
+								if(mUnStartCoursesAdapter.getCount() % 8 == 0){
+									if(isSuccess){
+										pageIndex = pageIndex + 1;
+										//加载更多
+										footerView.setVisibility(View.VISIBLE);
+										getUnStartDetail();
+									}
+								}
+							}
+						}
+					}
+					
+					@Override
+					public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		
 		getUnStartDetail();
 	}
 

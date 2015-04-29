@@ -34,7 +34,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_info);
 		mDataTitle = (TextView) findViewById(R.id.tv_title);
@@ -64,7 +63,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		case R.id.img_back:
 			finish();
 			break;
-			
 		case R.id.my_icon:
 			AlertDialog.Builder builderImg = new AlertDialog.Builder(MyDataActivity.this);
 			builderImg.setTitle("选择头像");

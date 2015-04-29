@@ -2,6 +2,7 @@ package com.nongguanjia.doctorTian.adapter;
 
 import java.util.List;
 import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.bean.AllStartCourse;
 import com.nongguanjia.doctorTian.bean.AllUnStartCourses;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.Options;
@@ -30,6 +31,12 @@ public class UnStartCoursesAdapter extends BaseAdapter {
 		options = Options.getOptions();
 		this.mContext = mContext;
 		this.mList = mList;
+	}
+	
+	
+	public void refreshData(List<AllUnStartCourses> mList) {
+		this.mList = mList;
+		notifyDataSetChanged();
 	}
 
 	@Override

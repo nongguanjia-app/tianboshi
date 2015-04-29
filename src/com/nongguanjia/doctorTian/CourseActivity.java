@@ -60,8 +60,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 	private Button mCollectionBtn;
 	private Favorite mFavorite;
 	private FavoriteColl mFavoriteColl;
-	private RelativeLayout layout_player;
-	private VODPlayCenter mPlayerView;
 	private boolean isBackgroud = false;
 	private Bundle db;
 	private Context mContext;
@@ -69,6 +67,8 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 	private String title;
 
 	// 乐视视频
+	private RelativeLayout layout_player;
+	private VODPlayCenter mPlayerView;
 	private EditText etUUID;
 	private EditText etVUID;
 	private EditText etLiveId;
@@ -86,7 +86,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		mContext = this;
 		mCancleCollectionBtn = (Button) findViewById(R.id.cancle_collection);
 		mCollectionBtn = (Button) findViewById(R.id.collection);
-
+		init();
 		/*
 		 * 乐视
 		 */
@@ -97,7 +97,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		mCancleCollectionBtn.setOnClickListener(this);
 		mCollectionBtn.setOnClickListener(this);
 		
-		init();
 
 		mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
 

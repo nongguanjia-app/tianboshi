@@ -30,11 +30,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lecloud.skin.PlayerStateCallback;
+import com.lecloud.skin.vod.VODPlayCenter;
+import com.letvcloud.sdk.base.util.Logger;
+import com.letvcloud.sdk.play.util.LogUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.adapter.AllechosAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
@@ -51,14 +56,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * 经验谈详情
  */
 public class ExpInfoActivity extends Activity implements OnClickListener{
-	private TextView tv_title, tv_info_title, tv_time, tv_summary; 
-	private ImageView img_back;
+	private TextView tv_info_title, tv_time, tv_summary,tv_name, tv_product,tv_content; 
 	private ImageView img;
-	private TextView tv_name, tv_product; 
-	private TextView tv_content;
+	private Button btn_attention;
+	
+	private ImageView img_back;
+	private TextView tv_title; 
 	private ListView listView;
 	private EditText ed_info;
-	private Button btn_send, btn_attention;
+	private Button btn_send;
 	private AllechosAdapter adapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
@@ -73,7 +79,12 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	private boolean isAttention = false;
 	private ProgressDialog mDialog;
 	
-	private Html.ImageGetter imageGetter;
+	//乐视
+	private RelativeLayout layout_player;
+	private VODPlayCenter mPlayerView;
+	String uuid = "7a0888b569";
+	String vuid = "79dd8da08a";
+	private boolean isBackgroud = false;
 	
 	
 	Handler mHandler = new Handler(){
@@ -123,11 +134,11 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exp_info);
 		
 		init();
+		leInit();
 	}
 	
 	
@@ -153,8 +164,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		tv_summary = (TextView)header.findViewById(R.id.tv_summary);
 		tv_name = (TextView)header.findViewById(R.id.name);
 		tv_product = (TextView)header.findViewById(R.id.product);
-		tv_content = (TextView)header.findViewById(R.id.tv_content);
-		img = (ImageView)header.findViewById(R.id.img);
+		tv_content = (TextView)header.findViewById(R.id.tv_content_expinfo);
+		img = (ImageView)header.findViewById(R.id.img_head);
 		btn_attention = (Button)header.findViewById(R.id.btn_attention);
 		listView.addHeaderView(header);
 		
@@ -177,7 +188,31 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		getAllechos();
 	}
-	
+	//乐视
+	private void leInit(){
+		layout_player = (RelativeLayout) findViewById(R.id.layout_expinfo);
+		mPlayerView = new VODPlayCenter(ExpInfoActivity.this, true);
+		layout_player.addView(mPlayerView.getPlayerView());
+		
+		mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
+
+			@Override
+			public void onStateChange(int state, Object... extra) {
+				if (state == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
+					Logger.e("onStateChange", "PLAYER_VIDEO_PAUSE");
+				} else if (state == PlayerStateCallback.PLAYER_VIDEO_PLAY) {
+					Logger.e("onStateChange", "PLAYER_VIDEO_PLAY");
+				} else if (state == PlayerStateCallback.PLAYER_VIDEO_RESUME) {
+					Logger.e("onStateChange", "PLAYER_VIDEO_RESUME");
+				} else if (state == PlayerStateCallback.PLAYER_STOP) {
+					Logger.e("onStateChange", "PLAYER_STOP");
+				}
+			}
+		});
+
+//		this.mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898",
+//		"", "");
+	}
 	
 	private void getExperienceInfo(){
 		String url = CommonConstant.experienceinfo + "/" + phoneNum + "," + expId;
@@ -449,19 +484,19 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	private void setListViewInfo(){
 		//点击item
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent,
 					View view, int position, long id) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
-				Bundle bd = new Bundle();
-				bd.putString("id", expId);
-				bd.putString("talkId", adapter.getEchos().get(position-1).getTalkId());
-				bd.putString("isExp", "1");
-				bd.putString("phoneNum", adapter.getEchos().get(position-1).getPhone());
-				intent.putExtras(bd);
-				startActivity(intent);
+				if(position>0){
+					Intent intent = new Intent(ExpInfoActivity.this, AllreplysActivity.class);
+					Bundle bd = new Bundle();
+					bd.putString("id", expId);
+					bd.putString("talkId", adapter.getEchos().get(position-1).getTalkId());
+					bd.putString("isExp", "1");
+					bd.putString("phoneNum", adapter.getEchos().get(position-1).getPhone());
+					intent.putExtras(bd);
+					startActivity(intent);
+				}
 			}
 			
 		});
@@ -532,5 +567,40 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		}
 	});
 	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mPlayerView != null) {
+			if (isBackgroud) {
+				if (mPlayerView.getCurrentPlayState() == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
+					this.mPlayerView.resumeVideo();
+				} else {
+					Logger.e("VODActivity", "已回收，重新请求播放");
+					mPlayerView.playVideo(uuid, vuid,
+							"c8b127186556ccfae084bbede663a898", "", "测试节目");
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mPlayerView != null) {
+			mPlayerView.pauseVideo();
+			isBackgroud = true;
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		mPlayerView.destroyVideo();
+		layout_player.removeAllViews();
+		mPlayerView = null;
+		super.onDestroy();
+		isBackgroud = false;
+		LogUtils.clearLog();
+	}
 	
 }
