@@ -36,6 +36,7 @@
     <string name="my">我</string>
     <string name="has_start">已开始</string>
     <string name="will_start">即将开始</string>
+    <string name="will_myCourse">我的课程</string>
     <string name="find">查找</string>
     <string name="commit">提交</string>
     <string name="my_info">我的资料</string>
