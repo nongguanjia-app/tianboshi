@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:id="@+id/container" 
-    android:layout_width="fill_parent"  
-    android:layout_height="wrap_content">
-    
-    <ImageView android:id="@+id/img"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@color/lightgreen"
-        android:layout_marginLeft="5dp"/>
-    
-    <TextView android:id="@+id/add_friend"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/img"
+        android:layout_height="60dp"
         android:layout_marginLeft="5dp"
-        android:layout_centerVertical="true"
-        android:text="@string/add_friend"/>
+        android:layout_marginRight="5dp" >
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/more_type_press" />
+
+        <TextView
+            android:id="@+id/add_friend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img"
+            android:text="@string/add_friend" />
+    </RelativeLayout>
 
 </RelativeLayout>

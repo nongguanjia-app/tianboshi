@@ -33,11 +33,12 @@
             android:layout_marginRight="5dip"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/takephoto_icon_normal" />
+            android:src="@drawable/mini_avatar_shadow" />
            
 
-        <RelativeLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="60dp">
             
             <TextView
 		        android:id="@+id/name"

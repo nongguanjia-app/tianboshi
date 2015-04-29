@@ -1,7 +1,6 @@
 package com.nongguanjia.doctorTian;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

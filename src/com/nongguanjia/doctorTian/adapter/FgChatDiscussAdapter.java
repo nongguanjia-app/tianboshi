@@ -69,9 +69,7 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.chat_discuss_item, null);
 			mHolder.img = (ImageView) convertView.findViewById(R.id.img);
 			mHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-			mHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
 			mHolder.tv_reply = (TextView) convertView.findViewById(R.id.tv_reply);
-			mHolder.tv_count = (TextView) convertView.findViewById(R.id.tv_count);
 
 			convertView.setTag(mHolder);
 		} else {
@@ -79,9 +77,12 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 		}
 
 		mHolder.tv_title.setText(talk.getCourseTitle());
-		mHolder.tv_name.setText(talk.getName());
-		mHolder.tv_reply.setText(talk.getContent());
-		mHolder.tv_count.setText(talk.getNum());
+		if(talk.getName().length() > 0){
+			mHolder.tv_reply.setText("最新评论" + talk.getName() + ": " + talk.getContent());
+		}else{
+			mHolder.tv_reply.setText("最新评论: " + talk.getContent());
+		}
+		
 
 		imageLoader.displayImage(CommonConstant.img_discuss + talk.getCourseImage(),mHolder.img, options);
 
@@ -90,7 +91,7 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 	
 	private class ViewHolder {
 		ImageView img;
-		TextView tv_title, tv_name, tv_reply, tv_count;
+		TextView tv_title, tv_reply;
 	}
 
 }

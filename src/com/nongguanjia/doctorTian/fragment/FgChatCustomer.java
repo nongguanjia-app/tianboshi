@@ -1,5 +1,6 @@
 package com.nongguanjia.doctorTian.fragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,6 +164,7 @@ public class FgChatCustomer extends Fragment {
 					startActivityForResult(intent, RESULT_OK);
 				}else if(which == 1){
 					intent = new Intent(getActivity(), ContractActivity.class);
+					intent.putExtra("FriendList", (Serializable)atts);
 					startActivity(intent);
 				}
 			}
