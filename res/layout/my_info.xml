@@ -29,14 +29,14 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/name_myInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="昵称 itachi"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/phone"
+                android:id="@+id/phone_myInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -45,7 +45,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/img_myInfo"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
@@ -56,75 +56,220 @@
 
     <ImageView style="@style/divide" />
     <!-- 性别 -->
+    <!-- 农户显示 -->
 
-    <RelativeLayout
-        android:id="@+id/sex"
-        style="@style/my_item_layout" >
+    <LinearLayout
+        android:id="@+id/myInfo_linearLayout_nong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/t_sex"
-            style="@style/my_item_tv"
-            android:text="@string/my_sex" />
+        <RelativeLayout
+            android:id="@+id/sex_myInfo"
+            style="@style/my_item_layout" >
 
-        <TextView
-            android:id="@+id/info_sex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/t_sex_myInfo"
+                style="@style/my_item_tv"
+                android:text="@string/my_sex" />
 
-    <ImageView style="@style/divide" />
-    <!-- 年龄 -->
+            <TextView
+                android:id="@+id/myInfo_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/age"
-        style="@style/my_item_layout" >
+        <ImageView style="@style/divide" />
+        <!-- 年龄 -->
 
-        <TextView
-            style="@style/my_item_tv"
-            android:text="@string/my_age" />
-        <TextView 
-            android:id="@+id/t_ege"
-            style="@style/my_item_tv"
-            android:layout_alignParentRight="true"
-            android:text="0岁" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/age_myInfo"
+            style="@style/my_item_layout" >
 
-    <ImageView style="@style/divide" />
-    <!-- 种植作物 -->
+            <TextView
+                style="@style/my_item_tv"
+                android:text="@string/my_age" />
 
-    <RelativeLayout
-        android:id="@+id/plant"
-        style="@style/my_item_layout" >
+            <TextView
+                android:id="@+id/t_age_myInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
 
-        <TextView
-            style="@style/my_item_tv"
-            android:text="@string/my_plant" />
+        <ImageView style="@style/divide" />
+        <!-- 种植作物 -->
 
-        <TextView
-            android:id="@+id/info_plant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/plant_myInfo"
+            style="@style/my_item_layout" >
 
-    <ImageView style="@style/divide" />
-    <!-- 种植面积 -->
+            <TextView
+                style="@style/my_item_tv"
+                android:text="@string/my_plant" />
 
-    <RelativeLayout
-        android:id="@+id/area"
-        style="@style/my_item_layout" >
+            <TextView
+                android:id="@+id/info_plant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
 
-        <TextView
-            style="@style/my_item_tv"
-            android:layout_toRightOf="@id/my_info_img"
-            android:text="@string/my_area" />
-    </RelativeLayout>
+        <ImageView style="@style/divide" />
+        <!-- 种植面积 -->
 
-    <ImageView style="@style/divide" />
+        <RelativeLayout
+            android:id="@+id/area"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:layout_toRightOf="@id/my_info_img"
+                android:text="@string/my_area" />
+
+            <TextView
+                android:id="@+id/info_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+    </LinearLayout>
+    <!-- 推广显示 -->
+
+    <LinearLayout
+        android:id="@+id/myInfo_linearLayout_tui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <!-- 地区 -->
+
+        <RelativeLayout
+            android:id="@+id/region"
+            android:visibility="gone"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="地区" />
+
+            <TextView
+                android:id="@+id/info_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+
+        <RelativeLayout
+            android:id="@+id/office"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="就业单位" />
+
+            <TextView
+                android:id="@+id/info_office"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+
+        <RelativeLayout
+            android:id="@+id/officeStyle"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="公司类型" />
+
+            <TextView
+                android:id="@+id/info_officeStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+
+        <RelativeLayout
+            android:id="@+id/product"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="经营产品" />
+
+            <TextView
+                android:id="@+id/info_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+
+        <RelativeLayout
+            android:id="@+id/time"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="从业时间" />
+
+            <TextView
+                android:id="@+id/info_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+
+        <RelativeLayout
+            android:id="@+id/nongJi"
+            style="@style/my_item_layout" >
+
+            <TextView
+                style="@style/my_item_tv"
+                android:text="擅长农技" />
+
+            <TextView
+                android:id="@+id/info_nongJi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ImageView style="@style/divide" />
+    </LinearLayout>
 
 </LinearLayout>
