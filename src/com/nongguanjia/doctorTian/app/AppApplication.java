@@ -8,13 +8,14 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.letvcloud.sdk.LeCloud;
+import com.nongguanjia.doctorTian.bean.UserInfo;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
-import com.letvcloud.sdk.LeCloud;
 
 public class AppApplication extends Application {
 	public static final String DEFAULT_APPKEY = "4637ba04-1792-486f-a87e-cfd077707244";
@@ -26,6 +27,8 @@ public class AppApplication extends Application {
 	
 	public String ROLE = "农户";
 	public String PHONENUM;
+	public String NICKNAME;
+	public UserInfo info;
 
 	@Override
 	public void onCreate() {

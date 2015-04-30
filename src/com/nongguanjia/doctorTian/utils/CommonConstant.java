@@ -43,6 +43,9 @@ public class CommonConstant {
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;
 	
+
+	public static final String UUID = "7a0888b569";
+	
 	//分类--图片
 	public static String img_course_category = "http://182.92.170.172/DoctorTian/img/course_category/";
 	//当前分类下的全部课程--图片
@@ -58,7 +61,13 @@ public class CommonConstant {
 	//下载包安装路径
 	public static final String savePath = "/sdcard/nongguanjia/apk/"; 
 	
-	
+	//添加好友后通知页面刷新
 	public static final String BROADCAST_ACTION = "com.nongguanjia.doctorTian.BroadcastAction";
 	
+	//获取视频id后通知视频播放
+	public static final String VIDEO_ACTION = "com.nongguanjia.doctorTian.VideoAction";
+	
+	public static final String edituser = "edituser";//修改个人信息（农户）
+	public static final String editdealer = "editdealer";//修改推广人信息
+	public static final String dealers = "dealers";//获取推广人信息
 }
