@@ -135,8 +135,6 @@ public class FgMyCourseTG extends Fragment {
 						// Log.e(TAG, "执行"+ allStartCourse);
 						courseAdapter = new MyCourseAdapter(getActivity(), myCourse);
 						listView.setAdapter(courseAdapter);
-					} else {
-						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

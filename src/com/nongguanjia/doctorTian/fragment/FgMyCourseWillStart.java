@@ -146,9 +146,6 @@ public class FgMyCourseWillStart extends Fragment {
 						mUnStartCoursesAdapter = new UnStartCoursesAdapter(
 								getActivity(), mAllUnStartCourses);
 						mListView.setAdapter(mUnStartCoursesAdapter);
-					} else {
-						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT)
-								.show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

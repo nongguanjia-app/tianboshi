@@ -157,7 +157,6 @@ public class FgMyCourseHasStart extends Fragment {
 						mStartCoursesAdapter = new StartCoursesAdapter(getActivity(), mAllStartCourse);
 						mListView.setAdapter(mStartCoursesAdapter);
 					} else {
-						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT).show();
 						footerView.setVisibility(View.GONE);
 					}
 				} catch (JSONException e) {
