@@ -46,7 +46,6 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 	private ProgressDialog mDialog;
 	private CacheUserHelper cacheUser;
 	public static final String CONFIG = "login_config";
-	private HashMap<String, String> user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 		forget_psd.setOnClickListener(this);
 		
 		cacheUser = CacheUserHelper.getInstance(getApplicationContext());
-		user = cacheUser.selectTable();
+		HashMap<String, String> user = cacheUser.selectTable();
 		//数据库中有缓存
 		if(!TextUtils.isEmpty(user.get("phone"))){ 
 			ed_phone.setText(user.get("phone"));
@@ -154,18 +153,10 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 				try {
 					if(response.getJSONObject("Users").getString("returnCode").equals("1")){
 						//缓存用户名密码
-						if(!TextUtils.isEmpty(user.get("phone"))){
-							if(!(ed_phone.getText().toString().equals(user.get("phone")) 
-									&& ed_psd.getText().toString().equals(user.get("psd")))){
-								cacheUser.deleteTable();
-							}
-						}
-						
 						cacheUser.insertTable(phoneNum, ed_psd.getText().toString());
 						cacheUser.closeDB();
 						
 						((AppApplication)getApplication()).PHONENUM = phoneNum;
-						
 						//登录Gotye
 						loginGotye();
 					}else{
@@ -205,6 +196,9 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 						Gson gson = new Gson();
 						UserInfo info = new UserInfo();
 						info = gson.fromJson(response.getJSONObject("UserInfo").toString(), new TypeToken<UserInfo>(){}.getType());
+						((AppApplication)getApplication()).NICKNAME = info.getName();
+						
+						((AppApplication)getApplication()).info = info;
 						
 						//区分权限
 						if(info.getRoleID().equals("农户")){
