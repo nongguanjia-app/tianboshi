@@ -28,7 +28,7 @@ public class UnStartCoursesAdapter extends BaseAdapter {
 	public UnStartCoursesAdapter(Context mContext, List<AllUnStartCourses> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 		this.mContext = mContext;
 		this.mList = mList;
 	}

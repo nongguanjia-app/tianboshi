@@ -46,7 +46,7 @@ public class AllechosAdapter extends BaseAdapter {
 
 	public AllechosAdapter(Context context, String expId) {
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(false);
 		this.context = context;
 		this.expId = expId;
 		

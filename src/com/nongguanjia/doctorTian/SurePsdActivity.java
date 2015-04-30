@@ -4,25 +4,22 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nongguanjia.doctorTian.app.AppApplication;
-import com.nongguanjia.doctorTian.bean.Abouts;
-import com.nongguanjia.doctorTian.bean.AllNewPassword;
-import com.nongguanjia.doctorTian.db.CacheUserHelper;
-import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
-import com.nongguanjia.doctorTian.utils.CommonConstant;
-import com.nongguanjia.doctorTian.utils.MD5Util;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nongguanjia.doctorTian.db.CacheUserHelper;
+import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
+import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.MD5Util;
 
 /**
  * @author itachi 忘记密码
@@ -105,8 +102,12 @@ public class SurePsdActivity extends Activity implements OnClickListener {
 				// 解析应答数据
 				try {
 					if(response.getJSONArray("NewPassword").getJSONObject(0).getString("returnCode").equals("1")){
-						
 						Toast.makeText(getApplicationContext(), "修改密码成功",Toast.LENGTH_SHORT).show();
+						
+						Intent intent = new Intent(SurePsdActivity.this, LoginActivity.class);
+						startActivity(intent);
+						
+						SurePsdActivity.this.finish();
 					} else {
 						Toast.makeText(getApplicationContext(), "修改密码失败",Toast.LENGTH_SHORT).show();
 					}

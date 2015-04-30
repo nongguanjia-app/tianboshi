@@ -26,7 +26,7 @@ public class UpgradeAdapter extends BaseAdapter {
 	public UpgradeAdapter(Context mContext, List<AllStatement> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
-		options = Options.getOptions();
+//		options = Options.getOptions();
 		this.mContext = mContext;
 		this.mList = mList;
 	}

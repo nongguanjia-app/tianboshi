@@ -26,7 +26,7 @@ public class CourseTableAdapter extends BaseAdapter {
 	public CourseTableAdapter(Context mContext, List<AllChapters> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
-		options = Options.getOptions();
+//		options = Options.getOptions();
 		this.mContext = mContext;
 		this.mList = mList;
 	}

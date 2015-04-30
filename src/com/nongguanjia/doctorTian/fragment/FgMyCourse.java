@@ -11,6 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.app.AppApplication;
@@ -30,6 +32,8 @@ public class FgMyCourse extends Fragment {
     Fragment hasStart;
     Fragment willStart;
     Fragment myCourse;
+    private TextView tv_title;
+    private ImageView img_back;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -42,6 +46,11 @@ public class FgMyCourse extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.my_course, container,false);
 		resources = getResources();
+		
+		tv_title = (TextView)view.findViewById(R.id.tv_title);
+		img_back = (ImageView)view.findViewById(R.id.img_back);
+		tv_title.setText("我的课程");
+		img_back.setVisibility(View.GONE);
         
         if(role.equals("推广人")){
 			titles = new String[]{ "已经开始", "即将开始", "我的课程" };

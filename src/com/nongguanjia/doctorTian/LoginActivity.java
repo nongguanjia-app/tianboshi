@@ -154,9 +154,11 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 				try {
 					if(response.getJSONObject("Users").getString("returnCode").equals("1")){
 						//缓存用户名密码
-						if(!(ed_phone.getText().toString().equals(user.get("phone")) 
-								&& ed_psd.getText().toString().equals(user.get("psd")))){
-							cacheUser.deleteTable();
+						if(!TextUtils.isEmpty(user.get("phone"))){
+							if(!(ed_phone.getText().toString().equals(user.get("phone")) 
+									&& ed_psd.getText().toString().equals(user.get("psd")))){
+								cacheUser.deleteTable();
+							}
 						}
 						
 						cacheUser.insertTable(phoneNum, ed_psd.getText().toString());

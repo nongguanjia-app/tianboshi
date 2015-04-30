@@ -29,7 +29,7 @@ public class GridViewAdapter extends BaseAdapter {
 		this.context = context;
 		this.list = list;
 		mInflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 	}
 	
 	

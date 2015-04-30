@@ -29,7 +29,7 @@ public class StartCoursesAdapter extends BaseAdapter {
 	public StartCoursesAdapter(Context mContext, List<AllStartCourse> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 		this.mContext = mContext;
 		this.mList = mList;
 	}

@@ -46,7 +46,7 @@ public class FgDiscussAreaAdapter extends BaseAdapter {
 
 	public FgDiscussAreaAdapter(Context context, String id) {
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(false);
 		this.context = context;
 		this.id = id;
 		dialog = new ReplyDialog(context, R.style.ReplyDialog);

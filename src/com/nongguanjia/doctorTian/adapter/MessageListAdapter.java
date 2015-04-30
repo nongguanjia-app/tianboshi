@@ -189,11 +189,11 @@ public class MessageListAdapter extends BaseAdapter {
 							iconView.setImageBitmap(bmp);
 							ImageCache.getInstance().put(name, bmp);
 						} else {
-							iconView.setImageResource(R.drawable.mini_avatar_shadow);
+							iconView.setImageResource(R.drawable.default_person_img);
 						}
 					}
 				} else {
-					iconView.setImageResource(R.drawable.mini_avatar_shadow);
+					iconView.setImageResource(R.drawable.default_person_img);
 				}
 			}
 

@@ -38,7 +38,7 @@ public class FgCourseExpAdapter extends BaseAdapter {
 	
 	public FgCourseExpAdapter(Context context){
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(false);
 		this.context = context;
 		
 	}

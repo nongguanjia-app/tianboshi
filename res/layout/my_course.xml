@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
+    
+    <include layout="@layout/title"/>
 
     <com.nongguanjia.doctorTian.view.PagerSlidingTabStrip
         android:id="@+id/tabs_myCourse"

@@ -33,7 +33,7 @@
             android:layout_marginRight="5dip"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/mini_avatar_shadow" />
+            android:src="@drawable/default_person_img" />
            
 
         <RelativeLayout 

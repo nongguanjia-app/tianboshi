@@ -43,7 +43,7 @@ public class ContactAdapter extends BaseAdapter {
 
 	public ContactAdapter(Context context, List<ContractInfo> contracts){
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(false);
 		this.context = context;
 		this.contracts = contracts;
 		

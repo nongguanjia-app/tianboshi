@@ -37,7 +37,7 @@ public class AllReplysAdapter extends BaseAdapter {
 	
 	public AllReplysAdapter(Context context){
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(false);
 		this.context = context;
 	}
 

@@ -37,7 +37,7 @@ public class CategoryAdapter extends BaseAdapter {
 	
 	public CategoryAdapter(Context context, ArrayList<AllCategoryCourses> courseList){
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 		this.context = context;
 	}
 

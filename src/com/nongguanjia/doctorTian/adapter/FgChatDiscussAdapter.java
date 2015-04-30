@@ -37,7 +37,7 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 
 	public FgChatDiscussAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 		this.context = context;
 	}
 
@@ -84,7 +84,7 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 		}
 		
 
-		imageLoader.displayImage(CommonConstant.img_discuss + talk.getCourseImage(),mHolder.img, options);
+		imageLoader.displayImage(CommonConstant.img_course_primary + talk.getCourseImage(),mHolder.img, options);
 
 		return convertView;
 	}

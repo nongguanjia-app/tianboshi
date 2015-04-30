@@ -27,7 +27,7 @@ public class MyCourseAdapter extends BaseAdapter {
 	public MyCourseAdapter(Context mContext, List<CourseMy> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
-		options = Options.getOptions();
+		options = Options.getOptions(true);
 		this.mList = mList;
 	}
 	

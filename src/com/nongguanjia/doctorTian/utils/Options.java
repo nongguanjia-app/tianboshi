@@ -9,14 +9,14 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class Options {
 	/** 新闻列表中用到的图片加载配置 */
-	public static DisplayImageOptions getOptions() {
+	public static DisplayImageOptions getOptions(boolean isCourse) { //课程和人的默认头像不同
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				// 设置图片在下载期间显示的图片
-				.showImageOnLoading(R.drawable.default_icon)
+				.showImageOnLoading(isCourse? R.drawable.default_course_img: R.drawable.default_person_img)
 				// 设置图片Uri为空或是错误的时候显示的图片
-				.showImageForEmptyUri(R.drawable.default_icon)
+				.showImageForEmptyUri(isCourse? R.drawable.default_course_img: R.drawable.default_person_img)
 				// 设置图片加载/解码过程中错误时候显示的图片
-				.showImageOnFail(R.drawable.default_icon)
+				.showImageOnFail(isCourse? R.drawable.default_course_img: R.drawable.default_person_img)
 				.cacheInMemory(true)
 				// 设置下载的图片是否缓存在内存中
 				.cacheOnDisc(true)
