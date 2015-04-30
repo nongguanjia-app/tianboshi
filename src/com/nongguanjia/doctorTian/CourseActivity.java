@@ -4,13 +4,17 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,8 +56,8 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 	private FgCourseExp fgCourseExp;
 	private FgDiscussArea fgDiscussArea;
 	
-	private TextView tv_title;
-	private ImageView img_back;
+//	private TextView tv_title;
+//	private ImageView img_back;
 
 	private FragmentManager fragmentManager;
 	private Button mCancleCollectionBtn;
@@ -74,15 +78,21 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 	private EditText etLiveId;
 	private RadioButton rb1;
 	private RadioButton rb2;
-	String uuid = "7a0888b569";
-	String vuid = "79dd8da08a";
+
+	private String vuid;
 	private String courseId;
+	private PlayReceiver mReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course);
+		
+		mReceiver = new PlayReceiver();
+		IntentFilter intentFilter = new IntentFilter(CommonConstant.VIDEO_ACTION);
+		registerReceiver(mReceiver, intentFilter);
+		
 		mContext = this;
 		mCancleCollectionBtn = (Button) findViewById(R.id.cancle_collection);
 		mCollectionBtn = (Button) findViewById(R.id.collection);
@@ -113,9 +123,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 				}
 			}
 		});
-
-		mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898",
-				"", "");
+		
 	}
 
 	private void init() {
@@ -124,10 +132,10 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		title = db.getString("title");
 		fragmentManager = getSupportFragmentManager();
 
-		tv_title = (TextView)findViewById(R.id.tv_title);
-		img_back = (ImageView)findViewById(R.id.img_back);
-		
-		tv_title.setText(title);
+//		tv_title = (TextView)findViewById(R.id.tv_title);
+//		img_back = (ImageView)findViewById(R.id.img_back);
+//		
+//		tv_title.setText(title);
 		
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		mPager = (ViewPager) findViewById(R.id.vPager);
@@ -136,14 +144,14 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 
 		tabs.setViewPager(mPager);
 		
-		img_back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				CourseActivity.this.finish();
-			}
-		});
+//		img_back.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				CourseActivity.this.finish();
+//			}
+//		});
 
 	}
 
@@ -306,8 +314,11 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 					this.mPlayerView.resumeVideo();
 				} else {
 					Logger.e("VODActivity", "已回收，重新请求播放");
-					mPlayerView.playVideo(uuid, vuid,
-							"c8b127186556ccfae084bbede663a898", "", "测试节目");
+					if(!TextUtils.isEmpty(vuid)){
+						mPlayerView.playVideo(CommonConstant.UUID, vuid,
+								"c8b127186556ccfae084bbede663a898", "", "测试节目");
+					}
+					
 				}
 			}
 		}
@@ -327,6 +338,24 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
+	
+	
+	
+	//广播接收器
+	public class PlayReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			vuid = intent.getExtras().getString("vid");
+			if(!TextUtils.isEmpty(vuid)){
+				mPlayerView.playVideo(CommonConstant.UUID, vuid, "c8b127186556ccfae084bbede663a898", "", "");
+			}
+			
+		}
+
+	}	
+	
 
 	@Override
 	protected void onDestroy() {

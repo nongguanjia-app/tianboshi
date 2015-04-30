@@ -2,7 +2,7 @@ package com.nongguanjia.doctorTian.adapter;
 
 import java.util.ArrayList;
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.bean.AllLecture;
+import com.nongguanjia.doctorTian.bean.Lecture;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 import com.nongguanjia.doctorTian.utils.Options;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -18,13 +18,13 @@ import android.widget.TextView;
 
 public class CourseAdapter extends BaseAdapter {
 	private Context mContext;
-	private ArrayList<AllLecture> mAllCoursesList;
+	private ArrayList<Lecture> mAllCoursesList;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	private ViewHolder mHolder = null;
 	private LayoutInflater mInflater;
 	
-	public CourseAdapter(Context mContext, ArrayList<AllLecture> mAllCoursesList) {
+	public CourseAdapter(Context mContext, ArrayList<Lecture> mAllCoursesList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
 		options = Options.getOptions(true);
@@ -53,7 +53,7 @@ public class CourseAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		final AllLecture lecture = mAllCoursesList.get(position);
+		final Lecture lecture = mAllCoursesList.get(position);
 		if (convertView==null) {
 			mHolder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.alllecture_item, null);

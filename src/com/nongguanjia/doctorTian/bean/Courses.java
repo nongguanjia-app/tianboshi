@@ -1,46 +1,25 @@
 package com.nongguanjia.doctorTian.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Courses implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Courses implements Parcelable {
 	private String returnCode;
 	private String authTxt;
-	private String Title;
-	private String CourseIntro;
-	private String CourseVideo;
 	private String Flag;
-	private String LargePicture;
+	private String CourseVideo;
 	private String State;
-	private String Progress;
+	private String LargePicture;
 	private String StartTime;
-	private List AllCase;
-	private ArrayList<AllLecture> AllLecture;
-
-	public Courses(String returnCode, String authTxt, String title,
-			String courseIntro, String courseVideo, String flag,
-			String largePicture, String state, String progress,
-			String startTime, List allCase, ArrayList<AllLecture> allLecture) {
-		super();
-		this.returnCode = returnCode;
-		this.authTxt = authTxt;
-		Title = title;
-		CourseIntro = courseIntro;
-		CourseVideo = courseVideo;
-		Flag = flag;
-		LargePicture = largePicture;
-		State = state;
-		Progress = progress;
-		StartTime = startTime;
-		AllCase = allCase;
-		AllLecture = allLecture;
-	}
-
+	private String Progress;
+	private String CourseIntro;
+	private String Title;
+	private List<Lecture> AllLecture;
+	private List<Case> AllCase;
+	
 	public String getReturnCode() {
 		return returnCode;
 	}
@@ -57,20 +36,12 @@ public class Courses implements Serializable {
 		this.authTxt = authTxt;
 	}
 
-	public String getTitle() {
-		return Title;
+	public String getFlag() {
+		return Flag;
 	}
 
-	public void setTitle(String title) {
-		Title = title;
-	}
-
-	public String getCourseIntro() {
-		return CourseIntro;
-	}
-
-	public void setCourseIntro(String courseIntro) {
-		CourseIntro = courseIntro;
+	public void setFlag(String flag) {
+		Flag = flag;
 	}
 
 	public String getCourseVideo() {
@@ -81,12 +52,12 @@ public class Courses implements Serializable {
 		CourseVideo = courseVideo;
 	}
 
-	public String getFlag() {
-		return Flag;
+	public String getState() {
+		return State;
 	}
 
-	public void setFlag(String flag) {
-		Flag = flag;
+	public void setState(String state) {
+		State = state;
 	}
 
 	public String getLargePicture() {
@@ -97,12 +68,12 @@ public class Courses implements Serializable {
 		LargePicture = largePicture;
 	}
 
-	public String getState() {
-		return State;
+	public String getStartTime() {
+		return StartTime;
 	}
 
-	public void setState(String state) {
-		State = state;
+	public void setStartTime(String startTime) {
+		StartTime = startTime;
 	}
 
 	public String getProgress() {
@@ -113,37 +84,94 @@ public class Courses implements Serializable {
 		Progress = progress;
 	}
 
-	public String getStartTime() {
-		return StartTime;
+	public String getCourseIntro() {
+		return CourseIntro;
 	}
 
-	public void setStartTime(String startTime) {
-		StartTime = startTime;
+	public void setCourseIntro(String courseIntro) {
+		CourseIntro = courseIntro;
 	}
 
-	public List getAllCase() {
-		return AllCase;
+	public String getTitle() {
+		return Title;
 	}
 
-	public void setAllCase(List allCase) {
-		AllCase = allCase;
+	public void setTitle(String title) {
+		Title = title;
 	}
 
-	public ArrayList<AllLecture> getAllLecture() {
+	public List<Lecture> getAllLecture() {
 		return AllLecture;
 	}
 
-	public void setAllLecture(ArrayList<AllLecture> allLecture) {
+	public void setAllLecture(List<Lecture> allLecture) {
 		AllLecture = allLecture;
 	}
 
-	@Override
-	public String toString() {
-		return "Courses [returnCode=" + returnCode + ", authTxt=" + authTxt
-				+ ", Title=" + Title + ", CourseIntro=" + CourseIntro
-				+ ", CourseVideo=" + CourseVideo + ", Flag=" + Flag
-				+ ", LargePicture=" + LargePicture + ", State=" + State
-				+ ", Progress=" + Progress + ", StartTime=" + StartTime
-				+ ", AllCase=" + AllCase + ", AllLecture=" + AllLecture + "]";
+	public List<Case> getAllCase() {
+		return AllCase;
 	}
+
+	public void setAllCase(List<Case> allCase) {
+		AllCase = allCase;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		// TODO Auto-generated method stub
+		out.writeString(returnCode);
+		out.writeString(authTxt);
+		out.writeString(Flag);
+		out.writeString(CourseVideo);
+		out.writeString(State);
+		out.writeString(LargePicture);
+		out.writeString(StartTime);
+		out.writeString(Progress);
+		out.writeString(CourseIntro);
+		out.writeString(Title);
+		out.writeTypedList(AllLecture);
+		out.writeTypedList(AllCase);
+	}
+	
+	
+	public static final Parcelable.Creator<Courses> CREATOR = new Creator<Courses>(){
+
+		@Override
+		public Courses createFromParcel(Parcel in) {
+			// TODO Auto-generated method stub
+			Courses course = new Courses();
+			course.returnCode = in.readString();
+			course.authTxt = in.readString();
+			course.Flag = in.readString();
+			course.CourseVideo = in.readString();
+			course.State = in.readString();
+			course.LargePicture = in.readString();
+			course.StartTime = in.readString();
+			course.Progress = in.readString();
+			course.CourseIntro = in.readString();
+			course.Title = in.readString();
+			
+			course.AllLecture = new ArrayList<Lecture>();
+			course.AllCase = new ArrayList<Case>();
+			
+			in.readTypedList(course.AllLecture, Lecture.CREATOR);
+			in.readTypedList(course.AllCase, Case.CREATOR);
+			
+			return course;
+		}
+
+		@Override
+		public Courses[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new Courses[size];
+		}
+		
+	};
+	
 }

@@ -2,9 +2,11 @@ package com.nongguanjia.doctorTian.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,19 +14,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.ExpertDetailActivity;
 import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.adapter.CourseAdapter;
+import com.nongguanjia.doctorTian.adapter.DetailAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
-import com.nongguanjia.doctorTian.bean.AllLecture;
 import com.nongguanjia.doctorTian.bean.Courses;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
@@ -34,23 +33,28 @@ import com.nongguanjia.doctorTian.utils.CommonConstant;
  */
 public class FgDetail extends Fragment {
 	private Activity activity;
-	private ListView alllecture_listview;
-	private LayoutInflater inflater = null;
-	private LinearLayout layout;
+	private ExpandableListView expListView;
 	private Courses mCourses;
-	private CourseAdapter mCourseAdapter;
-	private List<Courses> mAllCoursesList;
-	private TextView mCourseIntro;
+	
 	private String courseId;
+	
+	private List<String> groupData = new ArrayList<String>();
+	
+	private DetailAdapter adapter;
+	
 	
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		this.activity = activity;
-		inflater = LayoutInflater.from(activity);
+		
+		groupData.add("课程简介");
+		groupData.add("成功案例");
+		
 		super.onAttach(activity);
 	}
 
@@ -58,24 +62,18 @@ public class FgDetail extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.course_item, container, false);
-		mCourseIntro = (TextView) view.findViewById(R.id.course_intro);
-		alllecture_listview = (ListView) view.findViewById(R.id.alllecture_listview);
-		init(view);
+		expListView = (ExpandableListView)view.findViewById(R.id.exp_list);
+		
+		getDetail();
+		
 		return view;
 	}
 
-	private void init(View view) {
-		// TODO Auto-generated method stub
-		getDetail();
-	}
-
-	ArrayList<AllLecture> AllLecture_list;
 
 	private void getDetail() {
-		//db = this.getArguments();
-		//String id = db.getString("Id");
 		String phoneNum = ((AppApplication)getActivity().getApplication()).PHONENUM;
 		String url = CommonConstant.course + "/" + courseId +","+ phoneNum;
+		
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
 
 			@Override
@@ -93,29 +91,25 @@ public class FgDetail extends Fragment {
 						JSONObject ja = response.getJSONObject("Courses");
 						// 解析应答数据
 						Gson gson = new Gson();
-						mAllCoursesList = new ArrayList<Courses>();
 						mCourses = gson.fromJson(ja.toString(), Courses.class);
-						mAllCoursesList.add(mCourses);
-						AllLecture_list = mCourses.getAllLecture();
-						mCourseIntro.setText(mCourses.getCourseIntro());
-						if (mAllCoursesList.size() > 0) {
-							mCourseAdapter = new CourseAdapter(getActivity(),AllLecture_list);
-							alllecture_listview.setAdapter(mCourseAdapter);
-							alllecture_listview.setOnItemClickListener(new OnItemClickListener() {
-
-										@Override
-										public void onItemClick(AdapterView<?> arg0, View arg1,
-												int arg2, long arg3) {
-											Intent intent = new Intent(getActivity(),ExpertDetailActivity.class);
-											String lectureId = AllLecture_list.get(arg2).getLectureId();
-											intent.putExtra("lectureId",lectureId);
-											startActivity(intent);
-										}
-									});
-						} else {
-							Toast.makeText(getActivity(), "课程详情为空",
-									Toast.LENGTH_SHORT).show();
+						
+						//发送广播通知更新我的客户列表
+						Intent intent = new Intent();
+						intent.putExtra("vid", mCourses.getCourseVideo());
+						intent.setAction(CommonConstant.VIDEO_ACTION);
+						activity.sendBroadcast(intent);
+						
+						adapter = new DetailAdapter(activity, groupData, mCourses);
+						expListView.setAdapter(adapter);
+						
+						expListView.setGroupIndicator(null);
+						
+						for(int i = 0; i < groupData.size(); i++){
+							expListView.expandGroup(i);
 						}
+						
+						setListViewInfo();
+						
 					} else {
 						Toast.makeText(activity, "获取分类信息失败", Toast.LENGTH_SHORT).show();
 					}
@@ -127,4 +121,27 @@ public class FgDetail extends Fragment {
 			}
 		});
 	}
+	
+	
+	private void setListViewInfo(){
+		expListView.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPos,
+					int childPos, long id) {
+				// TODO Auto-generated method stub
+				if(groupPos == 0){
+					Intent intent = new Intent(getActivity(),ExpertDetailActivity.class);
+					String lectureId = mCourses.getAllLecture().get(childPos).getLectureId();
+					intent.putExtra("lectureId", lectureId);
+					startActivity(intent);
+				}else{
+					
+				}
+				
+				return true;
+			}
+		});
+	}
+	
 }
