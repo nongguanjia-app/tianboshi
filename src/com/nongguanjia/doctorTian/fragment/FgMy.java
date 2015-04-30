@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nongguanjia.doctorTian.AboutActivity;
 import com.nongguanjia.doctorTian.HelpActivity;
@@ -22,6 +22,8 @@ import com.nongguanjia.doctorTian.MyDataActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.UpdatePassActivity;
 import com.nongguanjia.doctorTian.UpgradeActivity;
+import com.nongguanjia.doctorTian.app.AppApplication;
+import com.nongguanjia.doctorTian.bean.UserInfo;
 import com.nongguanjia.doctorTian.task.UpdateTask;
 import com.nongguanjia.doctorTian.utils.NetworkDetector;
 
@@ -34,6 +36,8 @@ public class FgMy extends Fragment implements OnClickListener {
 	private Button mExit;
 	private TextView tv_title;
 	private ImageView img_back;
+	private TextView tvPhone,tvName;
+	private UserInfo info;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -46,10 +50,17 @@ public class FgMy extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.my, container, false);
+		tvName = (TextView) view.findViewById(R.id.name_my);
+		tvPhone = (TextView) view.findViewById(R.id.phone_my);
 		tv_title = (TextView)view.findViewById(R.id.tv_title);
 		tv_title.setText("我");
 		img_back = (ImageView)view.findViewById(R.id.img_back);
 		img_back.setVisibility(View.GONE);
+		info= ((AppApplication)getActivity().getApplication()).info;
+		if(info!=null){
+			tvName.setText(info.getName());
+			tvPhone.setText(info.getTelephone());
+		}
 		
 		mMy_info = (RelativeLayout) view.findViewById(R.id.my_info);
 //		mMy_Down = (RelativeLayout) view.findViewById(R.id.my_down);
