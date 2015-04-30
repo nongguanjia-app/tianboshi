@@ -38,6 +38,7 @@ public class CommonConstant {
 	public static final String version = "version"; //系统更新
 	public static final String abouts = "abouts"; //关于
 	public static final String helps = "helps"; //帮助
+	public static final String editpassword = "editpassword"; //修改密码
 	
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;
@@ -56,5 +57,8 @@ public class CommonConstant {
 	public static String img_exp_img = "http://182.92.170.172/DoctorTian";
 	//下载包安装路径
 	public static final String savePath = "/sdcard/nongguanjia/apk/"; 
+	
+	
+	public static final String BROADCAST_ACTION = "com.nongguanjia.doctorTian.BroadcastAction";
 	
 }

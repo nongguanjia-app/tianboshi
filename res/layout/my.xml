@@ -96,7 +96,7 @@
 
                 <ImageView style="@style/divide" />
 
-                <!-- 我的下载 -->
+                <!-- 我的下载 
 
                 <RelativeLayout
                     android:id="@+id/my_down"
@@ -121,6 +121,7 @@
                 </RelativeLayout>
 
                 <ImageView style="@style/divide" />
+                -->
 
              
                 <!-- 修改密码 -->

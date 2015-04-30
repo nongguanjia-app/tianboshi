@@ -40,6 +40,7 @@ public class UpgradeActivity extends Activity implements OnClickListener {
 	private Button mButton;
 	private String phoneNum;
 	private TextView mTitle;
+	private ImageView img_back;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,10 @@ public class UpgradeActivity extends Activity implements OnClickListener {
 		mListView = (ListView) findViewById(R.id.upgrade_list);
 		mTitle = (TextView) findViewById(R.id.tv_title);
 		mTitle.setText("升级为推广人");
+		img_back = (ImageView)findViewById(R.id.img_back);
 		mButton = (Button) findViewById(R.id.btn_update);
 		mButton.setOnClickListener(this);
+		img_back.setOnClickListener(this);
 		init();
 	}
 
@@ -77,7 +80,6 @@ public class UpgradeActivity extends Activity implements OnClickListener {
 						JSONArray ja = response.getJSONObject("AllStatements").getJSONArray("allStatement");
 						Gson gson = new Gson();
 						mAllStatement = gson.fromJson(ja.toString(),new TypeToken<List<AllStatement>>() {}.getType());
-						Log.e("zhao", "temp"+mAllStatement);
 						mUpgradeAdapter = new UpgradeAdapter(getApplicationContext(), mAllStatement);
 						mListView.setAdapter(mUpgradeAdapter);
 					} else {
@@ -134,6 +136,9 @@ public class UpgradeActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btn_update:
 			init_update();
+			break;
+		case R.id.img_back:
+			UpgradeActivity.this.finish();
 			break;
 		default:
 			break;

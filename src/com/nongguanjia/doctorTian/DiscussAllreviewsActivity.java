@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,41 +109,16 @@ public class DiscussAllreviewsActivity extends Activity {
 		footerView = (LinearLayout)layout.findViewById(R.id.foot_layout);
 		listView.addFooterView(layout);
 		
-		ed_info.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				// TODO Auto-generated method stub
-				if(ed_info.getText().toString().trim().length() > 0){
-					//按钮改变颜色
-					btn_send.setTextColor(DiscussAllreviewsActivity.this.getResources().getColor(R.color.send_btn_color));
-				}else{
-					btn_send.setTextColor(DiscussAllreviewsActivity.this.getResources().getColor(R.color.login_txt));
-				}
-			}
-			
-		});
-		
 		btn_send.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				addtalk(ed_info.getText().toString());
+				if(TextUtils.isEmpty(ed_info.getText())){
+					Toast.makeText(DiscussAllreviewsActivity.this, "请输入评论内容", Toast.LENGTH_SHORT).show();
+				}else{
+					addtalk(ed_info.getText().toString());
+				}
+				
 			}
 		});
 		

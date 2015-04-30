@@ -13,9 +13,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,11 +57,16 @@ public class FgChatCustomer extends Fragment {
 	private View head;
 	private Dialog noticeDialog;
 	
-	private static final int RESULT_OK = 1;
+	private RefreshReceiver mReceiver;
+	
 
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
+		mReceiver = new RefreshReceiver();
+		IntentFilter intentFilter = new IntentFilter(CommonConstant.BROADCAST_ACTION);
+		activity.registerReceiver(mReceiver, intentFilter);
+		
 		super.onAttach(activity);
 	}
 
@@ -161,7 +168,7 @@ public class FgChatCustomer extends Fragment {
 				Intent intent;
 				if(which == 0){
 					intent = new Intent(getActivity(), AddFriendActivity.class);
-					startActivityForResult(intent, RESULT_OK);
+					startActivity(intent);
 				}else if(which == 1){
 					intent = new Intent(getActivity(), ContractActivity.class);
 					intent.putExtra("FriendList", (Serializable)atts);
@@ -176,24 +183,16 @@ public class FgChatCustomer extends Fragment {
 	}
 
 	
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		if(resultCode == Activity.RESULT_OK){
-			switch (requestCode) {
-			case RESULT_OK:
-				getAllAttention();
-				break;
+	//广播接收器
+	public class RefreshReceiver extends BroadcastReceiver {
 
-			default:
-				break;
-			}
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			getAllAttention();
 		}
-		
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-	
+
+	}	
 	
 	
 	

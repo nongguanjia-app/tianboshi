@@ -90,8 +90,11 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 				try {
 					if(response.getJSONObject("AddAttention").getString("returnCode").equals("1")){
 						Toast.makeText(AddFriendActivity.this, "添加好友成功", Toast.LENGTH_SHORT).show();
+						//发送广播通知更新我的客户列表
 						Intent intent = new Intent();
-						setResult(RESULT_OK, intent);
+						intent.setAction(CommonConstant.BROADCAST_ACTION);
+						sendBroadcast(intent);
+						
 						AddFriendActivity.this.finish();
 					}else{
 						Toast.makeText(AddFriendActivity.this, "添加好友失败", Toast.LENGTH_SHORT).show();

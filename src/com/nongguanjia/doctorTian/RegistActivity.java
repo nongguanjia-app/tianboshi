@@ -1,5 +1,8 @@
 package com.nongguanjia.doctorTian;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +11,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,9 +41,33 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 	private Button btn_regist;
 	private ProgressDialog mDialog;
 	private Button btn_get_code;
+	private Button btn_timer;
 	private EditText ed_phone, ed_psd, ed_psd_again, ed_verify_code;
 	private String verifyCode;
 	private CacheUserHelper cacheUser;
+	
+	private Timer timer;
+	
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			
+			//handler处理消息
+			if(msg.what > 0){
+				btn_timer.setText(msg.what + "s");
+			}else{
+				//隐藏倒计时，显示验证按钮
+				btn_timer.setVisibility(View.GONE);
+				btn_get_code.setVisibility(View.VISIBLE);
+				//结束timer
+				timer.cancel();
+			}
+		}
+		
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +91,7 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 		
 		btn_regist = (Button)findViewById(R.id.btn_regist);
 		btn_get_code = (Button)findViewById(R.id.get_code);
+		btn_timer = (Button)findViewById(R.id.btn_timer);
 		ed_phone = (EditText)findViewById(R.id.edit_phone); 
 		ed_psd = (EditText)findViewById(R.id.edit_psd);
 		ed_psd_again = (EditText)findViewById(R.id.edit_psd_again);
@@ -105,6 +135,13 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 		case R.id.get_code:
 			if(!TextUtils.isEmpty(ed_phone.getText())){
 				mDialog.show();
+				
+				showTime();
+				
+				//显示倒计时
+				btn_get_code.setVisibility(View.GONE);
+				btn_timer.setVisibility(View.VISIBLE);
+				
 				getCode(ed_phone.getText().toString());
 			}else{
 				Toast.makeText(getApplicationContext(), "请输入手机号码", Toast.LENGTH_SHORT).show();
@@ -139,8 +176,11 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 				try {
 					if(response.getJSONObject("VerifyCodes").getString("returnCode").equals("1")){
 						verifyCode = response.getJSONObject("VerifyCodes").getString("verifyCode");
+						Toast.makeText(RegistActivity.this, "手机验证码已发送，请查看手机", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(getApplicationContext(), "获取验证码失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegistActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
+						//结束timer
+						timer.cancel();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -151,6 +191,27 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 			}
 			
 		});
+	}
+	
+	
+	
+	private void showTime(){
+		timer = new Timer();
+		TimerTask timerTask = new TimerTask(){
+			int i = 120;
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				//定义一个消息传过去
+				Message msg = new Message();
+				msg.what = i--;
+				handler.sendMessage(msg);
+			}
+			
+		};
+		//2s后开启倒计时，倒计时间隔为1s
+		timer.scheduleAtFixedRate(timerTask, 1000, 1000);
 	}
 	
 	

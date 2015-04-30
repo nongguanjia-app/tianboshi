@@ -29,8 +29,8 @@ import com.nongguanjia.doctorTian.utils.NetworkDetector;
  * @author 我
  */
 public class FgMy extends Fragment implements OnClickListener {
-	private RelativeLayout mMy_info, mMy_Down, mEdit_psd, mHelp, mAbout,
-			mUpgrade, mSystemUpgrade; //mRec
+	private RelativeLayout mMy_info, mEdit_psd, mHelp, mAbout,
+			mUpgrade, mSystemUpgrade; //mRec mMy_Down
 	private Button mExit;
 	private TextView tv_title;
 	private ImageView img_back;
@@ -52,7 +52,7 @@ public class FgMy extends Fragment implements OnClickListener {
 		img_back.setVisibility(View.GONE);
 		
 		mMy_info = (RelativeLayout) view.findViewById(R.id.my_info);
-		mMy_Down = (RelativeLayout) view.findViewById(R.id.my_down);
+//		mMy_Down = (RelativeLayout) view.findViewById(R.id.my_down);
 //		mRec = (RelativeLayout) view.findViewById(R.id.rec);
 		mEdit_psd = (RelativeLayout) view.findViewById(R.id.edit_psd);
 		mUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade);
@@ -62,7 +62,7 @@ public class FgMy extends Fragment implements OnClickListener {
 		mExit = (Button) view.findViewById(R.id.exitlogin);
 //		mRec.setOnClickListener(this);
 		mMy_info.setOnClickListener(this);
-		mMy_Down.setOnClickListener(this);
+//		mMy_Down.setOnClickListener(this);
 		mEdit_psd.setOnClickListener(this);
 		mHelp.setOnClickListener(this);
 		mAbout.setOnClickListener(this);
@@ -82,9 +82,9 @@ public class FgMy extends Fragment implements OnClickListener {
 			startActivity(intent_Info);
 			break;
 
-		case R.id.my_down:
-			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
-			break;
+//		case R.id.my_down:
+//			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
+//			break;
 //		case R.id.rec:
 //			Toast.makeText(getActivity(), "该功能正在完善中...", Toast.LENGTH_SHORT).show();
 //			break;

@@ -2,27 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8AC125"
-    android:orientation="vertical" >
-	<include
-        android:id="@+id/title"
+    android:background="@color/white" >
+
+    <include android:id="@+id/title"
         layout="@layout/title" />
-	
+
     <ListView
-        android:layout_below="@id/title"
         android:id="@+id/upgrade_list"
         android:layout_width="match_parent"
-        android:layout_height="200dp" >
-    </ListView>
+        android:layout_height="fill_parent"
+        android:layout_below="@id/title"
+        android:divider="@null" />
 
     <Button
         android:id="@+id/btn_update"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:background="#60a700"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/title_bar_bg"
         android:text="@string/upgrade"
         android:textColor="@color/white" />
 
