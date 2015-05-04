@@ -6,7 +6,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -23,8 +22,6 @@ public class TuiAreaActivity extends Activity{
 	private TextView tvTitle;
 	private ImageView ivBack;
 	private List<Map<String,String>> dataSheng;
-	private List<Map<String,String>> dataShi;
-	private List<Map<String,String>> dataQu;
 	private TuiAreaAdapter adapter;
 	private CacheCityHelper helper;
 	
@@ -49,7 +46,6 @@ public class TuiAreaActivity extends Activity{
 		});
 		helper = new CacheCityHelper(TuiAreaActivity.this);
 		dataSheng = helper.selectArea(0);
-		Log.e("--------------------data", dataSheng.toString());
 		
 		adapter = new TuiAreaAdapter(TuiAreaActivity.this, dataSheng);
 		listView.setAdapter(adapter);
