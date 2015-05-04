@@ -72,7 +72,7 @@ public class FgMyCourseHasStart extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				Intent intent = new Intent(getActivity(), CourseActivity.class);
-				intent.putExtra("Id", mAllStartCourse.get(arg2).getCourseId().toString());
+				intent.putExtra("Id", mAllStartCourse.get(arg2-1).getCourseId().toString());
 				getActivity().startActivity(intent);
 			}
 		});
