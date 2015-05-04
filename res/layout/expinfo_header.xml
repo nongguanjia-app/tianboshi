@@ -15,7 +15,6 @@
             android:id="@+id/info_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="4月8号测试经验谈"
             android:textSize="15sp" />
 
         <TextView
@@ -23,7 +22,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="2015-04-07 16:46:24"
             android:textSize="13sp" />
 
         <TextView
@@ -31,7 +29,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="农大粮王大赛"
             android:textSize="13sp" />
 
         <RelativeLayout
@@ -45,7 +42,7 @@
                 android:id="@+id/img_head"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@color/lightgreen" />
+                android:src="@drawable/default_person_img" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -60,14 +57,12 @@
                     android:id="@+id/name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="lixin"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/product"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="化肥种子"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -85,8 +80,7 @@
             android:id="@+id/layout_expinfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_content_expinfo"

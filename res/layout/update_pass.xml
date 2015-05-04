@@ -43,7 +43,8 @@
             android:layout_toRightOf="@id/img_tel"
             android:background="@null"
             android:hint="@string/hint_input_phone"
-            android:numeric="integer" />
+            android:numeric="integer"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->
@@ -81,7 +82,8 @@
             android:layout_toRightOf="@id/img_psd"
             android:background="@null"
             android:hint="@string/hint_old_psd"
-            android:password="true" />
+            android:password="true"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->
@@ -119,7 +121,8 @@
             android:layout_toRightOf="@id/img_again"
             android:background="@null"
             android:hint="@string/hint_input_psd"
-            android:password="true" />
+            android:password="true"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->
@@ -157,7 +160,8 @@
             android:layout_toRightOf="@id/img_again"
             android:background="@null"
             android:hint="@string/hint_input_again"
-            android:password="true" />
+            android:password="true"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->

@@ -42,7 +42,8 @@
                 android:layout_weight="5"
                 android:background="@drawable/input_bottom_bg"
                 android:gravity="center_vertical"
-                android:hint="@string/comment_hint" />
+                android:hint="@string/comment_hint"
+                android:textColorHint="@color/text_hint_color" />
 
             <Button
                 android:id="@+id/btn_send"

@@ -29,6 +29,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class SuccessCaseActivity extends Activity {
 	private TextView tv_title;
 	private ImageView img_back;
+	private TextView suc_title;
 	private TextView tv_detail;
 	private ImageView img_pic;
 	private String caseId;
@@ -52,8 +53,11 @@ public class SuccessCaseActivity extends Activity {
 		
 		tv_title = (TextView)findViewById(R.id.tv_title);
 		img_back = (ImageView)findViewById(R.id.img_back);
+		suc_title = (TextView)findViewById(R.id.suc_title);
 		tv_detail = (TextView)findViewById(R.id.case_detail);
 		img_pic = (ImageView)findViewById(R.id.img);
+		
+		tv_title.setText("成功案例");
 		
 		img_back.setOnClickListener(new OnClickListener() {
 			
@@ -103,7 +107,7 @@ public class SuccessCaseActivity extends Activity {
 	
 	
 	private void showView(){
-		tv_title.setText(info.getCaseTitle());
+		suc_title.setText(info.getCaseTitle());
 		tv_detail.setText(Html.fromHtml(info.getCaseContent()));
 		imageLoader.displayImage(CommonConstant.img_course_case + info.getCasePicture(), img_pic, options);
 	}

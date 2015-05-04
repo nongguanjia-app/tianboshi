@@ -80,17 +80,17 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	private ProgressDialog mDialog;
 	
 	//乐视
-	private RelativeLayout layout_player;
-	private VODPlayCenter mPlayerView;
-	String uuid = "7a0888b569";
-	String vuid = "79dd8da08a";
-	private boolean isBackgroud = false;
+//	private RelativeLayout layout_player;
+//	private VODPlayCenter mPlayerView;
+//	private String vuid = "79dd8da08a";
+//	private boolean isBackgroud = false;
 	
 	
 	Handler mHandler = new Handler(){
 
 		@Override
 		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case CommonConstant.RESPONSE_ERROR:
 				Toast.makeText(ExpInfoActivity.this, "评论失败", Toast.LENGTH_SHORT).show();
@@ -100,6 +100,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				pageIndex = 1;//相当于刷新
 				getAllechos();//重新获取数据
 				ed_info.setText("");
+				
 				break;
 			default:
 				break;
@@ -114,9 +115,14 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	Handler vHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
 			switch (msg.what) {
+			
 			case 2:
 				tv_content.setText((CharSequence)msg.obj);
+				
+				break;
+			default:
 				break;
 			}
 			super.handleMessage(msg);
@@ -131,7 +137,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.exp_info);
 		
 		init();
-		leInit();
+//		leInit();
 	}
 	
 	
@@ -181,30 +187,32 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		
 		getAllechos();
 	}
+	
 	//乐视
-	private void leInit(){
-		this.layout_player = (RelativeLayout) this.findViewById(R.id.layout_expinfo);
-		this.mPlayerView = new VODPlayCenter(this, true);
-		this.layout_player.addView(this.mPlayerView.getPlayerView());
-		
-		this.mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
-			@Override
-			public void onStateChange(int state, Object... extra) {
-				if (state == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
-					Logger.e("onStateChange", "PLAYER_VIDEO_PAUSE");
-				} else if (state == PlayerStateCallback.PLAYER_VIDEO_PLAY) {
-					Logger.e("onStateChange", "PLAYER_VIDEO_PLAY");
-				} else if (state == PlayerStateCallback.PLAYER_VIDEO_RESUME) {
-					Logger.e("onStateChange", "PLAYER_VIDEO_RESUME");
-				} else if (state == PlayerStateCallback.PLAYER_STOP) {
-					Logger.e("onStateChange", "PLAYER_STOP");
-				}
-			}
-		});
-
-		this.mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898", "", "");
-		
-	}
+//	private void leInit(){
+//		layout_player = (RelativeLayout) findViewById(R.id.layout_expinfo);
+//		mPlayerView = new VODPlayCenter(ExpInfoActivity.this, true);
+//		layout_player.addView(mPlayerView.getPlayerView());
+//		
+//		mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
+//
+//			@Override
+//			public void onStateChange(int state, Object... extra) {
+//				if (state == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
+//					Logger.e("onStateChange", "PLAYER_VIDEO_PAUSE");
+//				} else if (state == PlayerStateCallback.PLAYER_VIDEO_PLAY) {
+//					Logger.e("onStateChange", "PLAYER_VIDEO_PLAY");
+//				} else if (state == PlayerStateCallback.PLAYER_VIDEO_RESUME) {
+//					Logger.e("onStateChange", "PLAYER_VIDEO_RESUME");
+//				} else if (state == PlayerStateCallback.PLAYER_STOP) {
+//					Logger.e("onStateChange", "PLAYER_STOP");
+//				}
+//			}
+//			
+//		});
+//		
+//		play();
+//	}
 	
 	private void getExperienceInfo(){
 		String url = CommonConstant.experienceinfo + "/" + phoneNum + "," + expId;
@@ -231,6 +239,9 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 						info = new ExperienceInfo();
 						info = gson.fromJson(response.getJSONObject("ExperienceInfos").toString(), new TypeToken<ExperienceInfo>(){}.getType());
 						
+//						vuid = info.getVideoId();
+//						play();
+						
 						//判断好友是否存在
 						verifyattention();
 						
@@ -248,6 +259,13 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			
 		});	
 	}
+	
+	
+	
+//	private void play(){
+//		mPlayerView.playVideo(CommonConstant.UUID, vuid, "c8b127186556ccfae084bbede663a898",
+//				"", "");
+//	}
 	
 	
 	//获取讨论区内容
@@ -310,6 +328,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		tv_summary.setText(info.getSummary());
 		tv_name.setText(info.getName());
 		tv_product.setText(info.getProducts());
+		
+		imageLoader.displayImage(CommonConstant.img_exp + info.getAvatar(), img, options);
 		
 		//判断html是否含有图片
 		if(info.getContent().indexOf("img") > 0){
@@ -464,7 +484,7 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			}
 			break;
 		case R.id.img_back:
-			this.finish();
+			ExpInfoActivity.this.finish();
 			break;
 		default:
 			break;
@@ -559,44 +579,42 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		}
 	});
 	
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (this.mPlayerView != null) {
-			if (isBackgroud) {
-				if (mPlayerView.getCurrentPlayState() == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
-					this.mPlayerView.resumeVideo();
-				} else {
-					Logger.e("VODActivity", "已回收，重新请求播放");
-					mPlayerView.playVideo(uuid, vuid, "", "", "测试节目");
-				}
-			}
-		}
+//		if (mPlayerView != null) {
+//			if (isBackgroud) {
+//				if (mPlayerView.getCurrentPlayState() == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
+//					this.mPlayerView.resumeVideo();
+//				} else {
+//					Logger.e("VODActivity", "已回收，重新请求播放");
+//					if(!TextUtils.isEmpty(vuid)){
+//						play();
+//					}
+//					
+//				}
+//			}
+//		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (this.mPlayerView != null) {
-			this.mPlayerView.pauseVideo();
-			isBackgroud = true;
-		}
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
+//		if (mPlayerView != null) {
+//			mPlayerView.pauseVideo();
+//			isBackgroud = true;
+//		}
 	}
 
 	@Override
 	protected void onDestroy() {
-		this.mPlayerView.destroyVideo();
-		this.layout_player.removeAllViews();
-		this.mPlayerView = null;
+//		mPlayerView.destroyVideo();
+//		layout_player.removeAllViews();
+//		mPlayerView = null;
 		super.onDestroy();
-		isBackgroud = false;
-		LogUtils.clearLog();
+//		isBackgroud = false;
+//		LogUtils.clearLog();
 	}
 	
 }

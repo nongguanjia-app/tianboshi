@@ -26,7 +26,8 @@
 	            android:layout_height="wrap_content"
 	            android:background="@null"
 	            android:numeric="integer" 
-	            android:hint="请输入手机号码" />
+	            android:hint="请输入手机号码"
+	            android:textColorHint="@color/text_hint_color" />
             
             <!-- 底部线 -->
 

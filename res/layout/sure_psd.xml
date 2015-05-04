@@ -41,7 +41,8 @@
             android:hint="@string/hint_input_phone"
             android:layout_alignBottom="@id/img_u"
             android:background="@null"
-            android:numeric="integer" />
+            android:numeric="integer"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->
@@ -77,7 +78,8 @@
              android:layout_alignBottom="@id/img_p"
             android:hint="@string/hint_input_psd"
             android:background="@null"
-            android:password="true" />
+            android:password="true"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
     
     <!-- 底部线 -->

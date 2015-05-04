@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -236,7 +237,7 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 				mDialog.dismiss();
 				//解析应答数据
 				try {
-					if(response.getJSONObject("AddUser").getString("returnCode").equals("1")){
+					if(new JSONArray(response.getString("AddUser")).getJSONObject(0).getString("returnCode").equals("1")){
 						//注册成功后，初始化权限（农户）
 						((AppApplication)getApplication()).ROLE = "农户";
 						

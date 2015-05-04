@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +41,8 @@ import com.nongguanjia.doctorTian.utils.MD5Util;
  * 登录
  */
 public class LoginActivity extends Activity implements OnClickListener, LoginListener{
-	private Button btn_login, btn_regist;
-	private TextView forget_psd;
+	private Button btn_login;
+	private LinearLayout registLayout, forgetLayout;
 	private EditText ed_phone, ed_psd;
 	private ProgressDialog mDialog;
 	private CacheUserHelper cacheUser;
@@ -84,11 +85,12 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 		ed_phone = (EditText)findViewById(R.id.edit_phone);
 		ed_psd = (EditText)findViewById(R.id.edit_psd);
 		btn_login = (Button)findViewById(R.id.btn_login);
-		btn_regist = (Button)findViewById(R.id.btn_regist);
-		forget_psd = (TextView)findViewById(R.id.forget_psd);
+		registLayout = (LinearLayout)findViewById(R.id.regist);
+		forgetLayout = (LinearLayout)findViewById(R.id.forget);
+		
 		btn_login.setOnClickListener(this);
-		btn_regist.setOnClickListener(this);
-		forget_psd.setOnClickListener(this);
+		registLayout.setOnClickListener(this);
+		forgetLayout.setOnClickListener(this);
 		
 		cacheUser = CacheUserHelper.getInstance(getApplicationContext());
 		HashMap<String, String> user = cacheUser.selectTable();
@@ -118,11 +120,11 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 			}
 			
 			break;
-		case R.id.btn_regist:
+		case R.id.regist:
 			intent = new Intent(getApplicationContext(), RegistActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.forget_psd:
+		case R.id.forget:
 			intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
 			startActivity(intent);
 			break;

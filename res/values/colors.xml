@@ -93,5 +93,7 @@
       <drawable name="title_bar_bg">#0fd5c9</drawable>
       
       <color name="text_color">#6d6e71</color>
+      
+      <color name="text_hint_color">#bbbbbb</color>
     
 </resources>

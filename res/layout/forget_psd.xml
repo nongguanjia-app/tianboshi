@@ -42,7 +42,8 @@
             android:layout_toRightOf="@id/img_tel"
             android:background="@null"
             android:hint="@string/hint_input_phone"
-            android:numeric="integer" />
+            android:numeric="integer"
+            android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
     <!-- 底部线 -->
@@ -78,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:background="@null"
-                android:hint="@string/hint_input_auto" />
+                android:hint="@string/hint_input_auto"
+                android:textColorHint="@color/text_hint_color" />
 
             <!-- 底部线 -->
 

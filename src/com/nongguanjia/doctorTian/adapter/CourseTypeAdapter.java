@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nongguanjia.doctorTian.CategoryActivity;
@@ -126,7 +127,7 @@ public class CourseTypeAdapter extends BaseExpandableListAdapter {
 		}
 		
 		holder.groupName.setText(group.get(groupPosition));
-		holder.groupCount.setText(child.get(groupPosition).get(group.get(groupPosition)).size()+"");
+//		holder.groupCount.setText(child.get(groupPosition).get(group.get(groupPosition)).size()+"");
 		
 		return convertView;
 	}
