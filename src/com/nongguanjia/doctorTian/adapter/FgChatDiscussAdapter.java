@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +78,8 @@ public class FgChatDiscussAdapter extends BaseAdapter {
 		}
 
 		mHolder.tv_title.setText(talk.getCourseTitle());
-		if(talk.getName().length() > 0){
-			mHolder.tv_reply.setText("最新评论" + talk.getName() + ": " + talk.getContent());
+		if(!TextUtils.isEmpty(talk.getName())){
+			mHolder.tv_reply.setText("最新评论: 回复" + talk.getName() + ": " + talk.getContent());
 		}else{
 			mHolder.tv_reply.setText("最新评论: " + talk.getContent());
 		}
