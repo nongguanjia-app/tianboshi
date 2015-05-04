@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,12 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nongguanjia.doctorTian.CourseActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.MyCourseAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
@@ -56,6 +60,16 @@ public class FgMyCourseTG extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fg_course_tg, null);
 		init(v);
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent intent = new Intent(getActivity(), CourseActivity.class);
+				intent.putExtra("Id", myCourse.get(arg2).getCourseId().toString());
+				getActivity().startActivity(intent);
+			}
+		});
 		return v;
 	}
 

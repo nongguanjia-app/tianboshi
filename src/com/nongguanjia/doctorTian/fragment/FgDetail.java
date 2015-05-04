@@ -98,6 +98,8 @@ public class FgDetail extends Fragment {
 						//发送广播通知更新我的客户列表
 						Intent intent = new Intent();
 						intent.putExtra("vid", mCourses.getCourseVideo());
+						intent.putExtra("flag", mCourses.getFlag());
+						intent.putExtra("title", mCourses.getTitle());
 						intent.setAction(CommonConstant.VIDEO_ACTION);
 						activity.sendBroadcast(intent);
 						

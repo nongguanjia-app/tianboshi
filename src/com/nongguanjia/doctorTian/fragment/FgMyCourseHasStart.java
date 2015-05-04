@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nongguanjia.doctorTian.CourseActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.adapter.StartCoursesAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
@@ -63,8 +65,17 @@ public class FgMyCourseHasStart extends Fragment {
 		View view = inflater.inflate(R.layout.has_start, null);
 		mListView = (RTPullListView) view.findViewById(R.id.has_start_list);
 		
-		
 		init(view);
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent intent = new Intent(getActivity(), CourseActivity.class);
+				intent.putExtra("Id", mAllStartCourse.get(arg2).getCourseId().toString());
+				getActivity().startActivity(intent);
+			}
+		});
 		return view;
 	}
 
