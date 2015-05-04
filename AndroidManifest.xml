@@ -95,6 +95,15 @@
             android:name=".MyDataActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".TuiAreaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TuiAreaShiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TuiAreaQuActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AreaActivity"
             android:screenOrientation="portrait" />
         <activity
