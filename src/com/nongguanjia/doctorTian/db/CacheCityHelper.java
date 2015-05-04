@@ -1,5 +1,10 @@
 package com.nongguanjia.doctorTian.db;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,8 +26,29 @@ public class CacheCityHelper {
 		}
 		return INSTANCE;
 	}
+	/**
+	 * 查询地区
+	 * @param father 
+	 * @return
+	 */
+	public List<Map<String,String>> selectArea(int father){
+		db = mHelper.getReadableDatabase();
+		String sql = "select * from region  where father="+father;
+		Cursor cursor = db.rawQuery(sql, null);
+		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+		while(cursor.moveToNext()){
+			Map<String,String> map = new HashMap<String, String>();
+			map.put("name",cursor.getString(cursor.getColumnIndex("name")));
+			map.put("id", cursor.getString(cursor.getColumnIndex("id")));
+			list.add(map);
+		}
+		cursor.close();
+		db.close();
+		return list;
+	}
 
 	public void insertTable() {
+		db = mHelper.getWritableDatabase();
 		db.execSQL("insert  into 'region'('id','name','father') values (110000,'北京市',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (110100,'市辖区',110000)");
 		db.execSQL("insert  into 'region'('id','name','father') values (110101,'东城区',110100)");
@@ -3562,12 +3588,14 @@ public class CacheCityHelper {
 
 		cursor.close();
 
+		db.close();
 		return count;
 	}
 
 	
 	public void closeDB(){
     	db.close();
+    	
 	}
 	
 	

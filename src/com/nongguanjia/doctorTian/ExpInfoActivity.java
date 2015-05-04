@@ -91,7 +91,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case CommonConstant.RESPONSE_ERROR:
 				Toast.makeText(ExpInfoActivity.this, "评论失败", Toast.LENGTH_SHORT).show();
@@ -101,7 +100,6 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 				pageIndex = 1;//相当于刷新
 				getAllechos();//重新获取数据
 				ed_info.setText("");
-				
 				break;
 			default:
 				break;
@@ -116,14 +114,9 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	Handler vHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
-			
 			case 2:
 				tv_content.setText((CharSequence)msg.obj);
-				
-				break;
-			default:
 				break;
 			}
 			super.handleMessage(msg);
@@ -190,12 +183,11 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	}
 	//乐视
 	private void leInit(){
-		layout_player = (RelativeLayout) findViewById(R.id.layout_expinfo);
-		mPlayerView = new VODPlayCenter(ExpInfoActivity.this, true);
-		layout_player.addView(mPlayerView.getPlayerView());
+		this.layout_player = (RelativeLayout) this.findViewById(R.id.layout_expinfo);
+		this.mPlayerView = new VODPlayCenter(this, true);
+		this.layout_player.addView(this.mPlayerView.getPlayerView());
 		
-		mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
-
+		this.mPlayerView.setPlayerStateCallback(new PlayerStateCallback() {
 			@Override
 			public void onStateChange(int state, Object... extra) {
 				if (state == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
@@ -210,8 +202,8 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 			}
 		});
 
-//		this.mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898",
-//		"", "");
+		this.mPlayerView.playVideo(uuid, vuid, "c8b127186556ccfae084bbede663a898", "", "");
+		
 	}
 	
 	private void getExperienceInfo(){
@@ -567,18 +559,16 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 		}
 	});
 	
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mPlayerView != null) {
+		if (this.mPlayerView != null) {
 			if (isBackgroud) {
 				if (mPlayerView.getCurrentPlayState() == PlayerStateCallback.PLAYER_VIDEO_PAUSE) {
 					this.mPlayerView.resumeVideo();
 				} else {
 					Logger.e("VODActivity", "已回收，重新请求播放");
-					mPlayerView.playVideo(uuid, vuid,
-							"c8b127186556ccfae084bbede663a898", "", "测试节目");
+					mPlayerView.playVideo(uuid, vuid, "", "", "测试节目");
 				}
 			}
 		}
@@ -587,17 +577,23 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (mPlayerView != null) {
-			mPlayerView.pauseVideo();
+		if (this.mPlayerView != null) {
+			this.mPlayerView.pauseVideo();
 			isBackgroud = true;
 		}
 	}
 
 	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
+	@Override
 	protected void onDestroy() {
-		mPlayerView.destroyVideo();
-		layout_player.removeAllViews();
-		mPlayerView = null;
+		this.mPlayerView.destroyVideo();
+		this.layout_player.removeAllViews();
+		this.mPlayerView = null;
 		super.onDestroy();
 		isBackgroud = false;
 		LogUtils.clearLog();

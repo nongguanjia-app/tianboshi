@@ -173,11 +173,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener{
 
 		if (user != null) {
 			chatType = 0;
-			if(!TextUtils.isEmpty(user.getNickname())){
-				title.setText("和 " + user.getNickname() + " 聊天");
-			}else{
-				title.setText("和 " + user.getName() + " 聊天");
-			}
+			title.setText("和 " + user.getName() + " 聊天");
 		} else if (room != null) {
 			chatType = 1;
 			title.setText("聊天室：" + room.getRoomID());

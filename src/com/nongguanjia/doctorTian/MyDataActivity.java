@@ -9,8 +9,11 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -60,6 +63,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private String one="",two="",three="",four="",five="",six="",seven="",nongNamePar;
 	private String oneT="",twoT="",threeT="",fourT="",fiveT="",sixT="",nongNameParT;
 	private TuiUserInfo tuiUserInfo;
+	private AreaBroadcastReceiver broadcastReceiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +80,11 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		mySetText(tvNikcName, nickname, 0, 0);
 		
 		role = ((AppApplication)this.getApplication()).ROLE;
+		
 		if(role.equals("推广人")){
+			getTuiInfo();//获取推广人信息
 			llTui.setVisibility(View.VISIBLE);
 			llNong.setVisibility(View.GONE);
-			getTuiInfo();
 		}else{
 			llNong.setVisibility(View.VISIBLE);
 			llTui.setVisibility(View.GONE);
@@ -90,6 +95,10 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				mySetText(tvArea, info.getCropsArea(), 0, 4);
 			}
 		}
+				
+		
+		broadcastReceiver = new AreaBroadcastReceiver();
+		registerReceiver(broadcastReceiver, new IntentFilter("TuiAreaQuActivity"));
 	}
 
 	private void initView(){
@@ -129,7 +138,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		mPlant.setOnClickListener(this);
 		mArea.setOnClickListener(this);
 		//推广人
-//		rlRegion.setOnClickListener(this);
+		rlRegion.setOnClickListener(this);
 		rlOffice.setOnClickListener(this);
 		rlOfficeStyle.setOnClickListener(this);
 		rlProduct.setOnClickListener(this);
@@ -140,7 +149,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.img_back:
 			finish();
@@ -183,10 +191,12 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), "男", 
 								info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
 						tvSex.setText("男");
+						info.setGender("男");
 					}else{
 						ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), "女", 
 								info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
 						tvSex.setText("女");
+						info.setGender("女");
 					}
 				}
 			});
@@ -206,6 +216,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 								ChangeInfo(nickname, info.getName(), info.getAvatar(), age, info.getGender(), 
 										info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
 								tvAge.setText(age+" 岁");
+								info.setAge(age);
 							}
 						}
 					}).show();
@@ -280,6 +291,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 									ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), info.getGender(), 
 											nongNamePar, info.getCropsArea(), info.getCropsAreaUnit());
 									tvPlant.setText(nongNamePar);
+									info.setCropsId(nongNamePar);
 								}
 							}).setNegativeButton("取消", null).show();
 			break;
@@ -297,12 +309,14 @@ public class MyDataActivity extends Activity implements OnClickListener {
 								ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getGender(), info.getGender(), 
 										info.getCropsId(), mj, info.getCropsAreaUnit());
 								tvArea.setText(mj+" 亩");
+								info.setCropsArea(mj);
 							}
 						}
 					}).show();
 			break;
 		case R.id.region:
-			
+			Intent intentArea = new Intent(MyDataActivity.this, TuiAreaActivity.class);
+			startActivity(intentArea);
 			break;
 		case R.id.office:
 			final EditText office = new EditText(MyDataActivity.this);
@@ -322,6 +336,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 										tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
 										tuiUserInfo.getProfessional());
 								tvOffice.setText(data);
+								tuiUserInfo.setWorkPlace(data);
 							}
 						}
 					}).show();
@@ -342,6 +357,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 								"个体户", tuiUserInfo.getWorkYear(), 
 								tuiUserInfo.getProfessional());
 						tvOfficeStyle.setText("个体户");
+						tuiUserInfo.setBusinessForms("个体户");
 					}else{
 						ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
 								tuiUserInfo.getGender(), tuiUserInfo.getAge(),
@@ -350,6 +366,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 								"有限公司", tuiUserInfo.getWorkYear(), 
 								tuiUserInfo.getProfessional());
 						tvOfficeStyle.setText("有限公司");
+						tuiUserInfo.setBusinessForms("有限公司");
 					}
 				}
 			});
@@ -422,6 +439,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 									tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
 									tuiUserInfo.getProfessional());
 							tvProduct.setText(nongNameParT);
+							tuiUserInfo.setProducts(nongNameParT);
 						}
 					}).setNegativeButton("取消", null).show();
 			break;
@@ -443,6 +461,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 										tuiUserInfo.getBusinessForms(), data, 
 										tuiUserInfo.getProfessional());
 								tvDate.setText(data+" 年");
+								tuiUserInfo.setWorkYear(data);
 							}
 						}
 					}).show();
@@ -465,6 +484,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 										tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
 										data);
 								tvNongJi.setText(data);
+								tuiUserInfo.setProfessional(data);
 							}
 						}
 					}).show();
@@ -529,7 +549,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	 */
 	private void ChangeInfo(String name,String pic,String sex,String age,
 			String sheng,String shi,String qu,String produce,String office,String style,String date,String nongJi) {
-		String parameter= name+","+pic+","+sex+","+age+","+sheng+","+shi+","+qu+produce+","
+		String parameter= name+","+pic+","+sex+","+age+","+sheng+","+shi+","+qu+","+produce+","
 			+office+","+style+","+date+","+nongJi;
 		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
 		String url = CommonConstant.editdealer + "/" + phoneNum + ","+parameter;
@@ -555,7 +575,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				}
 				super.onSuccess(statusCode, headers, response);
 			}
-			
 		});
 	}
 	/**
@@ -564,6 +583,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private void getTuiInfo(){
 		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
 		String url = CommonConstant.dealers + "/" + phoneNum;
+		
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
 			@Override
 			public void onFailure(int statusCode, Header[] headers,
@@ -582,14 +602,15 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						tuiUserInfo = gson.fromJson(response.getJSONObject("Dealers").toString(), 
 								new TypeToken<TuiUserInfo>(){}.getType());
 						
+						mySetText(tvRegion, tuiUserInfo.getProvince()+" "+tuiUserInfo.getCity()+" "+tuiUserInfo.getArea(), 0);
 						mySetText(tvArea, tuiUserInfo.getProvince(), 0);
 						mySetText(tvOffice, tuiUserInfo.getWorkPlace(), 0);
 						mySetText(tvOfficeStyle, tuiUserInfo.getBusinessForms(), 0);
 						mySetText(tvProduct, tuiUserInfo.getProducts(), 0);
-						mySetText(tvDate, tuiUserInfo.getWorkYear(), 0);
+						mySetText(tvDate, tuiUserInfo.getWorkYear(), 1);
 						mySetText(tvNongJi, tuiUserInfo.getProfessional(), 0);
 					}else{
-						Toast.makeText(MyDataActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MyDataActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -634,7 +655,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	 * @param year
 	 */
 	private void mySetText(TextView tv, String data, int year) {
-		if (year == 0 && year == 0) {
+		if (year == 0) {
 			if (TextUtils.isEmpty(data)) {
 				tv.setText("未设置");
 			} else {
@@ -763,5 +784,28 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			return null;
 		}
 		return bitmap;
+	}
+	
+	private class AreaBroadcastReceiver extends BroadcastReceiver{
+		@Override
+		public void onReceive(Context arg0, Intent intent) {
+			String sheng = intent.getStringExtra("sheng");
+			String shi = intent.getStringExtra("shi");
+			String qu = intent.getStringExtra("qu");
+			if(!TextUtils.isEmpty(qu)){
+				ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+						tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+						sheng, shi, qu, tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+						tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
+						tuiUserInfo.getProfessional());
+				tvRegion.setText(sheng+" "+shi+" "+qu);
+			}
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(broadcastReceiver);
 	}
 }

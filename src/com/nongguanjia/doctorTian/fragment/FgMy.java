@@ -31,7 +31,8 @@ import com.nongguanjia.doctorTian.utils.NetworkDetector;
  * @author 我
  */
 public class FgMy extends Fragment implements OnClickListener {
-	private RelativeLayout mMy_info, mEdit_psd, mHelp, mAbout, mSystemUpgrade; //mRec mMy_Down mUpgrade
+	private RelativeLayout mMy_info, mEdit_psd, mHelp, mAbout,
+			mUpgrade, mSystemUpgrade; //mRec mMy_Down
 	private Button mExit;
 	private TextView tv_title;
 	private ImageView img_back;
@@ -65,7 +66,7 @@ public class FgMy extends Fragment implements OnClickListener {
 //		mMy_Down = (RelativeLayout) view.findViewById(R.id.my_down);
 //		mRec = (RelativeLayout) view.findViewById(R.id.rec);
 		mEdit_psd = (RelativeLayout) view.findViewById(R.id.edit_psd);
-//		mUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade);
+		mUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade);
 		mHelp = (RelativeLayout) view.findViewById(R.id.help);
 		mAbout = (RelativeLayout) view.findViewById(R.id.about);
 		mSystemUpgrade = (RelativeLayout) view.findViewById(R.id.upgrade_system);
@@ -76,7 +77,7 @@ public class FgMy extends Fragment implements OnClickListener {
 		mEdit_psd.setOnClickListener(this);
 		mHelp.setOnClickListener(this);
 		mAbout.setOnClickListener(this);
-//		mUpgrade.setOnClickListener(this);
+		mUpgrade.setOnClickListener(this);
 		mSystemUpgrade.setOnClickListener(this);
 		mExit.setOnClickListener(this);
 
@@ -110,10 +111,10 @@ public class FgMy extends Fragment implements OnClickListener {
 			Intent intent_about = new Intent(getActivity(), AboutActivity.class);
 			startActivity(intent_about);
 			break;
-//		case R.id.upgrade:
-//			Intent intent_upgrade = new Intent(getActivity(),UpgradeActivity.class);
-//			startActivity(intent_upgrade);
-//			break;
+		case R.id.upgrade:
+			Intent intent_upgrade = new Intent(getActivity(),UpgradeActivity.class);
+			startActivity(intent_upgrade);
+			break;
 		case R.id.upgrade_system: //系统升级
 //			Intent intent_system = new Intent(getActivity(),SystemActivity.class);
 //			startActivity(intent_system);
