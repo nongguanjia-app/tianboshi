@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -133,9 +132,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 
 		tv_title = (TextView)findViewById(R.id.course_title);
 		ivCollection = (ImageView) findViewById(R.id.course_collection);
-//		img_back = (ImageView)findViewById(R.id.img_back);
-//		
-//		tv_title.setText(title);
 		
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		mPager = (ViewPager) findViewById(R.id.vPager);
@@ -200,7 +196,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		String phoneNum = ((AppApplication) getBaseContext().getApplicationContext()).PHONENUM;
 		
 		Bundle bd = getIntent().getExtras();
@@ -216,87 +211,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 			}else{
 				collection(url, flagCollection);
 			}
-//			DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler() {
-//
-//				@Override
-//				public void onFailure(int statusCode, Header[] headers,
-//						String responseString, Throwable throwable) {
-//					// TODO Auto-generated method stub
-//					Toast.makeText(getApplicationContext(), "请求接口异常",
-//							Toast.LENGTH_SHORT).show();
-//					super.onFailure(statusCode, headers, responseString,
-//							throwable);
-//				}
-//
-//				@Override
-//				public void onSuccess(int statusCode, Header[] headers,
-//						JSONObject response) {
-//					// TODO Auto-generated method stub
-//					try {
-//						// JSONObject ja = response.getJSONObject("Subscribe");
-//						JSONObject ja = response
-//								.getJSONObject("DeleteFavorite");
-//						// 解析应答数据
-//						Gson gson = new Gson();
-//						mFavorite = gson.fromJson(ja.toString(), Favorite.class);
-//						if (mFavorite.getReturnCode().equals("1")) {
-//							// Log.e(TAG, "it"+mSubscribes);
-//							Toast.makeText(getApplicationContext(), "取消收藏",
-//									Toast.LENGTH_SHORT).show();
-////							mCollectionBtn.setVisibility(View.VISIBLE);
-////							mCancleCollectionBtn.setVisibility(View.GONE);
-//						} else {
-//							Toast.makeText(getApplicationContext(), "取消收藏失败",
-//									Toast.LENGTH_SHORT).show();
-//						}
-//					} catch (JSONException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					super.onSuccess(statusCode, headers, response);
-//				}
-//			});
-			break;
-
-//		case R.id.course_collection:
-//			DoctorTianRestClient.get(url2, null, new JsonHttpResponseHandler() {
-//
-//				@Override
-//				public void onFailure(int statusCode, Header[] headers,
-//						String responseString, Throwable throwable) {
-//					Toast.makeText(getApplicationContext(), "请求接口异常",
-//							Toast.LENGTH_SHORT).show();
-//					super.onFailure(statusCode, headers, responseString,
-//							throwable);
-//				}
-//
-//				@Override
-//				public void onSuccess(int statusCode, Header[] headers,
-//						JSONObject response) {
-//					try {
-//						JSONObject ja = response.getJSONObject("AddFavorite");
-//						// 解析应答数据
-//						Gson gson = new Gson();
-//						mFavoriteColl = gson.fromJson(ja.toString(),
-//								FavoriteColl.class);
-//						if (mFavoriteColl.getReturnCode().equals("1")) {
-//							Toast.makeText(getApplicationContext(), "收藏成功",
-//									Toast.LENGTH_SHORT).show();
-//							mCollectionBtn.setVisibility(View.GONE);
-//							mCancleCollectionBtn.setVisibility(View.VISIBLE);
-//						} else {
-//							Toast.makeText(getApplicationContext(), "收藏失败",
-//									Toast.LENGTH_SHORT).show();
-//						}
-//					} catch (JSONException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					super.onSuccess(statusCode, headers, response);
-//				}
-//			});
-
-		default:
 			break;
 		}
 	}
