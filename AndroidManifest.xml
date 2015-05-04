@@ -119,6 +119,10 @@
         <activity 
             android:name=".SurePsdActivity"
             android:screenOrientation="portrait" />
+        
+        <activity 
+            android:name=".SuccessCaseActivity"
+            android:screenOrientation="portrait" />
 		
         <receiver android:name=".receiver.StartServiceReceiver" >
             <intent-filter android:priority="1000" >

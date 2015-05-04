@@ -56,19 +56,19 @@ public class CourseTableAdapter extends BaseAdapter {
 			mHolder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.table_item, null);
 			mHolder.mName = (TextView) convertView.findViewById(R.id.table_chapter);
-			mHolder.mMediaName = (TextView) convertView.findViewById(R.id.table_about);
+			mHolder.mMediaName = (TextView) convertView.findViewById(R.id.table_title);
 			convertView.setTag(mHolder);
 		}else{
 			mHolder = (ViewHolder) convertView.getTag();
 		}
-		mHolder.mName.setText(mList.get(position).getName());
-		mHolder.mMediaName.setText(mList.get(position).getMediaName());
+		mHolder.mName.setText("第" + mList.get(position).getLectureOrder()+"节");
+		mHolder.mMediaName.setText(mList.get(position).getName());
 	//	imageLoader.displayImage(CommonConstant.img_course_primary +mList.get(position).getLargePicture(), mHolder.img, options);
 		return convertView;
 	}
 
 	private class ViewHolder{
 		ImageView img;
-		TextView mName,mMediaName;
+		TextView mName, mMediaName;
 	}
 }

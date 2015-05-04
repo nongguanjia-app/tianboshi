@@ -39,6 +39,7 @@ public class CommonConstant {
 	public static final String abouts = "abouts"; //关于
 	public static final String helps = "helps"; //帮助
 	public static final String editpassword = "editpassword"; //修改密码
+	public static final String caseinfo = "caseinfo"; //成功案例
 	
 	public static final int RESPONSE_ERROR = 0;
 	public static final int RESPONSE_SUCCESS = 1;
@@ -58,6 +59,9 @@ public class CommonConstant {
 	public static String img_discuss = "http://182.92.170.172/DoctorTian/img/roles/";
 	//课程经验谈详情图片路径
 	public static String img_exp_img = "http://182.92.170.172/DoctorTian";
+	//成功案例--图片
+	public static String img_course_case = "http://182.92.170.172/DoctorTian/img/course_case/";
+	
 	//下载包安装路径
 	public static final String savePath = "/sdcard/nongguanjia/apk/"; 
 	

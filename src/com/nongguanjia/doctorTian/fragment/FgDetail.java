@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.ExpertDetailActivity;
 import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.SuccessCaseActivity;
 import com.nongguanjia.doctorTian.adapter.DetailAdapter;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.Courses;
@@ -130,14 +131,19 @@ public class FgDetail extends Fragment {
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPos,
 					int childPos, long id) {
 				// TODO Auto-generated method stub
+				
+				
+				Intent intent;
 				if(groupPos == 0){
-					Intent intent = new Intent(getActivity(),ExpertDetailActivity.class);
+					intent = new Intent(getActivity(), ExpertDetailActivity.class);
 					String lectureId = mCourses.getAllLecture().get(childPos).getLectureId();
 					intent.putExtra("lectureId", lectureId);
-					startActivity(intent);
 				}else{
-					
+					intent = new Intent(getActivity(), SuccessCaseActivity.class);
+					String caseId = mCourses.getAllCase().get(childPos).getId();
+					intent.putExtra("caseId", caseId);
 				}
+				startActivity(intent);
 				
 				return true;
 			}
