@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.nongguanjia.doctorTian"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res/com.nongguanjia.doctorTian"
     android:orientation="vertical" >
-    <!-- 
-    <include layout="@layout/title"/>
-     -->
+
+<!--     <include layout="@layout/title"/> -->
 
     <RelativeLayout
         android:id="@+id/layout_player"
@@ -15,36 +14,42 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/white" >
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/title_bar_bg" >
 
-        <Button
-            android:id="@+id/collection"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:background="@drawable/collection" />
+        <TextView
+            android:id="@+id/course_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/cancle_collection"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:background="@drawable/exitcollection" />
+        <ImageView 
+            android:id="@+id/course_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/collection"/>
+            
     </RelativeLayout>
 
     <com.nongguanjia.doctorTian.view.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:pstsShouldExpand="true"
-        app:pstsUnderlineHeight="2dp"
-        app:pstsIndicatorHeight="2dp"
-        app:pstsIndicatorColor="@color/title_bar_bg"
-       	app:selectedTabTextColor="@color/title_bar_bg"
+        android:background="@android:color/white"
         app:pstsDividerColor="@android:color/transparent"
-	    app:pstsTabBackground="@drawable/background_tab"
-	   	android:background="@android:color/white" />
+        app:pstsIndicatorColor="@color/title_bar_bg"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsShouldExpand="true"
+        app:pstsTabBackground="@drawable/background_tab"
+        app:pstsUnderlineHeight="2dp"
+        app:selectedTabTextColor="@color/title_bar_bg" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vPager"
@@ -55,6 +60,5 @@
         android:background="#000000"
         android:flipInterval="30"
         android:persistentDrawingCache="animation" />
-   
 
 </LinearLayout>

@@ -158,7 +158,6 @@
 
         <RelativeLayout
             android:id="@+id/region"
-            android:visibility="gone"
             style="@style/my_item_layout" >
 
             <TextView
@@ -171,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />
@@ -190,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />
@@ -209,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />
@@ -228,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />
@@ -247,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />
@@ -266,7 +265,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <ImageView style="@style/divide" />

@@ -71,8 +71,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/button_subscribe_before"
-            android:visibility="gone" />
+            android:background="@drawable/button_subscribe_before" />
 
         <Button
             android:id="@+id/subscribe_btn2"
