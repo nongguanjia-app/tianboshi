@@ -25,16 +25,24 @@ public class CourseTypeAdapter extends BaseExpandableListAdapter {
 	private LayoutInflater mInflater;
 	private Context context;
 	private List<String> group;
-	private List<HashMap<String, ArrayList<AllCategorys>>> child;
+	private List<HashMap<String, ArrayList<AllCategorys>>> child = new ArrayList<HashMap<String, ArrayList<AllCategorys>>>(0);
 	private GridViewAdapter gridAdapter;
 	
 	private ViewHolder holder;
 	
-	public CourseTypeAdapter(Context context, List<String> names, List<HashMap<String, ArrayList<AllCategorys>>> list){
+	public List<HashMap<String, ArrayList<AllCategorys>>> getChild() {
+		return child;
+	}
+
+
+	public void setChild(List<HashMap<String, ArrayList<AllCategorys>>> child) {
+		this.child = child;
+	}
+	
+	public CourseTypeAdapter(Context context, List<String> names){
 		this.mInflater = LayoutInflater.from(context);
 		this.context = context;
 		this.group = names;
-		this.child = list;
 	}
 	
 

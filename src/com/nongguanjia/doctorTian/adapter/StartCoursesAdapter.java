@@ -1,5 +1,6 @@
 package com.nongguanjia.doctorTian.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -20,18 +21,25 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class StartCoursesAdapter extends BaseAdapter {
 	
 	private Context mContext;
-	private List<AllStartCourse> mList;
+	private List<AllStartCourse> mList = new ArrayList<AllStartCourse>(0);
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	private ViewHolder mHolder = null;
 	private LayoutInflater mInflater;
 	
-	public StartCoursesAdapter(Context mContext, List<AllStartCourse> mList) {
+	public List<AllStartCourse> getmList() {
+		return mList;
+	}
+
+	public void setmList(List<AllStartCourse> mList) {
+		this.mList = mList;
+	}
+	
+	public StartCoursesAdapter(Context mContext) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
 		options = Options.getOptions(true);
 		this.mContext = mContext;
-		this.mList = mList;
 	}
 	
 	public void refreshData(List<AllStartCourse> mList) {

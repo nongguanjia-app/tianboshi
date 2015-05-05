@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,9 @@ public class FgMyCourseHasStart extends Fragment {
 		// TODO Auto-generated method stub
 		this.activity = activity;
 		inflater = LayoutInflater.from(activity);
+		
+		mStartCoursesAdapter = new StartCoursesAdapter(activity);
+		
 		super.onAttach(activity);
 		
 	}
@@ -165,7 +169,10 @@ public class FgMyCourseHasStart extends Fragment {
 								new TypeToken<List<AllStartCourse>>() {
 								}.getType());
 						// Log.e(TAG, "执行"+ allStartCourse);
-						mStartCoursesAdapter = new StartCoursesAdapter(getActivity(), mAllStartCourse);
+						if(mAllStartCourse != null){
+							mStartCoursesAdapter.setmList(mAllStartCourse);
+						}
+						
 						mListView.setAdapter(mStartCoursesAdapter);
 					} else {
 						footerView.setVisibility(View.GONE);

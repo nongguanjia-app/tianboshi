@@ -144,7 +144,8 @@ public class FgCourseCenter extends Fragment {
 	
 	
 	private void showView(List<String> names, List<HashMap<String, ArrayList<AllCategorys>>> list){
-		adapter = new CourseTypeAdapter(getActivity(), names, list);
+		adapter = new CourseTypeAdapter(activity, names);
+		adapter.setChild(list);
 		expListView.setAdapter(adapter);
 		
 		expListView.setGroupIndicator(null);
