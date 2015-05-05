@@ -35,6 +35,7 @@ public class AppApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		Intent initService = new Intent(this, InitService.class);
 		startService(initService);
 		
