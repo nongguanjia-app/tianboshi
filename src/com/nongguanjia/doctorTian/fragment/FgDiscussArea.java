@@ -161,7 +161,12 @@ public class FgDiscussArea extends Fragment {
 						ArrayList<AllReviews> reviewList = new ArrayList<AllReviews>();
 						reviewList = gson.fromJson(ja.toString(), new TypeToken<List<AllReviews>>(){}.getType());
 						
-						adapter.getReviews().addAll(reviewList);
+						if(pageIndex == 1 && adapter.getReviews().size() > 0){
+							adapter.setReviews(reviewList);
+						}else{
+							adapter.getReviews().addAll(reviewList);
+						}
+						
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();

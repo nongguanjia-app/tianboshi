@@ -288,7 +288,7 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 				|| code == GotyeStatusCode.CODE_RELOGIN_SUCCESS) {
 			
 			//登录亲加服务器成功，跳转到主页
-			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+			Intent intent = new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			
 			GotyeUser u = GotyeAPI.getInstance().getCurrentLoginUser();
@@ -298,6 +298,8 @@ public class RegistActivity extends Activity implements OnClickListener, LoginLi
 			} else if (code == GotyeStatusCode.CODE_OK) {
 				Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 			}
+			
+			RegistActivity.this.finish();
 			
 		} else {
 			mDialog.dismiss();

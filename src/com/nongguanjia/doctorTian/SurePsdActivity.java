@@ -27,10 +27,10 @@ import com.nongguanjia.doctorTian.utils.MD5Util;
 public class SurePsdActivity extends Activity implements OnClickListener {
 	private EditText ed_psd, ed_psd_again;
 	private Button last_btn_next;
-	private CacheUserHelper cacheUser;
 	private ProgressDialog mDialog;
 	private String phoneNum;
 	private String psd;
+	private CacheUserHelper helper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,8 @@ public class SurePsdActivity extends Activity implements OnClickListener {
 
 	private void init() {
 		// TODO Auto-generated method stub
-		cacheUser = CacheUserHelper.getInstance(getApplicationContext());
+		helper = CacheUserHelper.getInstance(getApplicationContext());
+		
 		phoneNum = getIntent().getStringExtra("phoneNumber");
 		mDialog = new ProgressDialog(this);
 		mDialog.setMessage("正在加载请稍后...");
@@ -102,6 +103,8 @@ public class SurePsdActivity extends Activity implements OnClickListener {
 				// 解析应答数据
 				try {
 					if(response.getJSONArray("NewPassword").getJSONObject(0).getString("returnCode").equals("1")){
+						helper.deleteTable();
+						
 						Toast.makeText(getApplicationContext(), "修改密码成功",Toast.LENGTH_SHORT).show();
 						
 						Intent intent = new Intent(SurePsdActivity.this, LoginActivity.class);
