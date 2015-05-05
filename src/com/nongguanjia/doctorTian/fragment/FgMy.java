@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +20,6 @@ import com.nongguanjia.doctorTian.HelpActivity;
 import com.nongguanjia.doctorTian.MyDataActivity;
 import com.nongguanjia.doctorTian.R;
 import com.nongguanjia.doctorTian.UpdatePassActivity;
-import com.nongguanjia.doctorTian.UpgradeActivity;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.UserInfo;
 import com.nongguanjia.doctorTian.task.UpdateTask;
@@ -85,7 +83,6 @@ public class FgMy extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.my_info:
 			Intent intent_Info = new Intent(getActivity(), MyDataActivity.class);
