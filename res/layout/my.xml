@@ -27,7 +27,7 @@
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
-                    android:background="@drawable/head" />
+                    android:src="@drawable/default_person_img" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -52,15 +52,6 @@
                         android:text="手机号：13269177194"
                         android:textSize="15sp" />
                 </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="10dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/img_right" />
             </RelativeLayout>
 
             <LinearLayout
