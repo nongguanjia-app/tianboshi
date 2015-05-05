@@ -42,6 +42,7 @@ public class FgMy extends Fragment implements OnClickListener {
 	private TextView tvPhone,tvName;
 	private UserInfo info;
 	private PhotoBroadcastReceiver receiver;
+	private NameBroadcastReceiver receiverName;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -94,6 +95,9 @@ public class FgMy extends Fragment implements OnClickListener {
 		
 		receiver = new PhotoBroadcastReceiver();
 		getActivity().registerReceiver(receiver, new IntentFilter("com.nongguanjia.doctorTian.photo"));
+		
+		receiverName = new NameBroadcastReceiver();
+		getActivity().registerReceiver(receiverName, new IntentFilter("com.nongguanjia.doctorTian.name"));
 
 		return view;
 	}
@@ -181,10 +185,18 @@ public class FgMy extends Fragment implements OnClickListener {
 		}
 		
 	}
+	
+	private class NameBroadcastReceiver extends BroadcastReceiver{
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			tvName.setText(arg1.getStringExtra("name"));
+		}
+	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		getActivity().unregisterReceiver(receiver);
+		getActivity().unregisterReceiver(receiverName);
 	}
 }
