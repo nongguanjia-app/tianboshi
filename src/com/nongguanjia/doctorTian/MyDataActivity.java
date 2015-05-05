@@ -76,7 +76,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	final String[] itemsProduct = { "拖拉机", "种子", "化肥", "农具", "收割机", "插秧机" };
 	final boolean[] selectedProduct = new boolean[] { false, false, false,false,false,false};
 	private String role;
-	private String phone,nickname;
+	private String phone;
+	private String nickname;
 	int gender =1;
 	String telephone;
 	private UserInfo info;
@@ -97,7 +98,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		phone = ((AppApplication)this.getApplication()).PHONENUM;
 		nickname = ((AppApplication)this.getApplicationContext()).NICKNAME;
 		tvPhone.setText("手机号："+phone);
-		mySetText(tvNikcName, nickname, 0, 0);
+		mySetText(tvNikcName, info.getName(), 0, 0);
 		
 		role = ((AppApplication)this.getApplication()).ROLE;
 		
@@ -133,6 +134,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		
 		broadcastReceiver = new AreaBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter("TuiAreaQuActivity"));
+		
 	}
 
 	private void initView(){
@@ -144,9 +146,9 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		mPlant = (RelativeLayout) findViewById(R.id.plant_myInfo);
 		mArea = (RelativeLayout) findViewById(R.id.area);
 		mHead_img = (ImageView) findViewById(R.id.my_icon);
+		tvNikcName = (TextView) findViewById(R.id.name_myInfo);
 		//农户信息
 		tvSex = (TextView) findViewById(R.id.myInfo_sex);
-		tvNikcName = (TextView) findViewById(R.id.name_myInfo);
 		tvAge = (TextView) findViewById(R.id.t_age_myInfo);
 		tvArea = (TextView) findViewById(R.id.info_area);
 		tvPhone = (TextView) findViewById(R.id.phone_myInfo);
@@ -165,6 +167,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		rlDate = (RelativeLayout) findViewById(R.id.time);
 		rlNongJi = (RelativeLayout) findViewById(R.id.nongJi);
 		
+		tvNikcName.setOnClickListener(this);
+		
 		mHead_img.setOnClickListener(this);
 		mImage_back.setOnClickListener(this);
 		mSex.setOnClickListener(this);
@@ -178,6 +182,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		rlProduct.setOnClickListener(this);
 		rlDate.setOnClickListener(this);
 		rlNongJi.setOnClickListener(this);
+		
 	}
 
 	
@@ -186,6 +191,33 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.img_back:
 			finish();
+			break;
+		case R.id.name_myInfo:
+			final EditText etName = new EditText(MyDataActivity.this);
+			new AlertDialog.Builder(MyDataActivity.this).setTitle("编辑昵称")
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setView(etName)
+					.setNegativeButton("取消", null)
+					.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							String name = etName.getText().toString();
+							if(TextUtils.isEmpty(name)){
+								Toast.makeText(MyDataActivity.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+							}else{
+								if(!(TextUtils.isEmpty(name))){
+									ChangeInfo(name, info.getName(), info.getAvatar(), info.getAge(), info.getGender(), 
+											info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
+									info.setName(name);
+									tvNikcName.setText(name);
+									
+									Intent intent = new Intent("com.nongguanjia.doctorTian.name");
+									intent.putExtra("name", name);
+									sendBroadcast(intent);
+								}
+							}
+						}
+					}).show();
 			break;
 		case R.id.my_icon:
 			AlertDialog.Builder builderImg = new AlertDialog.Builder(MyDataActivity.this);
@@ -353,7 +385,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					}).show();
 			break;
 		case R.id.region:
-			//TODO 
 			Intent intentArea = new Intent(MyDataActivity.this, TuiAreaActivity.class);
 			startActivity(intentArea);
 			break;
