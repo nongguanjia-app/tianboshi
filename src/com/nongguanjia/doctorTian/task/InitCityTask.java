@@ -2,16 +2,13 @@ package com.nongguanjia.doctorTian.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.nongguanjia.doctorTian.db.CacheCityHelper;
 
 public class InitCityTask extends AsyncTask<String, Integer, String> {
 	private CacheCityHelper helper;
-	private Context context;
 	
 	public InitCityTask(Context context){
-		this.context = context;
 		helper = CacheCityHelper.getInstance(context);
 	}
 	
@@ -30,7 +27,6 @@ public class InitCityTask extends AsyncTask<String, Integer, String> {
 		// TODO Auto-generated method stub
 		if(result.equals("0")){
 			helper.closeDB();
-			Toast.makeText(context, "初始化数据成功", Toast.LENGTH_SHORT).show();
 		}
 		super.onPostExecute(result);
 	}
