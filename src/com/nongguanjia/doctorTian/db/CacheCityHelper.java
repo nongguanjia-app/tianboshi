@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CacheCityHelper {
 	private static CacheCityHelper INSTANCE = null;
@@ -16,6 +17,7 @@ public class CacheCityHelper {
 	private SQLiteDatabase db = null;
 	private static final String TB_NAME = "region";
 	private Context context;
+	
 
 	public CacheCityHelper(Context context) {
 		this.context = context;
@@ -50,8 +52,11 @@ public class CacheCityHelper {
 		return list;
 	}
 
+	
+
 	public void insertTable() {
 		db = mHelper.getWritableDatabase();
+		db.beginTransaction(); 
 		db.execSQL("insert  into 'region'('id','name','father') values (110000,'北京市',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (110100,'市辖区',110000)");
 		db.execSQL("insert  into 'region'('id','name','father') values (110101,'东城区',110100)");
@@ -3575,7 +3580,9 @@ public class CacheCityHelper {
 		db.execSQL("insert  into 'region'('id','name','father') values (710000,'台湾省',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (810000,'香港特别行政区',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (820000,'澳门特别行政区',0)");
-		
+		db.setTransactionSuccessful();  
+	    db.endTransaction();  
+	       
 	}
 
 	public int selectCount() {
