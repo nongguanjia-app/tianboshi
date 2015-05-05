@@ -874,7 +874,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	
 	private class AreaBroadcastReceiver extends BroadcastReceiver{
 		@Override
 		public void onReceive(Context arg0, Intent intent) {
