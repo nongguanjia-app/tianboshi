@@ -2,12 +2,7 @@ package com.nongguanjia.doctorTian;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -20,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -34,7 +31,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,7 +47,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.TuiUserInfo;
 import com.nongguanjia.doctorTian.bean.UserInfo;
-import com.nongguanjia.doctorTian.http.CustomerHttpClient;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 
@@ -74,6 +69,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private Uri uri;
 	private Bitmap photo;
 	private String path;
+	private SharedPreferences sp;
 	
 	final String[] items = { "小麦", "水稻", "大豆", "芝麻", "玉米", "食用菌", "蔬菜" };
 	final boolean[] selected = new boolean[] { false, false, false,false,false,false,false };// 一个存放Boolean值的数组
@@ -119,7 +115,12 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				mySetText(tvArea, info.getCropsArea(), 0, 4);
 			}
 		}
-				
+		
+		sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+		path = sp.getString("path", "");
+		if(!TextUtils.isEmpty(path)){
+			mHead_img.setImageBitmap(BitmapFactory.decodeFile(path));
+		}
 		
 		broadcastReceiver = new AreaBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter("TuiAreaQuActivity"));
@@ -738,13 +739,20 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				}
 				try{
 					File root = new File(Environment.getExternalStorageDirectory(),"image.jpg"); 
-							
 					FileOutputStream fileOutputStream = new FileOutputStream(root);
 					fileOutputStream.write(stream.toByteArray());
 					fileOutputStream.flush();
 					fileOutputStream.close();
 					path = root.getPath();
 					
+					Intent intent = new Intent("com.nongguanjia.doctorTian.photo");
+					intent.putExtra("path", path);
+					sendBroadcast(intent);
+					
+					sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+					Editor editor = sp.edit();
+					editor.putString("path", path);
+					editor.commit();
 //					String phone = ((AppApplication)getApplication()).PHONENUM;
 //					String url =DoctorTianRestClient.BASE_URL + phone +"," +"image.jpg";
 //					CustomerHttpClient.photoUpload(url, path, "image.jpg");
