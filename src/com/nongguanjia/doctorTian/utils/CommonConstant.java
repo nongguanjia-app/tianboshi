@@ -74,4 +74,5 @@ public class CommonConstant {
 	public static final String edituser = "edituser";//修改个人信息（农户）
 	public static final String editdealer = "editdealer";//修改推广人信息
 	public static final String dealers = "dealers";//获取推广人信息
+	public static final String fileuploads = "fileuploads";//上传头像
 }
