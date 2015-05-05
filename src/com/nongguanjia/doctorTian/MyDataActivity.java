@@ -3,6 +3,10 @@ package com.nongguanjia.doctorTian;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -17,6 +21,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -47,6 +53,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.TuiUserInfo;
 import com.nongguanjia.doctorTian.bean.UserInfo;
+import com.nongguanjia.doctorTian.db.CacheCityHelper;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 
@@ -101,6 +108,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		mySetText(tvNikcName, info.getName(), 0, 0);
 		
 		role = ((AppApplication)this.getApplication()).ROLE;
+		
+		
 		
 		sp = getSharedPreferences("config", Context.MODE_PRIVATE);
 		path = sp.getString("path", "");
@@ -896,7 +905,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
-	
+
 	
 	@Override
 	protected void onDestroy() {
