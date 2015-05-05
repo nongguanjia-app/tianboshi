@@ -2,10 +2,16 @@ package com.nongguanjia.doctorTian.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,9 +38,10 @@ public class FgMy extends Fragment implements OnClickListener {
 	private RelativeLayout mMy_info, mEdit_psd, mHelp, mAbout, mSystemUpgrade; //mRec mMy_Down mUpgrade
 	private Button mExit;
 	private TextView tv_title;
-	private ImageView img_back;
+	private ImageView img_back,mHead_img;
 	private TextView tvPhone,tvName;
 	private UserInfo info;
+	private PhotoBroadcastReceiver receiver;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -50,6 +57,7 @@ public class FgMy extends Fragment implements OnClickListener {
 		tvName = (TextView) view.findViewById(R.id.name_my);
 		tvPhone = (TextView) view.findViewById(R.id.phone_my);
 		tv_title = (TextView)view.findViewById(R.id.tv_title);
+		mHead_img = (ImageView) view.findViewById(R.id.my_icon);
 		tv_title.setText("我");
 		img_back = (ImageView)view.findViewById(R.id.img_back);
 		img_back.setVisibility(View.GONE);
@@ -77,6 +85,15 @@ public class FgMy extends Fragment implements OnClickListener {
 //		mUpgrade.setOnClickListener(this);
 		mSystemUpgrade.setOnClickListener(this);
 		mExit.setOnClickListener(this);
+		
+		SharedPreferences sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+		String path = sp.getString("path", "");
+		if(!TextUtils.isEmpty(path)){
+			mHead_img.setImageBitmap(BitmapFactory.decodeFile(path));
+		}
+		
+		receiver = new PhotoBroadcastReceiver();
+		getActivity().registerReceiver(receiver, new IntentFilter("com.nongguanjia.doctorTian.photo"));
 
 		return view;
 	}
@@ -152,5 +169,22 @@ public class FgMy extends Fragment implements OnClickListener {
 			break;
 		}
 	}
+	
+	private class PhotoBroadcastReceiver extends BroadcastReceiver{
 
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			String path = arg1.getStringExtra("path");
+			if(!TextUtils.isEmpty(path)){
+				mHead_img.setImageBitmap(BitmapFactory.decodeFile(path));
+			}
+		}
+		
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);
+	}
 }
