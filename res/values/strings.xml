@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">田博士</string>
+    <string name="app_name">农管家</string>
     <string name="action_settings">Settings</string>
     <string name="app_show_name">田博士</string>
     <string name="app_adout_name">我们农管家是一个新创立的农业互联网公司</string>
