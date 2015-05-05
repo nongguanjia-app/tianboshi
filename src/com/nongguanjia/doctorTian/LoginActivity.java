@@ -53,8 +53,8 @@ public class LoginActivity extends Activity implements OnClickListener, LoginLis
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		Intent initService = new Intent(this, InitService.class);
-		startService(initService);
+//		Intent initService = new Intent(this, InitService.class);
+//		startService(initService);
 		
 		//判断当前登录状态
 		int state = GotyeAPI.getInstance().getOnLineState();
