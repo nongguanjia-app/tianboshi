@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -14,8 +15,10 @@ public class CacheCityHelper {
 	private SqliteHelper mHelper = null;
 	private SQLiteDatabase db = null;
 	private static final String TB_NAME = "region";
+	private Context context;
 
 	public CacheCityHelper(Context context) {
+		this.context = context;
 		mHelper = new SqliteHelper(context);
 		db = mHelper.getWritableDatabase();
 	}
@@ -3572,6 +3575,7 @@ public class CacheCityHelper {
 		db.execSQL("insert  into 'region'('id','name','father') values (710000,'台湾省',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (810000,'香港特别行政区',0)");
 		db.execSQL("insert  into 'region'('id','name','father') values (820000,'澳门特别行政区',0)");
+		
 	}
 
 	public int selectCount() {
