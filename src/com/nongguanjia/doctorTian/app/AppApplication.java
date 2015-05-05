@@ -4,12 +4,14 @@ import java.io.File;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.letvcloud.sdk.LeCloud;
 import com.nongguanjia.doctorTian.bean.UserInfo;
+import com.nongguanjia.doctorTian.service.InitService;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,6 +35,8 @@ public class AppApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Intent initService = new Intent(this, InitService.class);
+		startService(initService);
 		
 		loadSelectedKey(this);
 		initImageLoader(getApplicationContext());
