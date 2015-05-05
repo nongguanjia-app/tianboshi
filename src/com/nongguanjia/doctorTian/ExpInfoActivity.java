@@ -297,7 +297,12 @@ public class ExpInfoActivity extends Activity implements OnClickListener{
 						JSONArray ja = response.getJSONObject("AllEchos").getJSONArray("allEchos");
 						echoList = gson.fromJson(ja.toString(), new TypeToken<List<AllEcho>>(){}.getType());
 						
-						adapter.getEchos().addAll(echoList);
+						if(pageIndex == 1 && adapter.getEchos().size() > 0){
+							adapter.setEchos(echoList);
+						}else{
+							adapter.getEchos().addAll(echoList);
+						}
+						
 						adapter.notifyDataSetChanged();
 						
 						setListViewInfo();
