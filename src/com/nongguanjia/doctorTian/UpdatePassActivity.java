@@ -20,6 +20,7 @@ import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.db.CacheUserHelper;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
+import com.nongguanjia.doctorTian.utils.MD5Util;
 /**
  * @author tx
  * 修改密码
@@ -72,6 +73,7 @@ public class UpdatePassActivity extends Activity implements OnClickListener{
 						Toast.makeText(UpdatePassActivity.this, "修改密码成功，请重新登录", Toast.LENGTH_SHORT).show();
 						Intent intent = new Intent(UpdatePassActivity.this, LoginActivity.class);
 						startActivity(intent);
+						UpdatePassActivity.this.finish();
 					}else{
 						Toast.makeText(UpdatePassActivity.this, "修改密码失败", Toast.LENGTH_SHORT).show();
 					}
@@ -107,7 +109,7 @@ public class UpdatePassActivity extends Activity implements OnClickListener{
 							if(!ed_again.getText().toString().equals(ed_new.getText().toString())){
 								Toast.makeText(getApplicationContext(), "两次密码不同，请重新输入", Toast.LENGTH_SHORT).show();
 							}else{
-								editPsd(ed_old.getText().toString(), ed_new.getText().toString());
+								editPsd(MD5Util.GetMD5Code(ed_old.getText().toString()), MD5Util.GetMD5Code(ed_new.getText().toString()));
 							}
 						}
 					}
