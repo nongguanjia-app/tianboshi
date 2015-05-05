@@ -1,7 +1,13 @@
 package com.nongguanjia.doctorTian;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -15,12 +21,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +51,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nongguanjia.doctorTian.app.AppApplication;
 import com.nongguanjia.doctorTian.bean.TuiUserInfo;
 import com.nongguanjia.doctorTian.bean.UserInfo;
+import com.nongguanjia.doctorTian.http.CustomerHttpClient;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 
@@ -46,11 +61,20 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private LinearLayout llNong,llTui;
 	private TextView mDataTitle;
 	private TextView tvNikcName,tvPhone,tvSex,tvAge,tvPlant,tvArea;
-	private Uri photoUri;
 	private TextView tvRegion,tvOffice,tvOfficeStyle,tvProduct,tvDate,tvNongJi;
 	private RelativeLayout rlRegion,rlOffice,rlOfficeStyle,rlProduct,rlDate,rlNongJi;
-	private final int PIC_FROM_CAMERA = 1;
-	private final int PIC_FROM＿LOCALPHOTO = 0;
+//	private Uri photoUri;
+//	private final int PIC_FROM_CAMERA = 1;
+//	private final int PIC_FROM＿LOCALPHOTO = 0;
+	//拍照
+	private int NONE = 0;
+	private int PHOTOHRAPH = 1;// 拍照
+	private int PHOTOZOOM = 2; // 缩放
+	private int PHOTORESOULT = 3;// 结果
+	private Uri uri;
+	private Bitmap photo;
+	private String path;
+	
 	final String[] items = { "小麦", "水稻", "大豆", "芝麻", "玉米", "食用菌", "蔬菜" };
 	final boolean[] selected = new boolean[] { false, false, false,false,false,false,false };// 一个存放Boolean值的数组
 	final String[] itemsProduct = { "拖拉机", "种子", "化肥", "农具", "收割机", "插秧机" };
@@ -162,15 +186,19 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			builderImg.setItems(photo, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					//Toast.makeText(MyDataActivity.this,"您选择的头像为：" + photo[which], Toast.LENGTH_SHORT).show();
 					switch (which) {
 					case 0:
-						doHandlerPhoto(PIC_FROM_CAMERA);// 用户点击了从照相机获取
+						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+						File root = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(root));
+						startActivityForResult(intent, PHOTOHRAPH);
+						dialog.dismiss();
 						break;
 					case 1:
-						doHandlerPhoto(PIC_FROM＿LOCALPHOTO);// 从相册中去获取
-						break;	
-					default:
+						Intent intent1 = new Intent(Intent.ACTION_PICK,null);
+						intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+						startActivityForResult(intent1, PHOTOZOOM);
+						dialog.dismiss();
 						break;
 					}
 				}
@@ -502,7 +530,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	 * @param area 农作物面积
 	 * @param nongId 农作物面积单位ID
 	 */
-	private void ChangeInfo(String nickname,String name,String head,String age,String sex,String nongName,String area,String nongId) {
+	private void ChangeInfo(String nickname,String name,String head,String age,String sex,String nongName,
+			String area,String nongId) {
 		String parameter= nickname+","+name+","+head+","+age+","+sex+","+nongName+","+area+","+nongId;
 				
 		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
@@ -669,122 +698,96 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
-	/**
-	 * 根据不同方式选择图片设置ImageView
-	 * @param type 0-本地相册选择，非0为拍照
-	 */
-	private void doHandlerPhoto(int type)
-	{
-		try
-		{
-			//保存裁剪后的图片文件
-			File pictureFileDir = new File(Environment.getExternalStorageDirectory(), "/upload");
-			if (!pictureFileDir.exists()) {
-				pictureFileDir.mkdirs();
-			}
-			File picFile = new File(pictureFileDir, "upload.jpeg");
-			if (!picFile.exists()) {
-				picFile.createNewFile();
-			}
-			photoUri = Uri.fromFile(picFile);
-			
-			if (type==PIC_FROM＿LOCALPHOTO)
-			{
-				Intent intent = getCropImageIntent();
-				startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
-			}else
-			{
-				Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-				startActivityForResult(cameraIntent, PIC_FROM_CAMERA);
-			}
-
-		} catch (Exception e)
-		{
-			Log.i("HandlerPicError", "处理图片出现错误");
-		}
-	}
 	
-	/**
-	 * 调用图片剪辑程序
-	 */
-	public Intent getCropImageIntent() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-		intent.setType("image/*");
-		setIntentParams(intent);
-		return intent;
-	}
-	
-	/**
-	 * 启动裁剪
-	 */
-	private void cropImageUriByTakePhoto() {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setDataAndType(photoUri, "image/*");
-		setIntentParams(intent);
-		startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
-	}
-	
-	/**
-	 * 设置公用参数
-	 */
-	private void setIntentParams(Intent intent)
-	{
-		intent.putExtra("crop", "true");
-		intent.putExtra("aspectX", 1);
+	public void startPhotoZoom(Uri uri){
+	 Intent intent = new Intent("com.android.camera.action.CROP");
+	 intent.setDataAndType(uri, "image/*");
+	 intent.putExtra("crop", "true");
+	  intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
-		intent.putExtra("outputX", 600);
-		intent.putExtra("outputY", 600);
-		intent.putExtra("noFaceDetection", true); // no face detection
-		intent.putExtra("scale", true);
-		intent.putExtra("return-data", false);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-	}
+		// 裁剪图片的宽高
+		intent.putExtra("outputX", 200);
+		intent.putExtra("outputY", 200);
+		intent.putExtra("return-data", true);
+	  startActivityForResult(intent, PHOTORESOULT);
+}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		switch (requestCode)
-		{
-		case PIC_FROM_CAMERA: // 拍照
-			try 
-			{
-				cropImageUriByTakePhoto();
-			} catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			break;
-		case PIC_FROM＿LOCALPHOTO:
-			try
-			{
-				if (photoUri != null) 
-				{
-					Bitmap bitmap = decodeUriAsBitmap(photoUri);
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode==NONE) return;
+		if(requestCode==PHOTOHRAPH&&(resultCode==RESULT_OK)){
+			File photo = new File(Environment.getExternalStorageDirectory()+"/image.jpg");
+			startPhotoZoom(Uri.fromFile(photo));
+			return;
+		}
+		if(data==null)	return;
+		if(requestCode==PHOTOZOOM){
+			uri = data.getData();
+			startPhotoZoom(uri);
+			return;
+		}
+		if(requestCode==PHOTORESOULT){
+			Bundle extras = data.getExtras();
+			if(extras!=null){
+				photo = extras.getParcelable("data");
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				if(photo!=null){
+					Bitmap bitmap = getRoundedCornerBitmap(photo);
+					bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 					mHead_img.setImageBitmap(bitmap);
 				}
-			} catch (Exception e) 
-			{
-				e.printStackTrace();
+				try{
+					File root = new File(Environment.getExternalStorageDirectory(),"image.jpg"); 
+							
+					FileOutputStream fileOutputStream = new FileOutputStream(root);
+					fileOutputStream.write(stream.toByteArray());
+					fileOutputStream.flush();
+					fileOutputStream.close();
+					path = root.getPath();
+					
+//					String phone = ((AppApplication)getApplication()).PHONENUM;
+//					String url =DoctorTianRestClient.BASE_URL + phone +"," +"image.jpg";
+//					CustomerHttpClient.photoUpload(url, path, "image.jpg");
+//					File file = new File(path);
+//					CustomerHttpClient.uploadFile(file, url);
+//					CustomerHttpClient.uploadpic(path, handler, url, pictoken, 1);
+				}catch(Exception e){
+					Log.d("文件路径错误", Log.getStackTraceString(e));
+				}
 			}
-			break;
+			return;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+
+	/**
+	 * 把剪裁后的图片设置为圆形
+	 * 
+	 * @param bitmap
+	 * @return
+	 */
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+		if(bitmap!=null){
+			Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), Config.ARGB_8888);
+			Canvas canvas = new Canvas(outBitmap);
+			final int color = 0xff424242;
+			final Paint paint = new Paint();
+			final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+			final RectF rectF = new RectF(rect);
+			final float roundPX = bitmap.getWidth() / 2;
+			paint.setAntiAlias(true);
+			canvas.drawARGB(0, 0, 0, 0);
+			paint.setColor(color);
+			canvas.drawRoundRect(rectF, roundPX, roundPX, paint);
+			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+			canvas.drawBitmap(bitmap, rect, rect, paint);
+			return outBitmap;
+		}else{
+			return bitmap;
 		}
 	}
 	
-	private Bitmap decodeUriAsBitmap(Uri uri)
-	{
-		Bitmap bitmap = null;
-		try 
-		{
-			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		return bitmap;
-	}
 	
 	private class AreaBroadcastReceiver extends BroadcastReceiver{
 		@Override
