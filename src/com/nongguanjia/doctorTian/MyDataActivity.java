@@ -101,8 +101,23 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		
 		role = ((AppApplication)this.getApplication()).ROLE;
 		
+		sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+		path = sp.getString("path", "");
+		if(!TextUtils.isEmpty(path)){
+			mHead_img.setImageBitmap(BitmapFactory.decodeFile(path));
+		}
+		
 		if(role.equals("推广人")){
 			getTuiInfo();//获取推广人信息
+			if(tuiUserInfo==null){
+				mySetText(tvRegion, sp.getString("area", "未设置"), 0);
+				mySetText(tvArea, sp.getString("province", "未设置"), 0);
+				mySetText(tvOffice, sp.getString("workPlace", "未设置"), 0);
+				mySetText(tvOfficeStyle, sp.getString("BusinessForms", "未设置"), 0);
+				mySetText(tvProduct, sp.getString("Products", "未设置"), 0);
+				mySetText(tvDate, sp.getString("WorkYear", "未设置"), 1);
+				mySetText(tvNongJi, sp.getString("Professional", "未设置"), 0);
+			}
 			llTui.setVisibility(View.VISIBLE);
 			llNong.setVisibility(View.GONE);
 		}else{
@@ -114,12 +129,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				mySetText(tvPlant, info.getCropsId(), 0, 0);
 				mySetText(tvArea, info.getCropsArea(), 0, 4);
 			}
-		}
-		
-		sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-		path = sp.getString("path", "");
-		if(!TextUtils.isEmpty(path)){
-			mHead_img.setImageBitmap(BitmapFactory.decodeFile(path));
 		}
 		
 		broadcastReceiver = new AreaBroadcastReceiver();
@@ -190,7 +199,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					switch (which) {
 					case 0:
 						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-						File root = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+						File root = new File(Environment.getExternalStorageDirectory(), "image.jpg");
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(root));
 						startActivityForResult(intent, PHOTOHRAPH);
 						dialog.dismiss();
@@ -344,6 +353,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					}).show();
 			break;
 		case R.id.region:
+			//TODO 
 			Intent intentArea = new Intent(MyDataActivity.this, TuiAreaActivity.class);
 			startActivity(intentArea);
 			break;
@@ -357,15 +367,22 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						@Override
 						public void onClick(DialogInterface arg0, int arg1) {
 							String data = office.getText().toString();
-							if(!(TextUtils.isEmpty(data))){
-								ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-										tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-										tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-										tuiUserInfo.getProducts(),data,
-										tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
-										tuiUserInfo.getProfessional());
+							if(tuiUserInfo==null){
 								tvOffice.setText(data);
-								tuiUserInfo.setWorkPlace(data);
+								Editor editor = sp.edit();
+								editor.putString("workPlace", data);
+								editor.commit();
+							}else{
+								if(!(TextUtils.isEmpty(data))){
+									ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+											tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+											tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+											tuiUserInfo.getProducts(),data,
+											tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
+											tuiUserInfo.getProfessional());
+									tvOffice.setText(data);
+									tuiUserInfo.setWorkPlace(data);
+								}
 							}
 						}
 					}).show();
@@ -379,23 +396,35 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				public void onClick(DialogInterface dialog, int which) {
 					tvSex.setText(citiesStyle[which]);
 					if(citiesStyle[which] == "个体户"){
-						ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-								tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-								tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-								tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
-								"个体户", tuiUserInfo.getWorkYear(), 
-								tuiUserInfo.getProfessional());
+						if(tuiUserInfo==null){
+							Editor editor = sp.edit();
+							editor.putString("BusinessForms", "个体户");
+							editor.commit();
+						}else{
+							ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+									tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+									tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+									tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+									"个体户", tuiUserInfo.getWorkYear(), 
+									tuiUserInfo.getProfessional());
+							tuiUserInfo.setBusinessForms("个体户");
+						}
 						tvOfficeStyle.setText("个体户");
-						tuiUserInfo.setBusinessForms("个体户");
 					}else{
-						ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-								tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-								tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-								tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
-								"有限公司", tuiUserInfo.getWorkYear(), 
-								tuiUserInfo.getProfessional());
+						if(tuiUserInfo==null){
+							Editor editor = sp.edit();
+							editor.putString("BusinessForms", "有限公司");
+							editor.commit();
+						}else{
+							ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+									tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+									tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+									tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+									"有限公司", tuiUserInfo.getWorkYear(), 
+									tuiUserInfo.getProfessional());
+							tuiUserInfo.setBusinessForms("有限公司");
+						}
 						tvOfficeStyle.setText("有限公司");
-						tuiUserInfo.setBusinessForms("有限公司");
 					}
 				}
 			});
@@ -461,14 +490,20 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			.setPositiveButton("确定",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-									tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-									tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-									nongNameParT,tuiUserInfo.getWorkPlace(),
-									tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
-									tuiUserInfo.getProfessional());
+							if(tuiUserInfo==null){
+								Editor editor = sp.edit();
+								editor.putString("Products", nongNameParT);
+								editor.commit();
+							}else{
+								ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+										tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+										tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+										nongNameParT,tuiUserInfo.getWorkPlace(),
+										tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
+										tuiUserInfo.getProfessional());
+								tuiUserInfo.setProducts(nongNameParT);
+							}
 							tvProduct.setText(nongNameParT);
-							tuiUserInfo.setProducts(nongNameParT);
 						}
 					}).setNegativeButton("取消", null).show();
 			break;
@@ -483,14 +518,20 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						public void onClick(DialogInterface arg0, int arg1) {
 							String data = time.getText().toString();
 							if(!(TextUtils.isEmpty(data))){
-								ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-										tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-										tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-										tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
-										tuiUserInfo.getBusinessForms(), data, 
-										tuiUserInfo.getProfessional());
+								if(tuiUserInfo==null){
+									Editor editor = sp.edit();
+									editor.putString("WorkYear", data);
+									editor.commit();
+								}else{
+									ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+											tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+											tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+											tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+											tuiUserInfo.getBusinessForms(), data, 
+											tuiUserInfo.getProfessional());
+									tuiUserInfo.setWorkYear(data);
+								}
 								tvDate.setText(data+" 年");
-								tuiUserInfo.setWorkYear(data);
 							}
 						}
 					}).show();
@@ -506,14 +547,20 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						public void onClick(DialogInterface arg0, int arg1) {
 							String data = nongJi.getText().toString();
 							if(!(TextUtils.isEmpty(data))){
-								ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-										tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-										tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
-										tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
-										tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
-										data);
+								if(tuiUserInfo==null){
+									Editor editor = sp.edit();
+									editor.putString("Professional", data);
+									editor.commit();
+								}else{
+									ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+											tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+											tuiUserInfo.getProvince(), tuiUserInfo.getCity(), tuiUserInfo.getArea(), 
+											tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+											tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
+											data);
+									tuiUserInfo.setProfessional(data);
+								}
 								tvNongJi.setText(data);
-								tuiUserInfo.setProfessional(data);
 							}
 						}
 					}).show();
@@ -640,7 +687,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						mySetText(tvDate, tuiUserInfo.getWorkYear(), 1);
 						mySetText(tvNongJi, tuiUserInfo.getProfessional(), 0);
 					}else{
-						Toast.makeText(MyDataActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
+//						Toast.makeText(MyDataActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -804,15 +851,22 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			String shi = intent.getStringExtra("shi");
 			String qu = intent.getStringExtra("qu");
 			if(!TextUtils.isEmpty(qu)){
-				ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
-						tuiUserInfo.getGender(), tuiUserInfo.getAge(),
-						sheng, shi, qu, tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
-						tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
-						tuiUserInfo.getProfessional());
+				if(tuiUserInfo==null){
+					Editor editor = sp.edit();
+					editor.putString("area", sheng+" "+shi+" "+qu);
+					editor.commit();
+				}else{
+					ChangeInfo(tuiUserInfo.getLoginName(), tuiUserInfo.getAvatar(), 
+							tuiUserInfo.getGender(), tuiUserInfo.getAge(),
+							sheng, shi, qu, tuiUserInfo.getProducts(),tuiUserInfo.getWorkPlace(),
+							tuiUserInfo.getBusinessForms(), tuiUserInfo.getWorkYear(), 
+							tuiUserInfo.getProfessional());
+				}
 				tvRegion.setText(sheng+" "+shi+" "+qu);
 			}
 		}
 	}
+	
 	
 	@Override
 	protected void onDestroy() {
