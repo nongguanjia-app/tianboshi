@@ -119,15 +119,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		
 		if(role.equals("推广人")){
 			getTuiInfo();//获取推广人信息
-			if(tuiUserInfo==null){
-				mySetText(tvRegion, sp.getString("area", "未设置"), 0);
-				mySetText(tvArea, sp.getString("province", "未设置"), 0);
-				mySetText(tvOffice, sp.getString("workPlace", "未设置"), 0);
-				mySetText(tvOfficeStyle, sp.getString("BusinessForms", "未设置"), 0);
-				mySetText(tvProduct, sp.getString("Products", "未设置"), 0);
-				mySetText(tvDate, sp.getString("WorkYear", "未设置"), 1);
-				mySetText(tvNongJi, sp.getString("Professional", "未设置"), 0);
-			}
 			llTui.setVisibility(View.VISIBLE);
 			llNong.setVisibility(View.GONE);
 		}else{
@@ -727,6 +718,15 @@ public class MyDataActivity extends Activity implements OnClickListener {
 						mySetText(tvDate, tuiUserInfo.getWorkYear(), 1);
 						mySetText(tvNongJi, tuiUserInfo.getProfessional(), 0);
 					}else{
+						if(tuiUserInfo==null){
+							mySetText(tvRegion, sp.getString("area", "未设置"), 0);
+							mySetText(tvArea, sp.getString("province", "未设置"), 0);
+							mySetText(tvOffice, sp.getString("workPlace", "未设置"), 0);
+							mySetText(tvOfficeStyle, sp.getString("BusinessForms", "未设置"), 0);
+							mySetText(tvProduct, sp.getString("Products", "未设置"), 0);
+							mySetText(tvDate, sp.getString("WorkYear", "未设置"), 1);
+							mySetText(tvNongJi, sp.getString("Professional", "未设置"), 0);
+						}
 //						Toast.makeText(MyDataActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
