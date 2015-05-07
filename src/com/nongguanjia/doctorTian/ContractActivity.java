@@ -60,14 +60,17 @@ public class ContractActivity extends Activity {
 		tv_title.setText("通讯录");
 		btn_commit.setVisibility(View.VISIBLE);
 		
-		contracts = GetContractUtil.getPhoneContracts(this);
+//		contracts = GetContractUtil.getPhoneContracts(this);
+		contracts = GetContractUtil.getSIMContacts(this);
 		
 		ArrayList<AllAttention> friendList = (ArrayList<AllAttention>)getIntent().getSerializableExtra("FriendList");
-		//已经添加的好友不再显示
-		for(int i = 0; i < friendList.size(); i++){
-			for(int j = 0; j < contracts.size(); j++){
-				if(contracts.get(j).getPhoneNum().equals(friendList.get(i).getTelephone())){
-					contracts.remove(contracts.get(j));
+		if(friendList != null){
+			//已经添加的好友不再显示
+			for(int i = 0; i < friendList.size(); i++){
+				for(int j = 0; j < contracts.size(); j++){
+					if(contracts.get(j).getPhoneNum().equals(friendList.get(i).getTelephone())){
+						contracts.remove(contracts.get(j));
+					}
 				}
 			}
 		}
@@ -81,8 +84,13 @@ public class ContractActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				list = adapter.getList();
-				UploadTask task = new UploadTask();
-				task.execute();
+				if(list.size() > 0){
+					UploadTask task = new UploadTask();
+					task.execute();
+				}else{
+					Toast.makeText(ContractActivity.this, "请选择好友", Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
 		

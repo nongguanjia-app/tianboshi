@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/commit"
         android:textSize="17sp"
-        android:textColor="@color/lightgreen"
+        android:textColor="@color/white"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:visibility="gone"

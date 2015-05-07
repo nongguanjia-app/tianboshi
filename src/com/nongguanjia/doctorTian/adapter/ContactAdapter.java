@@ -74,8 +74,9 @@ public class ContactAdapter extends BaseAdapter {
 		if(convertView == null){
 			mHolder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.contract_item, null);
-			mHolder.img = (ImageView)convertView.findViewById(R.id.img);
+//			mHolder.img = (ImageView)convertView.findViewById(R.id.img);
 			mHolder.tv_name = (TextView)convertView.findViewById(R.id.tv_name);
+			mHolder.tv_tel = (TextView)convertView.findViewById(R.id.tv_phone);
 			mHolder.cb_choose = (CheckBox)convertView.findViewById(R.id.cb_choose);
 			
 			convertView.setTag(mHolder);
@@ -84,18 +85,23 @@ public class ContactAdapter extends BaseAdapter {
 		}
 		
 		mHolder.tv_name.setText(info.getName());
+		mHolder.tv_tel.setText(info.getPhoneNum());
 		
 		mHolder.cb_choose.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton btnView, boolean isChecked) {
 				// TODO Auto-generated method stub
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("name", info.getName());
+				map.put("tel", info.getPhoneNum());
+				
+				if(list.contains(map)){
+					list.remove(map);
+					mHolder.cb_choose.setChecked(false);
+				}
+				
 				if(isChecked){
-					HashMap<String, String> map = new HashMap<String, String>();
-					
-					map.put("name", info.getName());
-					map.put("tel", info.getPhoneNum());
-					
 					list.add(map);
 				}
 			}
@@ -108,8 +114,8 @@ public class ContactAdapter extends BaseAdapter {
 	
 	
 	private class ViewHolder{
-		ImageView img;
-		TextView tv_name;
+//		ImageView img;
+		TextView tv_name, tv_tel;
 		CheckBox cb_choose;
 	}
 	
