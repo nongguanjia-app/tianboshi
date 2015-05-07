@@ -11,7 +11,7 @@
     <string name="company_tel">公司电话：18828838888</string>
     <string name="company_address">公司地址：北京东四十条</string>
     <string name="company_edition">农管家公司 版权所有</string>
-    <string name="hint_input_phone">输入手机号码</string>
+    <string name="hint_input_phone">输入密码</string>
     <string name="hint_input_psd">输入密码</string>
     <string name="hint_input_again">再次输入密码</string>
     <string name="hint_input_auto">自动获取验证码</string>
