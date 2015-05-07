@@ -5,11 +5,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class DoctorTianRestClient {
-	public static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
+//	public static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
 	
 //	private static final String BASE_URL = "http://123.56.158.177/tianboshi/";//测试服务器
 	
-//	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
+	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
 	
 	private static AsyncHttpClient client = new AsyncHttpClient();
 	

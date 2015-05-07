@@ -2,11 +2,6 @@ package com.nongguanjia.doctorTian.adapter;
 
 import java.util.List;
 
-import com.nongguanjia.doctorTian.R;
-import com.nongguanjia.doctorTian.bean.AllChapters;
-import com.nongguanjia.doctorTian.utils.Options;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +10,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nongguanjia.doctorTian.R;
+import com.nongguanjia.doctorTian.bean.AllChaptersNong;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class CourseTableAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<AllChapters> mList;
+	private List<AllChaptersNong> mList;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	private ViewHolder mHolder = null;
 	private LayoutInflater mInflater;
 	
-	public CourseTableAdapter(Context mContext, List<AllChapters> mList) {
+	public CourseTableAdapter(Context mContext, List<AllChaptersNong> mList) {
 		super();
 		mInflater = LayoutInflater.from(mContext);
 //		options = Options.getOptions();

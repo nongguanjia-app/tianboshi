@@ -41,7 +41,6 @@ public class SurePsdActivity extends Activity implements OnClickListener {
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		helper = CacheUserHelper.getInstance(getApplicationContext());
 		
 		phoneNum = getIntent().getStringExtra("phoneNumber");

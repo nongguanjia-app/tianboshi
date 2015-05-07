@@ -137,7 +137,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		mPager = (ViewPager) findViewById(R.id.vPager);
 
 		mPager.setAdapter(new MyAdapter(fragmentManager, titles));
-
 		tabs.setViewPager(mPager);
 		
 		ivCollection.setOnClickListener(this);
@@ -309,7 +308,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 			if(!TextUtils.isEmpty(vuid)){
 				mPlayerView.playVideo(CommonConstant.UUID, vuid, "c8b127186556ccfae084bbede663a898", "", "");
 			}
-			
 		}
 
 	}	
@@ -322,7 +320,6 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 		super.onDestroy();
 		isBackgroud = false;
 		LogUtils.clearLog();
-		unregisterReceiver(broadcastReceiver);
 	}
 	/**
 	 * 获取到课程信息时显示是否收藏
@@ -342,6 +339,7 @@ public class CourseActivity extends FragmentActivity implements OnClickListener 
 					ivCollection.setImageResource(R.drawable.collection);
 				}
 			}
+			unregisterReceiver(broadcastReceiver);
 		}
 	}
 	
