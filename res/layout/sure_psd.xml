@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/img_u"
             android:layout_marginLeft="5dp"
-            android:hint="@string/hint_input_phone"
+            android:hint="@string/hint_input_psd"
             android:layout_alignBottom="@id/img_u"
             android:background="@null"
             android:numeric="integer"
@@ -76,7 +76,7 @@
             android:layout_toRightOf="@id/img_p"
             android:layout_marginLeft="5dp"
              android:layout_alignBottom="@id/img_p"
-            android:hint="@string/hint_input_psd"
+            android:hint="@string/hint_input_again"
             android:background="@null"
             android:password="true"
             android:textColorHint="@color/text_hint_color" />

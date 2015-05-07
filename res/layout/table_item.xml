@@ -29,6 +29,7 @@
             android:layout_height="20dp"
             android:background="@drawable/btn_down"
             android:layout_centerVertical="true"
+            android:focusable="false"
             android:layout_alignParentRight="true"/>
         
     </RelativeLayout>
