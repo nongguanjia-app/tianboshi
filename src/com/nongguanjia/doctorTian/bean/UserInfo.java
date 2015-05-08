@@ -22,6 +22,7 @@ public class UserInfo implements Parcelable{
 	private String authTxt;
 	private String Cauid;
 	
+	
 	public String getCauid() {
 		return Cauid;
 	}
