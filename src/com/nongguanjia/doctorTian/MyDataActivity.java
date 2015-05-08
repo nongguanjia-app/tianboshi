@@ -112,7 +112,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_info);
-		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
 		llNong = (LinearLayout) findViewById(R.id.myInfo_linearLayout_nong);
 		llTui = (LinearLayout) findViewById(R.id.myInfo_linearLayout_tui);
 		initView();
@@ -121,7 +120,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		phone = ((AppApplication)this.getApplication()).PHONENUM;
 		nickname = ((AppApplication)this.getApplicationContext()).NICKNAME;
 		tvPhone.setText("手机号："+phone);
-		mySetTextInfo(tvNikcName, info.getName(), 0);
+		tvNikcName.setText(info.getName());
+		
 		role = ((AppApplication)this.getApplication()).ROLE;
 		
 		
@@ -151,6 +151,9 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		
 		unitsReceiver = new UnitsBroadcastReceiver();
 		registerReceiver(unitsReceiver, new IntentFilter("com.nongguanjia.doctorTian"));
+		
+		getAllproduct();
+		getAllcrops();
 	}
 
 	private void initView(){
@@ -308,7 +311,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					}).show();
 			break;
 		case R.id.plant_myInfo:
-			getAllcrops();
 			final StringBuffer sb = new StringBuffer();
 			new AlertDialog.Builder(MyDataActivity.this)
 					.setTitle("选择种植作物")
@@ -422,7 +424,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			builderStyle.show();
 			break;
 		case R.id.product:
-			getAllproduct();
 			final StringBuffer sb1 = new StringBuffer();
 			new AlertDialog.Builder(MyDataActivity.this)
 			.setTitle("选择种植作物")
