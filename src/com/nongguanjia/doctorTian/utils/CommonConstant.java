@@ -75,4 +75,7 @@ public class CommonConstant {
 	public static final String editdealer = "editdealer";//修改推广人信息
 	public static final String dealers = "dealers";//获取推广人信息
 	public static final String fileuploads = "fileuploads";//上传头像
+	public static final String allcrops = "allcrops";//获取作物名称
+	public static final String allproduct = "allproduct";//获取经营产品内容
+	public static final String allunits = "allunits";//获取面积单位
 }

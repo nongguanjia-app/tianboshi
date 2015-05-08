@@ -47,7 +47,6 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_confirm:
 			if(TextUtils.isEmpty(ed_tel.getText())){
@@ -71,16 +70,13 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 	
 	private void addFriend(){
 		String phoneNum = ((AppApplication)getApplication()).PHONENUM;
-		String url = CommonConstant.addattention + "/" 
-				+ ed_tel.getText().toString() + ","
-				+ phoneNum + ","
-				+ "2";
+		String url = CommonConstant.addattention + "/" + phoneNum + ","+ ed_tel.getText().toString()
+				+ "," + "2";
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int statusCode, Header[] headers,
 					String responseString, Throwable throwable) {
-				// TODO Auto-generated method stub
 				super.onFailure(statusCode, headers, responseString, throwable);
 			}
 
@@ -96,11 +92,14 @@ public class AddFriendActivity extends Activity implements OnClickListener{
 						sendBroadcast(intent);
 						
 						AddFriendActivity.this.finish();
+					}else if(response.getJSONObject("AddAttention").getString("returnCode").equals("4")){
+						Toast.makeText(AddFriendActivity.this, "好友未注册，已发送短信提示", Toast.LENGTH_SHORT).show();
+					}else if(response.getJSONObject("AddAttention").getString("returnCode").equals("5")){
+						Toast.makeText(AddFriendActivity.this, "好友已添加", Toast.LENGTH_SHORT).show();
 					}else{
 						Toast.makeText(AddFriendActivity.this, "添加好友失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

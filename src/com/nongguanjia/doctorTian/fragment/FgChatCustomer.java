@@ -62,7 +62,6 @@ public class FgChatCustomer extends Fragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		mReceiver = new RefreshReceiver();
 		IntentFilter intentFilter = new IntentFilter(CommonConstant.BROADCAST_ACTION);
 		activity.registerReceiver(mReceiver, intentFilter);
@@ -144,7 +143,6 @@ public class FgChatCustomer extends Fragment {
 						Toast.makeText(getActivity().getApplicationContext(), "获取好友失败", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

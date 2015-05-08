@@ -2,13 +2,13 @@ package com.nongguanjia.doctorTian;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,8 +21,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -35,6 +33,7 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,10 +49,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.nongguanjia.doctorTian.app.AppApplication;
+import com.nongguanjia.doctorTian.bean.Allcrops;
+import com.nongguanjia.doctorTian.bean.Allproduct;
 import com.nongguanjia.doctorTian.bean.TuiUserInfo;
 import com.nongguanjia.doctorTian.bean.UserInfo;
-import com.nongguanjia.doctorTian.db.CacheCityHelper;
+import com.nongguanjia.doctorTian.http.CustomerHttpClient;
 import com.nongguanjia.doctorTian.http.DoctorTianRestClient;
 import com.nongguanjia.doctorTian.utils.CommonConstant;
 
@@ -78,10 +80,12 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private String path;
 	private SharedPreferences sp;
 	
-	final String[] items = { "小麦", "水稻", "大豆", "芝麻", "玉米", "食用菌", "蔬菜" };
-	final boolean[] selected = new boolean[] { false, false, false,false,false,false,false };// 一个存放Boolean值的数组
-	final String[] itemsProduct = { "拖拉机", "种子", "化肥", "农具", "收割机", "插秧机" };
-	final boolean[] selectedProduct = new boolean[] { false, false, false,false,false,false};
+	private String[] items;
+	private boolean[] selected;// 一个存放Boolean值的数组
+	private String[] itemsProduct;
+	private boolean[] selectedProduct;
+	
+	
 	private String role;
 	private String phone;
 	private String nickname;
@@ -92,11 +96,23 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private String oneT="",twoT="",threeT="",fourT="",fiveT="",sixT="",nongNameParT;
 	private TuiUserInfo tuiUserInfo;
 	private AreaBroadcastReceiver broadcastReceiver;
+	private List<Allcrops> listAllcrops;//获取农作物名称
+	private ArrayList<String> listArea;//获取面积单位
+	private UnitsBroadcastReceiver unitsReceiver;
+	
+	private  Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			if(msg.what==1){
+				Toast.makeText(getApplicationContext(), "成功", 0).show();
+			}
+		};
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_info);
+		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
 		llNong = (LinearLayout) findViewById(R.id.myInfo_linearLayout_nong);
 		llTui = (LinearLayout) findViewById(R.id.myInfo_linearLayout_tui);
 		initView();
@@ -105,10 +121,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		phone = ((AppApplication)this.getApplication()).PHONENUM;
 		nickname = ((AppApplication)this.getApplicationContext()).NICKNAME;
 		tvPhone.setText("手机号："+phone);
-		mySetText(tvNikcName, info.getName(), 0, 0);
-		
+		mySetTextInfo(tvNikcName, info.getName(), 0);
 		role = ((AppApplication)this.getApplication()).ROLE;
-		
 		
 		
 		sp = getSharedPreferences("config", Context.MODE_PRIVATE);
@@ -125,16 +139,18 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			llNong.setVisibility(View.VISIBLE);
 			llTui.setVisibility(View.GONE);
 			if(info!=null){
-				mySetText(tvSex, info.getGender(), 0, 0);
-				mySetText(tvAge, info.getAge(), 2, 0);
-				mySetText(tvPlant, info.getCropsId(), 0, 0);
-				mySetText(tvArea, info.getCropsArea(), 0, 4);
+				mySetTextInfo(tvSex, info.getGender(), 0);
+				mySetTextInfo(tvAge, info.getAge(), 2);
+				mySetTextInfo(tvPlant, info.getCropsId(), 0);
+				mySetTextInfo(tvArea, info.getCropsArea()+info.getCropsAreaUnit(), 0);
 			}
 		}
 		
 		broadcastReceiver = new AreaBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter("TuiAreaQuActivity"));
 		
+		unitsReceiver = new UnitsBroadcastReceiver();
+		registerReceiver(unitsReceiver, new IntentFilter("com.nongguanjia.doctorTian"));
 	}
 
 	private void initView(){
@@ -207,7 +223,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 							}else{
 								if(!(TextUtils.isEmpty(name))){
 									ChangeInfo(name, info.getName(), info.getAvatar(), info.getAge(), info.getGender(), 
-											info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
+											info.getCropsId(), info.getCropsArea(), info.getCauid());
 									info.setName(name);
 									tvNikcName.setText(name);
 									
@@ -259,12 +275,12 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					tvSex.setText(cities[which]);
 					if(cities[which] == "男"){
 						ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), "男", 
-								info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
+								info.getCropsId(), info.getCropsArea(), info.getCauid());
 						tvSex.setText("男");
 						info.setGender("男");
 					}else{
 						ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), "女", 
-								info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
+								info.getCropsId(), info.getCropsArea(), info.getCauid());
 						tvSex.setText("女");
 						info.setGender("女");
 					}
@@ -284,7 +300,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 							String age = editText.getText().toString();
 							if(!(TextUtils.isEmpty(age))){
 								ChangeInfo(nickname, info.getName(), info.getAvatar(), age, info.getGender(), 
-										info.getCropsId(), info.getCropsArea(), info.getCropsAreaUnit());
+										info.getCropsId(), info.getCropsArea(), info.getCauid());
 								tvAge.setText(age+" 岁");
 								info.setAge(age);
 							}
@@ -292,64 +308,22 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					}).show();
 			break;
 		case R.id.plant_myInfo:
+			getAllcrops();
+			final StringBuffer sb = new StringBuffer();
 			new AlertDialog.Builder(MyDataActivity.this)
 					.setTitle("选择种植作物")
 					// 标题
 					.setMultiChoiceItems(items, selected,
 							new DialogInterface.OnMultiChoiceClickListener() {// 设置多选条目
 								public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-									switch (which) {
-									case 0:
-										if (isChecked) {
-											one = "小麦.";
-										} else {
-											one = "";
-										}
-										break;
-									case 1:
-										if (isChecked) {
-											two = "水稻.";
-										} else {
-											two = "";
-										}
-										break;
-									case 2:
-										if (isChecked) {
-											three = "大豆.";
-										} else {
-											three = "";
-										}
-										break;
-									case 3:
-										if (isChecked) {
-											four = "芝麻.";
-										} else {
-											four = "";
-										}
-										break;
-									case 4:
-										if (isChecked) {
-											five = "玉米.";
-										} else {
-											five = "";
-										}
-										break;
-									case 5:
-										if (isChecked) {
-											six = "食用菌.";
-										} else {
-											six = "";
-										}
-										break;
-									case 6:
-										if (isChecked) {
-											seven = "蔬菜.";
-										} else {
-											seven = "";
-										}
-										break;
+									
+									String temp = items[which]+".";
+									if(isChecked){
+										sb.append(temp);
+									}else{
+										sb.delete(sb.indexOf(temp), temp.length());
 									}
-									String par = one+two+three+four+five+six+seven;
+									String par = sb.toString();
 									if(par.length()>0){
 										nongNamePar = par.substring(0, par.length()-1);
 									}
@@ -359,30 +333,16 @@ public class MyDataActivity extends Activity implements OnClickListener {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 									ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getAge(), info.getGender(), 
-											nongNamePar, info.getCropsArea(), info.getCropsAreaUnit());
+											nongNamePar, info.getCropsArea(), info.getCauid());
 									tvPlant.setText(nongNamePar);
 									info.setCropsId(nongNamePar);
 								}
 							}).setNegativeButton("取消", null).show();
 			break;
 		case R.id.area:
-			final EditText area = new EditText(MyDataActivity.this);
-			new AlertDialog.Builder(MyDataActivity.this).setTitle("请输入种植面积")
-					.setIcon(android.R.drawable.ic_dialog_info)
-					.setView(area)
-					.setNegativeButton("取消", null)
-					.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							String mj = area.getText().toString();
-							if(!(TextUtils.isEmpty(mj))){
-								ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getGender(), info.getGender(), 
-										info.getCropsId(), mj, info.getCropsAreaUnit());
-								tvArea.setText(mj+" 亩");
-								info.setCropsArea(mj);
-							}
-						}
-					}).show();
+			//TODO 面积
+			Intent intent = new Intent(MyDataActivity.this, AreaActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.region:
 			Intent intentArea = new Intent(MyDataActivity.this, TuiAreaActivity.class);
@@ -462,57 +422,22 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			builderStyle.show();
 			break;
 		case R.id.product:
+			getAllproduct();
+			final StringBuffer sb1 = new StringBuffer();
 			new AlertDialog.Builder(MyDataActivity.this)
 			.setTitle("选择种植作物")
 			// 标题
 			.setMultiChoiceItems(itemsProduct, selectedProduct,
 					new DialogInterface.OnMultiChoiceClickListener() {// 设置多选条目
 						public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-							switch (which) {
-							case 0:
-								if (isChecked) {
-									oneT = "拖拉机.";
-								} else {
-									oneT = "";
-								}
-								break;
-							case 1:
-								if (isChecked) {
-									twoT = "种子.";
-								} else {
-									twoT = "";
-								}
-								break;
-							case 2:
-								if (isChecked) {
-									threeT = "化肥.";
-								} else {
-									threeT = "";
-								}
-								break;
-							case 3:
-								if (isChecked) {
-									fourT = "农具.";
-								} else {
-									fourT = "";
-								}
-								break;
-							case 4:
-								if (isChecked) {
-									fiveT = "收割机.";
-								} else {
-									fiveT = "";
-								}
-								break;
-							case 5:
-								if (isChecked) {
-									sixT = "插秧机.";
-								} else {
-									sixT = "";
-								}
-								break;
+							
+							String temp = itemsProduct[which]+".";
+							if(isChecked){
+								sb1.append(temp);
+							}else{
+								sb1.delete(sb1.indexOf(temp), temp.length());
 							}
-							String par = oneT+twoT+threeT+fourT+fiveT+sixT;
+							String par = sb1.toString();
 							if(par.length()>0){
 								nongNameParT = par.substring(0, par.length()-1);
 							}
@@ -691,7 +616,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	private void getTuiInfo(){
 		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
 		String url = CommonConstant.dealers + "/" + phoneNum;
-		
 		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
 			@Override
 			public void onFailure(int statusCode, Header[] headers,
@@ -736,7 +660,89 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
-	
+	/**
+	 * 获取农作物名称
+	 */
+	private void getAllcrops(){
+		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
+		String url = CommonConstant.allcrops + "/" + phoneNum;
+		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					String responseString, Throwable throwable) {
+				Toast.makeText(MyDataActivity.this, "请求接口异常", Toast.LENGTH_SHORT).show();
+				super.onFailure(statusCode, headers, responseString, throwable);
+			}
+			
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				try {
+					if(response.getJSONObject("allCrops").getString("returnCode").equals("1")){
+						JSONArray ja = response.getJSONObject("allCrops").getJSONArray("allCrops");
+						Gson gson = new Gson();
+						listAllcrops = new ArrayList<Allcrops>();
+						listAllcrops = gson.fromJson(ja.toString(), new TypeToken<List<Allcrops>>(){}.getType());
+						
+						items = new String[listAllcrops.size()];
+						selected = new boolean[listAllcrops.size()];
+						if(TextUtils.isEmpty(items[0])){
+							for (int i = 0; i < listAllcrops.size(); i++) {
+								items[i] = listAllcrops.get(i).getName();
+								selected[i] = false;
+							}
+						}
+						
+					}else{
+						Toast.makeText(MyDataActivity.this, "数据获取失败", Toast.LENGTH_SHORT).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	/**
+	 * 获取经营产品信息
+	 */
+	private void getAllproduct(){
+		String url = CommonConstant.allproduct;
+		DoctorTianRestClient.get(url, null, new JsonHttpResponseHandler(){
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					String responseString, Throwable throwable) {
+				Toast.makeText(MyDataActivity.this, "请求接口异常", Toast.LENGTH_SHORT).show();
+				super.onFailure(statusCode, headers, responseString, throwable);
+			}
+			
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				try {
+					if(response.getJSONObject("Allproduct").getString("returnCode").equals("1")){
+						JSONArray ja = response.getJSONObject("Allproduct").getJSONArray("allproduct");
+						Gson gson = new Gson();
+						List<Allproduct> listAllproduct = new ArrayList<Allproduct>();
+						listAllproduct = gson.fromJson(ja.toString(),new TypeToken<List<Allproduct>>(){}.getType());
+						
+						itemsProduct = new String [listAllproduct.size()];
+						selectedProduct = new boolean [listAllproduct.size()];
+						if(TextUtils.isEmpty(itemsProduct[0])){
+							for (int i = 0; i < listAllproduct.size(); i++) {
+								itemsProduct[i] = listAllproduct.get(i).getName();
+								selectedProduct[i] = false;
+							}
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	/**
 	 * textview设置初始数据
 	 * @param tv textview
@@ -744,8 +750,8 @@ public class MyDataActivity extends Activity implements OnClickListener {
 	 * @param age 2表示设置年龄  4表示设置面积  0设置其他
 	 * @param area 如上
 	 */
-	private void mySetText(TextView tv, String data, int age, int area) {
-		if (age == 0 && area == 0) {
+	private void mySetTextInfo(TextView tv, String data, int age) {
+		if (age == 0) {
 			if (TextUtils.isEmpty(data)) {
 				tv.setText("未设置");
 			} else {
@@ -756,12 +762,6 @@ public class MyDataActivity extends Activity implements OnClickListener {
 				tv.setText("未设置");
 			} else {
 				tv.setText(data+" 岁");
-			}
-		}else if(area==4){
-			if (TextUtils.isEmpty(data)) {
-				tv.setText("未设置");
-			} else {
-				tv.setText(data+" 亩");
 			}
 		}
 	}
@@ -832,6 +832,9 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					fileOutputStream.close();
 					path = root.getPath();
 					
+					//TODO 图片上传
+					uploadPhoto(root);
+					
 					Intent intent = new Intent("com.nongguanjia.doctorTian.photo");
 					intent.putExtra("path", path);
 					sendBroadcast(intent);
@@ -840,12 +843,7 @@ public class MyDataActivity extends Activity implements OnClickListener {
 					Editor editor = sp.edit();
 					editor.putString("path", path);
 					editor.commit();
-//					String phone = ((AppApplication)getApplication()).PHONENUM;
-//					String url =DoctorTianRestClient.BASE_URL + phone +"," +"image.jpg";
-//					CustomerHttpClient.photoUpload(url, path, "image.jpg");
-//					File file = new File(path);
-//					CustomerHttpClient.uploadFile(file, url);
-//					CustomerHttpClient.uploadpic(path, handler, url, pictoken, 1);
+					
 				}catch(Exception e){
 					Log.d("文件路径错误", Log.getStackTraceString(e));
 				}
@@ -853,6 +851,41 @@ public class MyDataActivity extends Activity implements OnClickListener {
 			return;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	/**
+	 * 图片上传
+	 * @param file
+	 */
+	private void uploadPhoto(File file){
+		String phoneNum = ((AppApplication)MyDataActivity.this.getApplication()).PHONENUM;
+		String url = CommonConstant.fileuploads + "/" + phoneNum;
+		RequestParams params = new RequestParams();
+		try {
+			params.put("img", file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		DoctorTianRestClient.post(url, params,  new JsonHttpResponseHandler(){
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					String responseString, Throwable throwable) {
+				Toast.makeText(MyDataActivity.this, "请求接口异常", Toast.LENGTH_SHORT).show();
+				super.onFailure(statusCode, headers, responseString, throwable);
+			}
+			
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				try {
+					if(response.getJSONObject("FileUploadRequest").getString("returnCode").equals("1")){
+						Toast.makeText(MyDataActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 
@@ -906,10 +939,26 @@ public class MyDataActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	private class UnitsBroadcastReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			String mj = arg1.getStringExtra("number");
+			String dan = arg1.getStringExtra("dan");
+			String danName = arg1.getStringExtra("danName");
+			
+			ChangeInfo(nickname, info.getName(), info.getAvatar(), info.getGender(), info.getGender(), 
+					info.getCropsId(), mj, dan);
+			tvArea.setText(mj+danName);
+			info.setCropsArea(mj);
+			info.setCropsAreaUnit(danName);
+		}
+	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(broadcastReceiver);
+		unregisterReceiver(unitsReceiver);
 	}
 }

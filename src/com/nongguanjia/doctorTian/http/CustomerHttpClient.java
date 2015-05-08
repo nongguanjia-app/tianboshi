@@ -51,8 +51,8 @@ public class CustomerHttpClient {
 
 	private static final String TAG = "CustomerHttpClient";
 	
-	private static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
-//	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
+//	private static final String BASE_URL = "http://182.92.170.172/tianboshi/"; 
+	private static final String BASE_URL = "http://192.168.1.116:8080/demo/tbs/"; 
 
 	private CustomerHttpClient() {
 	}
@@ -124,82 +124,44 @@ public class CustomerHttpClient {
 		}
 	}
 	
-	public static void photoUpload(String u, String path, String photoName) {
-//		String end = "\r\n";
-//		String twoHyphens = "--";
-//		String boundary = "*****";
-		try {
-			URL url = new URL(u);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setDoInput(true);
-			con.setDoOutput(true);
-			con.setRequestMethod("POST");
-			DataOutputStream ds = new DataOutputStream(con.getOutputStream());
-//			ds.writeBytes(twoHyphens + boundary + end);
-//			ds.writeBytes("Content-Disposition: form-data; "
-//					+ "name=\"file1\";filename=\"" + photoName + "\"" + end);
-//			ds.writeBytes(end);
-			FileInputStream fStream = new FileInputStream(path);
-			int bufferSize = 1024;
-			byte[] buffer = new byte[bufferSize];
-			int length = -1;
-			/* 从文件读取数据至缓冲区 */
-			while ((length = fStream.read(buffer)) != -1) {
-				/* 将资料写入DataOutputStream中 */
-				ds.write(buffer, 0, length);
-			}
-//			ds.writeBytes(end);
-//			ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
-			/* close streams */
-			fStream.close();
-			ds.flush();
-			/* 取得Response内容 */
-			InputStream is = con.getInputStream();
-			int ch;
-			StringBuffer b = new StringBuffer();
-			while ((ch = is.read()) != -1) {
-				b.append((char) ch);
-			}
-			Log.e("1111111111-------------result====", "成功" + b.toString());
-			ds.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void uploadpic(final String picpath, final Handler handler,
-			final String httppath, final String pictoken, final int index) {
-		new Thread() {
-			public void run() {
-				try {
-					HttpClient httpclient = new DefaultHttpClient();
-					HttpPost httppost = new HttpPost(httppath);
-					MultipartEntity reqEntity = new MultipartEntity();
-
-					FileBody file = new FileBody(new File(picpath));
-					reqEntity.addPart("Photo", file);//参数phone文件路径
-
-					StringBody descript = new StringBody(pictoken);
-					StringBody t = new StringBody("ModifyPic");
-					reqEntity.addPart("Token", descript);//参数token
-					reqEntity.addPart("t", t);//参数t
-					
-					httppost.setEntity(reqEntity);
-					httpclient.execute(httppost);
-					handler.sendMessage(handler.obtainMessage(index, "发送成功"));
-					return;
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				handler.sendEmptyMessage(-1);
-			};
-		}.start();
-	}
+//	/**
+//	 * 图片上传方法
+//	 * @param picpath 图片路径
+//	 * @param handler 
+//	 * @param httppath utl路径
+//	 * @param pictoken 参数 值
+//	 * @param index    handler  code值
+//	 */
+//	public static void uploadpic(final String picpath, final Handler handler,
+//			final String httppath, final String pictoken, final int index) {
+//		new Thread() {
+//			public void run() {
+//				try {
+//					HttpClient httpclient = new DefaultHttpClient();
+//					HttpPost httppost = new HttpPost(httppath);
+//					MultipartEntity reqEntity = new MultipartEntity();
+//
+//					FileBody file = new FileBody(new File(picpath));
+//					reqEntity.addPart("img", file);//参数phone文件路径
+//
+//					StringBody descript = new StringBody(pictoken);//key对应的 值
+//					reqEntity.addPart("img", descript);//参数token
+//					
+//					httppost.setEntity(reqEntity);
+//					httpclient.execute(httppost);
+//					handler.sendMessage(handler.obtainMessage(index, "发送成功"));
+//					return;
+//				} catch (UnsupportedEncodingException e) {
+//					e.printStackTrace();
+//				} catch (ClientProtocolException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				handler.sendEmptyMessage(-1);
+//			};
+//		}.start();
+//	}
 	
 	public static int uploadFile(File file, String RequestURL) {
 		final String TAG = "uploadFile";
