@@ -60,8 +60,10 @@ public class ContractActivity extends Activity {
 		tv_title.setText("通讯录");
 		btn_commit.setVisibility(View.VISIBLE);
 		
-//		contracts = GetContractUtil.getPhoneContracts(this);
 		contracts = GetContractUtil.getSIMContacts(this);
+		if(contracts.size() == 0){
+			contracts = GetContractUtil.getPhoneContracts(this);
+		}
 		
 		ArrayList<AllAttention> friendList = (ArrayList<AllAttention>)getIntent().getSerializableExtra("FriendList");
 		if(friendList != null){
