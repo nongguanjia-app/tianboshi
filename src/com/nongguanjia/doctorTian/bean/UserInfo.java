@@ -20,7 +20,14 @@ public class UserInfo implements Parcelable{
 	private String roleID;
 	private String returnCode;
 	private String authTxt;
+	private String Cauid;
 	
+	public String getCauid() {
+		return Cauid;
+	}
+	public void setCauid(String cauid) {
+		Cauid = cauid;
+	}
 	public String getName() {
 		return Name;
 	}
@@ -141,6 +148,7 @@ public class UserInfo implements Parcelable{
 		out.writeString(roleID);
 		out.writeString(returnCode);
 		out.writeString(authTxt);
+		out.writeString(Cauid);
 	}
 	
 	
@@ -167,7 +175,7 @@ public class UserInfo implements Parcelable{
 			info.roleID = in.readString();
 			info.returnCode = in.readString();
 			info.authTxt = in.readString();
-			
+			info.Cauid = in.readString();
 			return info;
 		}
 
