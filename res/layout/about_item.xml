@@ -36,8 +36,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@color/title_bar_bg"
-        android:textColor="@color/white"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/about_intro"
@@ -104,20 +104,21 @@
             android:id="@+id/tv_copyright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/text_hint_color"
-            android:layout_marginBottom="10dp" />
-        
-        <TextView android:id="@+id/tv_name"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/tv_copyright"
-            android:textSize="13sp"
-            android:textColor="@color/text_hint_color"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/text_hint_color"
+            android:textSize="13sp" />
     </RelativeLayout>
 
 </LinearLayout>
