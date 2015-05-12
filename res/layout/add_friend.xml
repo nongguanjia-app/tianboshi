@@ -23,7 +23,6 @@
             android:textColorHint="@color/text_hint_color" />
 
         <!-- 底部线 -->
-        
 
         <ImageView
             android:layout_width="fill_parent"
