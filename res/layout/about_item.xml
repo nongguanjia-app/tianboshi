@@ -7,6 +7,7 @@
 
     <include layout="@layout/title" />
 
+    
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
