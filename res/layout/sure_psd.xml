@@ -41,7 +41,6 @@
             android:hint="@string/hint_input_psd"
             android:layout_alignBottom="@id/img_u"
             android:background="@null"
-            android:numeric="integer"
             android:textColorHint="@color/text_hint_color" />
     </RelativeLayout>
 
