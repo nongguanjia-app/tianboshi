@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/tv_chatcontent"
+            android:visibility="gone"
             android:layout_below="@id/iv_userhead"/>
     </RelativeLayout>
 

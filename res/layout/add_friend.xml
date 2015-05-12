@@ -3,52 +3,59 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <include layout="@layout/title"/>
-    
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp">
-        
-        <LinearLayout 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="4.0"
-            android:gravity="bottom"
-            android:layout_gravity="bottom">
-            
-            <EditText android:id="@+id/ed_tel"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:background="@null"
-	            android:numeric="integer" 
-	            android:hint="请输入手机号码"
-	            android:textColorHint="@color/text_hint_color" />
-            
-            <!-- 底部线 -->
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/title_bar_bg" />
-            
-        </LinearLayout>
-        
-        
-        <Button android:id="@+id/btn_confirm"
-            android:layout_width="wrap_content"
+    <include layout="@layout/title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/ed_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:hint="请输入名字"
+            android:textColorHint="@color/text_hint_color" />
+
+        <!-- 底部线 -->
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/title_bar_bg" />
+
+        <EditText
+            android:id="@+id/ed_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@null"
+            android:hint="请输入手机号码"
+            android:numeric="integer"
+            android:textColorHint="@color/text_hint_color" />
+
+        <!-- 底部线 -->
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/title_bar_bg" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
             android:background="@color/title_bar_bg"
-            android:textColor="@color/white"
-            android:text="@string/confirm"/>
-        
+            android:text="提 交"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>
